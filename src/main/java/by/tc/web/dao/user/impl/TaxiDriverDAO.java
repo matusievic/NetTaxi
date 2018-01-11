@@ -92,7 +92,7 @@ public class TaxiDriverDAO implements UserDAO {
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setLong(1, phone);
             statement.setString(2, String.valueOf(password));
-            ResultSet result = statement.executeQuery(query);
+            ResultSet result = statement.executeQuery();
 
             if (result.last()) {
                 if (result.getRow() != 1) {
@@ -124,6 +124,58 @@ public class TaxiDriverDAO implements UserDAO {
         } catch (InterruptedException e) {
             logger.error("The thread was interrupted during waiting time", e);
             throw new DAOException("Cannot register due to server error");
+        }
+    }
+
+    @Override
+    public void update(User user) throws DAOException {
+        final String query = "UPDATE drivers" +
+                "SET phone=?, name=?, surname=?, password=?, is_baned=?, car_number=?, car_model=?, rating=?" +
+                "WHERE administrator_id=?;";
+
+        TaxiDriver taxiDriver = (TaxiDriver) user;
+
+        try (PooledConnection connection = dbPool.takeConnection()) {
+
+            PreparedStatement statement = connection.prepareStatement(query);
+
+            statement.setLong(1, taxiDriver.getPhone());
+            statement.setString(2, taxiDriver.getName());
+            statement.setString(3, taxiDriver.getSurname());
+            statement.setString(4, String.valueOf(taxiDriver.getPassword()));
+            statement.setBoolean(5, taxiDriver.isBaned());
+            statement.setString(6, String.valueOf(taxiDriver.getCar().getNumber()));
+            statement.setString(7, String.valueOf(taxiDriver.getCar().getModel()));
+            statement.setFloat(8, taxiDriver.getRating());
+            statement.setInt(9, taxiDriver.getId());
+
+            if (statement.executeUpdate() != 1) {
+                //TODO
+            }
+
+        } catch (InterruptedException e) {
+            //TODO
+        } catch (SQLException e) {
+            //TODO
+        }
+    }
+
+    @Override
+    public void delete(User user) throws DAOException {
+        final String query = "DELETE FROM drivers WHERE driver_id=?;";
+
+        try (PooledConnection connection = dbPool.takeConnection()) {
+
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setInt(1, user.getId());
+            if (statement.executeUpdate() != 1) {
+                //TODO
+            }
+
+        } catch (InterruptedException e) {
+            //TODO
+        } catch (SQLException e) {
+            //TODO
         }
     }
 }

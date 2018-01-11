@@ -26,13 +26,16 @@ public class CustomerDAO implements UserDAO {
         try {
             PooledConnection connection = dbPool.takeConnection();
             PreparedStatement statement = connection.prepareStatement("INSERT INTO customers (phone, name, surname, password, is_baned, discount) VALUE (?, ?, ?, ?, false, 0);");
+
             statement.setString(1, String.valueOf(customer.getPhone()));
             statement.setString(2, customer.getName());
             statement.setString(3, customer.getSurname());
             statement.setString(4, String.valueOf(customer.getPassword()));
+
             if (statement.executeUpdate() != 1) {
                 throw new SQLException("Cannot perform update query");
             }
+
         } catch (SQLException e) {
             logger.error("Cannot register user: ", e);
             throw new DAOException("Cannot register user due to server error");
@@ -70,7 +73,9 @@ public class CustomerDAO implements UserDAO {
                 customers[currentPosition] = customer;
                 currentPosition++;
             }
+
             return customers;
+
         } catch (SQLException e) {
             logger.error("Cannot register user: ", e);
             throw new DAOException("Cannot register user due to server error");
@@ -89,7 +94,7 @@ public class CustomerDAO implements UserDAO {
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setLong(1, phone);
             statement.setString(2, String.valueOf(password));
-            ResultSet result = statement.executeQuery(query);
+            ResultSet result = statement.executeQuery();
 
             if (result.last()) {
                 if (result.getRow() != 1) {
@@ -111,6 +116,7 @@ public class CustomerDAO implements UserDAO {
             customer.setPassword(result.getString("password").toCharArray());
             customer.setBaned(result.getBoolean("is_baned"));
             customer.setDiscount(result.getFloat("discount"));
+
             return customer;
 
         } catch (SQLException e) {
@@ -119,6 +125,56 @@ public class CustomerDAO implements UserDAO {
         } catch (InterruptedException e) {
             logger.error("The thread was interrupted during waiting time", e);
             throw new DAOException("Cannot register due to server error");
+        }
+    }
+
+    @Override
+    public void update(User user) throws DAOException {
+        final String query = "UPDATE customers" +
+                "SET phone=?, name=?, surname=?, password=?, is_baned=?, discount=?" +
+                "WHERE customer_id=?;";
+
+        Customer customer = (Customer) user;
+
+        try (PooledConnection connection = dbPool.takeConnection()) {
+
+            PreparedStatement statement = connection.prepareStatement(query);
+
+            statement.setLong(1, customer.getPhone());
+            statement.setString(2, customer.getName());
+            statement.setString(3, customer.getSurname());
+            statement.setString(4, String.valueOf(customer.getPassword()));
+            statement.setBoolean(5, customer.isBaned());
+            statement.setFloat(6, customer.getDiscount());
+            statement.setInt(7, customer.getId());
+
+            if (statement.executeUpdate() != 1) {
+                //TODO
+            }
+
+        } catch (InterruptedException e) {
+            //TODO
+        } catch (SQLException e) {
+            //TODO
+        }
+    }
+
+    @Override
+    public void delete(User user) throws DAOException {
+        final String query = "DELETE FROM customers WHERE customer_id=?;";
+
+        try (PooledConnection connection = dbPool.takeConnection()) {
+
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setInt(1, user.getId());
+            if (statement.executeUpdate() != 1) {
+                //TODO
+            }
+
+        } catch (InterruptedException e) {
+            //TODO
+        } catch (SQLException e) {
+            //TODO
         }
     }
 }

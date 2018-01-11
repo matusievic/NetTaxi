@@ -24,9 +24,10 @@ public class AdministratorDAO implements UserDAO {
     @Override
     public void create(User user) throws DAOException {
         Customer customer = (Customer) user;
-        try {
-            PooledConnection connection = dbPool.takeConnection();
+        try (PooledConnection connection = dbPool.takeConnection()) {
+
             PreparedStatement statement = connection.prepareStatement("INSERT INTO administrator (phone, name, surname, password) VALUE (?, ?, ?, ?);");
+
             statement.setString(1, String.valueOf(customer.getPhone()));
             statement.setString(2, customer.getName());
             statement.setString(3, customer.getSurname());
@@ -34,6 +35,7 @@ public class AdministratorDAO implements UserDAO {
             if (statement.executeUpdate() != 1) {
                 throw new SQLException("Cannot perform update query");
             }
+
         } catch (SQLException e) {
             logger.error("Cannot register user: ", e);
             throw new DAOException("Cannot register user due to server error");
@@ -46,8 +48,8 @@ public class AdministratorDAO implements UserDAO {
     @Override
     public Administrator[] read() throws DAOException {
         final String query = "SELECT * FROM administrators;";
-        try {
-            PooledConnection connection = dbPool.takeConnection();
+        try (PooledConnection connection = dbPool.takeConnection()) {
+
             Statement statement = connection.createStatement();
             ResultSet result = statement.executeQuery(query);
 
@@ -69,7 +71,9 @@ public class AdministratorDAO implements UserDAO {
                 administrators[currentPosition] = administrator;
                 currentPosition++;
             }
+
             return administrators;
+
         } catch (SQLException e) {
             logger.error("Cannot register user: ", e);
             throw new DAOException("Cannot register user due to server error");
@@ -83,12 +87,12 @@ public class AdministratorDAO implements UserDAO {
     public User readByPhoneAndPassword(long phone, char[] password) throws DAOException {
         final String query = "SELECT * FROM administrators WHERE phone=? AND password=?";
 
-        try {
-            PooledConnection connection = dbPool.takeConnection();
+        try (PooledConnection connection = dbPool.takeConnection()) {
+
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setLong(1, phone);
             statement.setString(2, String.valueOf(password));
-            ResultSet result = statement.executeQuery(query);
+            ResultSet result = statement.executeQuery();
 
             if (result.last()) {
                 if (result.getRow() != 1) {
@@ -108,6 +112,7 @@ public class AdministratorDAO implements UserDAO {
             administrator.setName(result.getString("name"));
             administrator.setSurname(result.getString("surname"));
             administrator.setPassword(result.getString("password").toCharArray());
+
             return administrator;
 
         } catch (SQLException e) {
@@ -116,6 +121,54 @@ public class AdministratorDAO implements UserDAO {
         } catch (InterruptedException e) {
             logger.error("The thread was interrupted during waiting time", e);
             throw new DAOException("Cannot register due to server error");
+        }
+    }
+
+    @Override
+    public void update(User user) throws DAOException {
+        final String query = "UPDATE administrators" +
+                             "SET phone=?, name=?, surname=?, password=?" +
+                             "WHERE administrator_id=?;";
+
+        Administrator administrator = (Administrator) user;
+
+        try (PooledConnection connection = dbPool.takeConnection()) {
+
+            PreparedStatement statement = connection.prepareStatement(query);
+
+            statement.setLong(1, administrator.getPhone());
+            statement.setString(2, administrator.getName());
+            statement.setString(3, administrator.getSurname());
+            statement.setString(4, String.valueOf(administrator.getPassword()));
+            statement.setInt(5, administrator.getId());
+
+            if (statement.executeUpdate() != 1) {
+                //TODO
+            }
+
+        } catch (InterruptedException e) {
+            //TODO
+        } catch (SQLException e) {
+            //TODO
+        }
+    }
+
+    @Override
+    public void delete(User user) throws DAOException {
+        final String query = "DELETE FROM administrators WHERE administrator_id=?;";
+
+        try (PooledConnection connection = dbPool.takeConnection()) {
+
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setInt(1, user.getId());
+            if (statement.executeUpdate() != 1) {
+                //TODO
+            }
+
+        } catch (InterruptedException e) {
+            //TODO
+        } catch (SQLException e) {
+            //TODO
         }
     }
 }
