@@ -1,14 +1,33 @@
 package by.tc.web.domain.user;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public abstract class User {
+public abstract class User implements Serializable {
+    private static final long serialVersionUID = -5863058898809249040L;
+    private int id;
+    private long phone;
     private String name;
     private String surname;
-    private String login;
-    private String password;
+    private char[] password;
 
     public User() {
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public long getPhone() {
+        return phone;
+    }
+
+    public void setPhone(long phone) {
+        this.phone = phone;
     }
 
     public String getName() {
@@ -27,19 +46,11 @@ public abstract class User {
         this.surname = surname;
     }
 
-    public String getLogin() {
-        return login;
-    }
-
-    public void setLogin(String login) {
-        this.login = login;
-    }
-
-    public String getPassword() {
+    public char[] getPassword() {
         return password;
     }
 
-    public void setPassword(String password) {
+    public void setPassword(char[] password) {
         this.password = password;
     }
 
@@ -51,18 +62,19 @@ public abstract class User {
 
         User user = (User) obj;
 
+        if (Objects.equals(phone, user.phone)) { return false; }
         if (!Objects.equals(name, user.name)) { return false; }
         if (!Objects.equals(surname, user.surname)) { return false; }
-        if (Objects.equals(login, user.login)) { return false; }
         if (Objects.equals(password, user.password)) { return false; }
+
         return true;
     }
 
     @Override
     public int hashCode() {
-        int result = Objects.hashCode(name);
+        int result = Objects.hashCode(phone);
+        result = 31 * result + Objects.hashCode(name);
         result = 31 * result + Objects.hashCode(surname);
-        result = 31 * result + Objects.hashCode(login);
         result = 31 * result + Objects.hashCode(password);
         return result;
     }

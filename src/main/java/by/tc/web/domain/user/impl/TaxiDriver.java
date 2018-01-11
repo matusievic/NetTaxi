@@ -1,39 +1,31 @@
 package by.tc.web.domain.user.impl;
 
+import by.tc.web.domain.car.Car;
 import by.tc.web.domain.user.User;
 
 import java.util.Objects;
 
 public class TaxiDriver extends User {
-    private String phone;
-    private String carModel;
-    private String carNumber;
+    private static final long serialVersionUID = -7105690319962626166L;
+    private boolean baned;
+    private Car car;
 
-    public TaxiDriver() {
+    public TaxiDriver() {}
+
+    public boolean isBaned() {
+        return baned;
     }
 
-    public String getPhone() {
-        return phone;
+    public void setBaned(boolean baned) {
+        this.baned = baned;
     }
 
-    public void setPhone(String phone) {
-        this.phone = phone;
+    public Car getCar() {
+        return car;
     }
 
-    public String getCarModel() {
-        return carModel;
-    }
-
-    public void setCarModel(String carModel) {
-        this.carModel = carModel;
-    }
-
-    public String getCarNumber() {
-        return carNumber;
-    }
-
-    public void setCarNumber(String carNumber) {
-        this.carNumber = carNumber;
+    public void setCar(Car car) {
+        this.car = car;
     }
 
     @Override
@@ -43,19 +35,14 @@ public class TaxiDriver extends User {
         if (!super.equals(obj)) { return false; }
 
         TaxiDriver taxiDriver = (TaxiDriver) obj;
-
-        if (Objects.equals(phone, taxiDriver.phone)) { return false; }
-        if (Objects.equals(carModel, taxiDriver.carModel)) { return false; }
-        if (Objects.equals(carNumber, taxiDriver.carNumber)) { return false; }
+        if (!Objects.equals(car, taxiDriver.car)) { return false; }
         return true;
     }
 
     @Override
     public int hashCode() {
         int result = super.hashCode();
-        result = 31 * result + (phone != null ? phone.hashCode() : 0);
-        result = 31 * result + (carModel != null ? carModel.hashCode() : 0);
-        result = 31 * result + (carNumber != null ? carNumber.hashCode() : 0);
+        result = 31 * result + Objects.hashCode(car);
         return result;
     }
 }

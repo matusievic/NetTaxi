@@ -2,37 +2,26 @@ package by.tc.web.domain.user.impl;
 
 import by.tc.web.domain.user.User;
 
-import java.util.Objects;
-
 public class Customer extends User {
-    private String phone;
+    private static final long serialVersionUID = -3707270676089648600L;
+    private boolean baned;
+    private float discount;
 
-    public Customer() {
+    public Customer() {}
+
+    public boolean isBaned() {
+        return baned;
     }
 
-    public String getPhone() {
-        return phone;
+    public void setBaned(boolean baned) {
+        this.baned = baned;
     }
 
-    public void setPhone(String phone) {
-        this.phone = phone;
+    public float getDiscount() {
+        return discount;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) { return true; }
-        if (o == null || getClass() != o.getClass()) { return false; }
-        if (!super.equals(o)) return false;
-
-        Customer customer = (Customer) o;
-
-        return Objects.equals(phone, customer.phone);
-    }
-
-    @Override
-    public int hashCode() {
-        int result = super.hashCode();
-        result = 31 * result + (phone != null ? phone.hashCode() : 0);
-        return result;
+    public void setDiscount(float discount) {
+        this.discount = discount;
     }
 }
