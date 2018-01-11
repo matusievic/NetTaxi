@@ -22,10 +22,10 @@ public final class MySQLPool implements DBPool {
     private static final int INITIAL_POOL_SIZE = 5;
     private static final int MAXIMUM_POOL_SIZE = 20;
 
-    private static final String DRIVER_NAME;
-    private static final String URL;
-    private static final String USER;
-    private static final String PASSWORD;
+    private static final String DRIVER_NAME = "com.mysql.jdbc.Driver";
+    private static final String URL = "jdbc:mysql://localhost:3306/NetTaxi";
+    private static final String USER = "root";
+    private static final String PASSWORD = "root";
 
     private final DatabaseFactory databaseFactory = DatabaseFactory.getInstance();
     private final BlockingQueue<PooledConnection> pool = new ArrayBlockingQueue<>(20);
@@ -54,9 +54,9 @@ public final class MySQLPool implements DBPool {
 
     static {
         try(InputStream propertiesFile = ClassLoader.getSystemResourceAsStream("database/jdbc.properties")) {
-            //configure log4j property file
+            /*//configure log4j property file
             Properties log4jProps = new Properties();
-            log4jProps.load(ClassLoader.getSystemResourceAsStream("log4j/log4j.properties"));
+            log4jProps.load(Thread.currentThread().getContextClassLoader().getSystemResourceAsStream("log4j/log4j.properties"));
             PropertyConfigurator.configure(log4jProps);
 
             //read properties from file
@@ -91,7 +91,7 @@ public final class MySQLPool implements DBPool {
                 PASSWORD = null;
             } else {
                 PASSWORD = password;
-            }
+            }*/
 
             //instantiate a connections pool
             instance = new MySQLPool();
