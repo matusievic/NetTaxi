@@ -8,8 +8,9 @@
 
     <fmt:message bundle="${loc}" key="local.application.name" var="applicationNameLabel"/>
     <fmt:message bundle="${loc}" key="local.signup.activity" var="signupPageLabel"/>
+    <fmt:message bundle="${loc}" key="local.signup.repeat_password" var="repeatPasswordLabel"/>
 
-    <fmt:message bundle="${loc}" key="local.user.login" var="loginLabel"/>
+    <fmt:message bundle="${loc}" key="local.user.phone" var="phoneLabel"/>
     <fmt:message bundle="${loc}" key="local.user.password" var="passwordLabel"/>
     <fmt:message bundle="${loc}" key="local.user.name" var="nameLabel"/>
     <fmt:message bundle="${loc}" key="local.user.surname" var="surnameLabel"/>
@@ -20,23 +21,14 @@
     <title>${signupPageLabel} - ${applicationNameLabel}</title>
 </head>
 <body>
-<form action="/controller" method="get">
-    <input type="hidden" name="command" value="LOCALIZE"/>
-    <input type="hidden" name="from" value="${pageContext.request.requestURI}">
-    <select name="locale">
-        <option value="be">Беларуская</option>
-        <option value="en">English</option>
-    </select>
-    <input type="submit" value="OK">
-</form>
-<form action="AccountController" method="get">
-    <input type="hidden" name="command" value="registration">
-
-    ${loginLabel}: <input type="text" name="login" value=""><br>
-    ${passwordLabel}: <input type="password" name="password" value=""><br>
-    ${passwordLabel}: <input type="password" name="password" value=""><br>
-    ${nameLabel}: <input type="password" name="password" value=""><br>
-    ${surnameLabel}: <input type="password" name="password" value=""><br>
+<jsp:directive.include file="include/language.jsp" />
+<form action="/controller" method="post">
+    <input type="hidden" name="command" value="register_customer">
+    <input type="text" name="phone" placeholder="${phoneLabel}" required><br>
+    <input type="text" name="name" placeholder="${nameLabel}" required><br>
+    <input type="text" name="surname" placeholder="${surnameLabel}" required><br>
+    <input type="password" name="first_password" placeholder="${passwordLabel}" required><br>
+    <input type="password" name="second_password" placeholder="${repeatPasswordLabel}" required><br>
     <input type="submit" value="${signupPageLabel}">
 </form>
 </body>

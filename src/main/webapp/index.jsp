@@ -5,26 +5,17 @@
 <head>
     <fmt:setLocale value="${sessionScope.locale}"/>
     <fmt:setBundle basename="localization.local" var="loc"/>
-    <fmt:message bundle="${loc}" key="local.user.login" var="loginLabel"/>
-    <fmt:message bundle="${loc}" key="local.login.activity" var="loginPageLabel"/>
-    <fmt:message bundle="${loc}" key="local.user.password" var="passwordLabel"/>
-    <fmt:message bundle="${loc}" key="local.login.button" var="loginButton"/>
     <fmt:message bundle="${loc}" key="local.application.name" var="applicationNameLabel"/>
-    <fmt:message bundle="${loc}" key="local.signup" var="signupLabel"/>
+    <fmt:message bundle="${loc}" key="local.page.main.title" var="pageTitleLabel"/>
 
-    <title>${mainLabel} - ${applicationNameLabel}</title>
+    <fmt:message bundle="${loc}" key="local.login.activity" var="signinPageLabel"/>
+    <fmt:message bundle="${loc}" key="local.signup" var="signupPageLabel"/>
+
+    <title>${pageTitleLabel} - ${applicationNameLabel}</title>
 </head>
 <body>
-<form action="/controller" method="get">
-    <input type="hidden" name="command" value="LOCALIZE"/>
-    <input type="hidden" name="from" value="${pageContext.request.requestURI}">
-    <select name="locale">
-        <option value="be">Беларуская</option>
-        <option value="en">English</option>
-    </select>
-    <input type="submit" value="OK">
-</form>
-<a href="/login">${loginPageLabel}</a>
-<a href="/signup">${signupLabel}</a>
+<jsp:directive.include file="WEB-INF/jsp/include/language.jsp" />
+<a href="/signin">${signinPageLabel}</a>
+<a href="/signup">${signupPageLabel}</a>
 </body>
 </html>

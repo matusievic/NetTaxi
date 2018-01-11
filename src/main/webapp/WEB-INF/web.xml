@@ -4,19 +4,14 @@
          xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
 
     <display-name>Internet taxi</display-name>
-    
+
+
+
+    <!--Welcome page-->
+
     <welcome-file-list>
         <welcome-file>/index.jsp</welcome-file>
     </welcome-file-list>
-
-    <servlet>
-        <servlet-name>Controller</servlet-name>
-        <servlet-class>by.tc.web.controller.Controller</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>Controller</servlet-name>
-        <url-pattern>/controller</url-pattern>
-    </servlet-mapping>
 
     <servlet>
         <servlet-name>IndexPage</servlet-name>
@@ -28,13 +23,29 @@
     </servlet-mapping>
 
 
+
+    <!--Controller-->
+
     <servlet>
-        <servlet-name>LoginPage</servlet-name>
-        <jsp-file>/WEB-INF/jsp/login.jsp</jsp-file>
+        <servlet-name>Controller</servlet-name>
+        <servlet-class>by.tc.web.controller.control.Controller</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-name>LoginPage</servlet-name>
-        <url-pattern>/login</url-pattern>
+        <servlet-name>Controller</servlet-name>
+        <url-pattern>/controller</url-pattern>
+    </servlet-mapping>
+
+
+
+    <!--Sign In and Sign Up pages-->
+
+    <servlet>
+        <servlet-name>SignInPage</servlet-name>
+        <jsp-file>/WEB-INF/jsp/signin.jsp</jsp-file>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>SignInPage</servlet-name>
+        <url-pattern>/signin</url-pattern>
     </servlet-mapping>
 
     <servlet>
@@ -44,6 +55,161 @@
     <servlet-mapping>
         <servlet-name>SignUpPage</servlet-name>
         <url-pattern>/signup</url-pattern>
+    </servlet-mapping>
+
+
+
+    <!--Customer pages-->
+
+    <servlet>
+        <servlet-name>CustomerAccount</servlet-name>
+        <jsp-file>/WEB-INF/jsp/customer/account.jsp</jsp-file>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>CustomerAccount</servlet-name>
+        <url-pattern>/customer/account</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>CustomerOrder</servlet-name>
+        <jsp-file>/WEB-INF/jsp/customer/order.jsp</jsp-file>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>CustomerOrder</servlet-name>
+        <url-pattern>/customer/order</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>CustomerHistory</servlet-name>
+        <jsp-file>/WEB-INF/jsp/customer/history.jsp</jsp-file>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>CustomerHistory</servlet-name>
+        <url-pattern>/customer/history</url-pattern>
+    </servlet-mapping>
+
+
+
+    <!--Driver pages-->
+
+    <servlet>
+        <servlet-name>DriverAccount</servlet-name>
+        <jsp-file>/WEB-INF/jsp/driver/account.jsp</jsp-file>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>DriverAccount</servlet-name>
+        <url-pattern>/driver/account</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>DriverHistory</servlet-name>
+        <jsp-file>/WEB-INF/jsp/driver/history.jsp</jsp-file>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>DriverHistory</servlet-name>
+        <url-pattern>/driver/history</url-pattern>
+    </servlet-mapping>
+
+
+
+    <!--Administrator pages-->
+
+    <servlet>
+        <servlet-name>AdministratorAccount</servlet-name>
+        <jsp-file>/WEB-INF/jsp/administrator/account.jsp</jsp-file>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AdministratorAccount</servlet-name>
+        <url-pattern>/administrator/account</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>AdministratorCustomers</servlet-name>
+        <jsp-file>/WEB-INF/jsp/administrator/customers/jsp</jsp-file>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AdministratorCustomers</servlet-name>
+        <url-pattern>/administrator/customers</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>AdministratorDrivers</servlet-name>
+        <jsp-file>/WEB-INF/jsp/administrator/drivers.jsp</jsp-file>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AdministratorDrivers</servlet-name>
+        <url-pattern>/administrator/drivers</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>AdministratorOrders</servlet-name>
+        <jsp-file>/WEB-INF/jsp/administrator/orders.jsp</jsp-file>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AdministratorOrders</servlet-name>
+        <url-pattern>/administrator/orders</url-pattern>
+    </servlet-mapping>
+
+
+
+    <!--Filters-->
+
+    <filter>
+        <filter-name>CustomerFilter</filter-name>
+        <filter-class>by.tc.web.controller.filter.CustomerFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>CustomerFilter</filter-name>
+        <url-pattern>/customer/*</url-pattern>
+    </filter-mapping>
+
+    <filter>
+        <filter-name>DriverFilter</filter-name>
+        <filter-class>by.tc.web.controller.filter.TaxiDriverFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>DriverFilter</filter-name>
+        <url-pattern>/driver/*</url-pattern>
+    </filter-mapping>
+
+    <filter>
+        <filter-name>AdministratorFilter</filter-name>
+        <filter-class>by.tc.web.controller.filter.AdministratorFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>AdministratorFilter</filter-name>
+        <url-pattern>/administrator/*</url-pattern>
+    </filter-mapping>
+
+
+
+    <!--Error pages-->
+
+    <servlet>
+        <servlet-name>Error403</servlet-name>
+        <jsp-file>/WEB-INF/jsp/error/403.jsp</jsp-file>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Error403</servlet-name>
+        <url-pattern>/403</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>Error404</servlet-name>
+        <jsp-file>/WEB-INF/jsp/error/404.jsp</jsp-file>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Error404</servlet-name>
+        <url-pattern>/404</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>Error500</servlet-name>
+        <jsp-file>/WEB-INF/jsp/error/500.jsp</jsp-file>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Error500</servlet-name>
+        <url-pattern>/500</url-pattern>
     </servlet-mapping>
 
 </web-app>
