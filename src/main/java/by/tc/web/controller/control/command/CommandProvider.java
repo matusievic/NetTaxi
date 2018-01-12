@@ -23,6 +23,9 @@ public final class CommandProvider {
         commands.put(ControllerActivity.BLOCK_CUSTOMER, new CustomerBlockingCommand());
         commands.put(ControllerActivity.UNBLOCK_CUSTOMER, new CustomerUnblockingCommand());
         commands.put(ControllerActivity.DISCOUNT_CUSTOMER, new CustomerDiscountingCommand());
+        commands.put(ControllerActivity.UPDATE_ADMINISTRATOR, new AdministratorUpdatingCommand());
+        commands.put(ControllerActivity.DELETE_ADMINISTRATOR, new AdministratorDeletingCommand());
+        commands.put(ControllerActivity.CLOSE_SESSION, new CloseSessionCommand());
     }
 
     public static ControllerCommand takeCommand(String name) {

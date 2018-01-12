@@ -1,7 +1,7 @@
 package by.tc.web.service.validator;
 
 public final class AccountValidator {
-    private static final String PHONE_REGEX = "\\+375[(29)(33)(44)](\\d{8})";
+    private static final String PHONE_REGEX = "\\+?375[(29)(33)(44)](\\d{8})";
     private static final String NAME_REGEX = "[A-Z][a-z]+";
     private static final String SURNAME_REGEX = "[A-Z][a-z]+";
     private static final String PASSWORD_REGEX = "^(?=^.{6,}$)((?=.*\\d)|(?=.*\\W+))(?![.\\n])(?=.*[A-Z])(?=.*[a-z]).*$";

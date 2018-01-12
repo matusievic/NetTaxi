@@ -11,6 +11,7 @@
     <fmt:message bundle="${loc}" key="user.taxi_driver.surname" var="surnameLabel"/>
     <fmt:message bundle="${loc}" key="user.taxi_driver.car_number" var="carNumberLabel"/>
     <fmt:message bundle="${loc}" key="user.taxi_driver.car_model" var="carModelLabel"/>
+    <fmt:message bundle="${loc}" key="page.administrator.driver.create.back" var="backLabel"/>
     <fmt:message bundle="${loc}" key="application.name" var="applicationNameLabel"/>
     <fmt:message bundle="${loc}" key="page.administrator.driver.create.title" var="pageTitleLabel"/>
 
@@ -28,5 +29,6 @@
     <input type="text" name="car_model" placeholder="Car model" required>
     <input type="submit" value="OK">
 </form>
+<a href="/controller?command=display_taxidrivers">${backLabel}</a>
 </body>
 </html>

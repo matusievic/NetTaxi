@@ -7,4 +7,6 @@ public interface UserService {
     void block(int userId);
     void unblock(int userId);
     void discount(int userId, float discount);
+    void update(User user);
+    void delete(User user);
 }

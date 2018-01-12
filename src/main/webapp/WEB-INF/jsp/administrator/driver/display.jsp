@@ -15,6 +15,7 @@
     <fmt:message bundle="${loc}" key="user.taxi_driver.rating" var="ratingLabel"/>
     <fmt:message bundle="${loc}" key="page.administrator.driver.display.ban" var="blockLabel"/>
     <fmt:message bundle="${loc}" key="page.administrator.driver.display.unban" var="unblockLabel"/>
+    <fmt:message bundle="${loc}" key="page.administrator.driver.display.back" var="backLabel"/>
     <fmt:message bundle="${loc}" key="application.name" var="applicationNameLabel"/>
     <fmt:message bundle="${loc}" key="page.administrator.driver.display.title" var="pageTitleLabel"/>
 
@@ -63,5 +64,6 @@
         <a href="/controller?command=unblock_taxidriver&id=${taxiDriver.id}">${unblockLabel}</a>
     </c:when>
 </c:choose>
+<a href="/controller?command=display_taxidrivers">${backLabel}</a>
 </body>
 </html>

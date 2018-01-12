@@ -177,6 +177,24 @@
         <url-pattern>/administrator/orders</url-pattern>
     </servlet-mapping>
 
+    <servlet>
+        <servlet-name>AdministratorAccountEditing</servlet-name>
+        <jsp-file>/WEB-INF/jsp/administrator/account/edit.jsp</jsp-file>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AdministratorAccountEditing</servlet-name>
+        <url-pattern>/administrator/account/edit</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>AdministratorAccountDeleting</servlet-name>
+        <jsp-file>/WEB-INF/jsp/administrator/account/delete.jsp</jsp-file>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AdministratorAccountDeleting</servlet-name>
+        <url-pattern>/administrator/account/delete</url-pattern>
+    </servlet-mapping>
+
 
 
     <!--Filters-->

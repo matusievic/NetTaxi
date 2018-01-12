@@ -55,4 +55,26 @@ public class CustomerService implements UserService {
             //TODO
         }
     }
+
+    @Override
+    public void update(User user) {
+        try {
+            if (user != null) {
+                dao.update(user);
+            }
+        } catch (DAOException e) {
+            //TODO
+        }
+    }
+
+    @Override
+    public void delete(User user) {
+        try {
+            if (user != null) {
+                dao.delete(user);
+            }
+        } catch (DAOException e) {
+            //TODO
+        }
+    }
 }

@@ -11,5 +11,7 @@ public class CloseSessionCommand implements ControllerCommand {
     @Override
     public void execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.getSession().invalidate();
+        resp.sendRedirect("/");
+        return;
     }
 }
