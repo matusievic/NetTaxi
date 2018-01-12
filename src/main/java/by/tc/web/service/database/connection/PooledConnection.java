@@ -4,7 +4,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public interface PooledConnection {
+public interface PooledConnection extends AutoCloseable {
     Statement createStatement() throws SQLException;
     PreparedStatement prepareStatement(String sql) throws SQLException;
     void close() throws SQLException;

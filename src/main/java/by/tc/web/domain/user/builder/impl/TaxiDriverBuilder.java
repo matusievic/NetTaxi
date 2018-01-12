@@ -6,7 +6,8 @@ import by.tc.web.domain.user.impl.TaxiDriver;
 
 public class TaxiDriverBuilder extends UserBuilder {
     private Car car;
-    private boolean baned;
+    private boolean banned;
+    private float rating;
 
     public TaxiDriverBuilder(int id) {
         super(id);
@@ -17,8 +18,13 @@ public class TaxiDriverBuilder extends UserBuilder {
         return this;
     }
 
-    public TaxiDriverBuilder baned(boolean baned) {
-        this.baned = baned;
+    public TaxiDriverBuilder banned(boolean banned) {
+        this.banned = banned;
+        return this;
+    }
+
+    public TaxiDriverBuilder rating(float rating) {
+        this.rating = rating;
         return this;
     }
 
@@ -30,7 +36,8 @@ public class TaxiDriverBuilder extends UserBuilder {
         taxiDriver.setSurname(super.surname);
         taxiDriver.setPassword(password);
         taxiDriver.setCar(this.car);
-        taxiDriver.setBaned(this.baned);
+        taxiDriver.setBanned(this.banned);
+        taxiDriver.setRating(rating);
         return taxiDriver;
     }
 

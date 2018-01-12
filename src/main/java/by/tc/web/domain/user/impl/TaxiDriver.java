@@ -7,17 +7,18 @@ import java.util.Objects;
 
 public class TaxiDriver extends User {
     private static final long serialVersionUID = -7105690319962626166L;
-    private boolean baned;
+    private boolean banned;
     private Car car;
+    private float rating;
 
     public TaxiDriver() {}
 
-    public boolean isBaned() {
-        return baned;
+    public boolean isBanned() {
+        return banned;
     }
 
-    public void setBaned(boolean baned) {
-        this.baned = baned;
+    public void setBanned(boolean banned) {
+        this.banned = banned;
     }
 
     public Car getCar() {
@@ -26,6 +27,14 @@ public class TaxiDriver extends User {
 
     public void setCar(Car car) {
         this.car = car;
+    }
+
+    public float getRating() {
+        return rating;
+    }
+
+    public void setRating(float rating) {
+        this.rating = rating;
     }
 
     @Override

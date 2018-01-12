@@ -27,7 +27,7 @@ public class TaxiDriverDAO implements UserDAO {
         Car car = taxiDriver.getCar();
         try {
             PooledConnection connection = dbPool.takeConnection();
-            PreparedStatement statement = connection.prepareStatement("INSERT INTO drivers (phone, name, surname, password, is_baned, car_number, car_model, rating) VALUE (?, ?, ?, ?, 0, ?, ?, 0);");
+            PreparedStatement statement = connection.prepareStatement("INSERT INTO drivers (phone, name, surname, password, is_banned, car_number, car_model, rating) VALUE (?, ?, ?, ?, 0, ?, ?, 0);");
             statement.setString(1, String.valueOf(taxiDriver.getPhone()));
             statement.setString(2, taxiDriver.getName());
             statement.setString(3, taxiDriver.getSurname());
@@ -67,7 +67,7 @@ public class TaxiDriverDAO implements UserDAO {
                 taxiDriver.setName(result.getString("name"));
                 taxiDriver.setSurname(result.getString("surname"));
                 taxiDriver.setPassword(result.getString("password").toCharArray());
-                taxiDriver.setBaned(result.getBoolean("is_baned"));
+                taxiDriver.setBanned(result.getBoolean("is_banned"));
                 taxiDriver.setCar(new Car(result.getString("car_number").toCharArray(), result.getString("car_model")));
                 taxiDriver.setRating(result.getFloat("rating"));
                 taxiDrivers[currentPosition] = taxiDriver;
@@ -81,6 +81,48 @@ public class TaxiDriverDAO implements UserDAO {
             logger.error("The thread was interrupted during waiting time", e);
             throw new DAOException("Cannot register due to server error");
         }
+    }
+
+    @Override
+    public User[] readInRange(int begin, int end) throws DAOException {
+        final String query = "SELECT * FROM drivers WHERE driver_id BETWEEN ? AND ?";
+        try (PooledConnection connection = dbPool.takeConnection()) {
+
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setInt(1, begin);
+            statement.setInt(2, end);
+
+            ResultSet result = statement.executeQuery();
+
+            int rowCount = 0;
+            if (result.last()) {
+                rowCount = result.getRow();
+                result.beforeFirst();
+            }
+
+            TaxiDriver[] taxiDrivers = new TaxiDriver[rowCount];
+            int currentPosition = 0;
+            while (result.next()) {
+                TaxiDriver taxiDriver = new TaxiDriver();
+                taxiDriver.setId(result.getInt("driver_id"));
+                taxiDriver.setPhone(result.getLong("phone"));
+                taxiDriver.setName(result.getString("name"));
+                taxiDriver.setSurname(result.getString("surname"));
+                taxiDriver.setPassword(result.getString("password").toCharArray());
+                taxiDriver.setBanned(result.getBoolean("is_banned"));
+                taxiDriver.setCar(new Car(result.getString("car_number").toCharArray(), result.getString("car_model")));
+                taxiDriver.setRating(result.getFloat("rating"));
+                taxiDrivers[currentPosition] = taxiDriver;
+                currentPosition++;
+            }
+            return taxiDrivers;
+
+        } catch (InterruptedException e) {
+            //TODO
+        } catch (SQLException e) {
+            //TODO
+        }
+        return null;
     }
 
     @Override
@@ -112,7 +154,7 @@ public class TaxiDriverDAO implements UserDAO {
             taxiDriver.setName(result.getString("name"));
             taxiDriver.setSurname(result.getString("surname"));
             taxiDriver.setPassword(result.getString("password").toCharArray());
-            taxiDriver.setBaned(result.getBoolean("is_baned"));
+            taxiDriver.setBanned(result.getBoolean("is_banned"));
             taxiDriver.setCar(new Car(result.getString("car_number").toCharArray(), result.getString("car_model")));
             taxiDriver.setRating(result.getFloat("rating"));
 
@@ -128,9 +170,31 @@ public class TaxiDriverDAO implements UserDAO {
     }
 
     @Override
+    public int readLength() throws DAOException {
+
+        final String query = "SELECT COUNT(*) FROM drivers;";
+
+        try (PooledConnection connection = dbPool.takeConnection()) {
+
+            Statement statement = connection.createStatement();
+            ResultSet result = statement.executeQuery(query);
+
+            while (result.next()) {
+                return result.getInt(1);
+            }
+
+        } catch (InterruptedException e) {
+            //TODO
+        } catch (SQLException e) {
+            //TODO
+        }
+        return 0;
+    }
+
+    @Override
     public void update(User user) throws DAOException {
         final String query = "UPDATE drivers" +
-                "SET phone=?, name=?, surname=?, password=?, is_baned=?, car_number=?, car_model=?, rating=?" +
+                "SET phone=?, name=?, surname=?, password=?, is_banned=?, car_number=?, car_model=?, rating=?" +
                 "WHERE administrator_id=?;";
 
         TaxiDriver taxiDriver = (TaxiDriver) user;
@@ -143,7 +207,7 @@ public class TaxiDriverDAO implements UserDAO {
             statement.setString(2, taxiDriver.getName());
             statement.setString(3, taxiDriver.getSurname());
             statement.setString(4, String.valueOf(taxiDriver.getPassword()));
-            statement.setBoolean(5, taxiDriver.isBaned());
+            statement.setBoolean(5, taxiDriver.isBanned());
             statement.setString(6, String.valueOf(taxiDriver.getCar().getNumber()));
             statement.setString(7, String.valueOf(taxiDriver.getCar().getModel()));
             statement.setFloat(8, taxiDriver.getRating());

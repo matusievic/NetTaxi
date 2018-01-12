@@ -1,4 +1,4 @@
-package by.tc.web.controller;
+package by.tc.web.controller.control.command;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;

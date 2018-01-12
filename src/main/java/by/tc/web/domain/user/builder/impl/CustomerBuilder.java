@@ -4,15 +4,15 @@ import by.tc.web.domain.user.builder.UserBuilder;
 import by.tc.web.domain.user.impl.Customer;
 
 public class CustomerBuilder extends UserBuilder {
-    private boolean baned;
+    private boolean banned;
     private float discount;
 
     public CustomerBuilder(int id) {
         super(id);
     }
 
-    public CustomerBuilder baned(boolean baned) {
-        this.baned = baned;
+    public CustomerBuilder banned(boolean banned) {
+        this.banned = banned;
         return this;
     }
 
@@ -29,7 +29,7 @@ public class CustomerBuilder extends UserBuilder {
         customer.setName(super.name);
         customer.setSurname(super.surname);
         customer.setPassword(super.password);
-        customer.setBaned(this.baned);
+        customer.setBanned(this.banned);
         customer.setDiscount(this.discount);
         return customer;
     }

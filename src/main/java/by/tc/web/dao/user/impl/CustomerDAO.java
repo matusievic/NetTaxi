@@ -25,7 +25,7 @@ public class CustomerDAO implements UserDAO {
         Customer customer = (Customer) user;
         try {
             PooledConnection connection = dbPool.takeConnection();
-            PreparedStatement statement = connection.prepareStatement("INSERT INTO customers (phone, name, surname, password, is_baned, discount) VALUE (?, ?, ?, ?, false, 0);");
+            PreparedStatement statement = connection.prepareStatement("INSERT INTO customers (phone, name, surname, password, is_banned, discount) VALUE (?, ?, ?, ?, false, 0);");
 
             statement.setString(1, String.valueOf(customer.getPhone()));
             statement.setString(2, customer.getName());
@@ -68,7 +68,7 @@ public class CustomerDAO implements UserDAO {
                 customer.setName(result.getString("name"));
                 customer.setSurname(result.getString("surname"));
                 customer.setPassword(result.getString("password").toCharArray());
-                customer.setBaned(result.getBoolean("is_baned"));
+                customer.setBanned(result.getBoolean("is_banned"));
                 customer.setDiscount(result.getFloat("discount"));
                 customers[currentPosition] = customer;
                 currentPosition++;
@@ -83,6 +83,48 @@ public class CustomerDAO implements UserDAO {
             logger.error("The thread was interrupted during waiting time", e);
             throw new DAOException("Cannot register due to server error");
         }
+    }
+
+    @Override
+    public User[] readInRange(int begin, int end) throws DAOException {
+        final String query = "SELECT * FROM customers WHERE customer_id BETWEEN ? AND ?";
+        try (PooledConnection connection = dbPool.takeConnection()) {
+
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setInt(1, begin);
+            statement.setInt(2, end);
+
+            ResultSet result = statement.executeQuery();
+
+            int rowCount = 0;
+            if (result.last()) {
+                rowCount = result.getRow();
+                result.beforeFirst();
+            }
+
+            Customer[] customers = new Customer[rowCount];
+            int currentPosition = 0;
+            while (result.next()) {
+                Customer customer = new Customer();
+                customer.setId(result.getInt("customer_id"));
+                customer.setPhone(result.getLong("phone"));
+                customer.setName(result.getString("name"));
+                customer.setSurname(result.getString("surname"));
+                customer.setPassword(result.getString("password").toCharArray());
+                customer.setBanned(result.getBoolean("is_banned"));
+                customer.setDiscount(result.getFloat("discount"));
+                customers[currentPosition] = customer;
+                currentPosition++;
+            }
+
+            return customers;
+
+        } catch (InterruptedException e) {
+            //TODO
+        } catch (SQLException e) {
+            //TODO
+        }
+        return null;
     }
 
     @Override
@@ -114,7 +156,7 @@ public class CustomerDAO implements UserDAO {
             customer.setName(result.getString("name"));
             customer.setSurname(result.getString("surname"));
             customer.setPassword(result.getString("password").toCharArray());
-            customer.setBaned(result.getBoolean("is_baned"));
+            customer.setBanned(result.getBoolean("is_banned"));
             customer.setDiscount(result.getFloat("discount"));
 
             return customer;
@@ -129,9 +171,30 @@ public class CustomerDAO implements UserDAO {
     }
 
     @Override
+    public int readLength() throws DAOException {
+        final String query = "SELECT COUNT(*) FROM customers;";
+
+        try (PooledConnection connection = dbPool.takeConnection()) {
+
+            Statement statement = connection.createStatement();
+            ResultSet result = statement.executeQuery(query);
+
+            while (result.next()) {
+                return result.getInt(1);
+            }
+
+        } catch (InterruptedException e) {
+            //TODO
+        } catch (SQLException e) {
+            //TODO
+        }
+        return 0;
+    }
+
+    @Override
     public void update(User user) throws DAOException {
         final String query = "UPDATE customers" +
-                "SET phone=?, name=?, surname=?, password=?, is_baned=?, discount=?" +
+                "SET phone=?, name=?, surname=?, password=?, is_banned=?, discount=?" +
                 "WHERE customer_id=?;";
 
         Customer customer = (Customer) user;
@@ -144,7 +207,7 @@ public class CustomerDAO implements UserDAO {
             statement.setString(2, customer.getName());
             statement.setString(3, customer.getSurname());
             statement.setString(4, String.valueOf(customer.getPassword()));
-            statement.setBoolean(5, customer.isBaned());
+            statement.setBoolean(5, customer.isBanned());
             statement.setFloat(6, customer.getDiscount());
             statement.setInt(7, customer.getId());
 
