@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-public class DriversDisplayingCommand implements ControllerCommand {
+public class TaxiDriversDisplayingCommand implements ControllerCommand {
     private static final String CURRENT_PAGE_PARAM = "page";
     private static final int ITEMS_PER_PAGE = 30;
     private static final Paginator paginator = PaginatorFactory.getInstance().getTaxiDriverPaginator();

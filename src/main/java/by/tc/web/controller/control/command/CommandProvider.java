@@ -14,7 +14,15 @@ public final class CommandProvider {
         commands.put(ControllerActivity.REGISTER_CUSTOMER, new CustomerRegistrationCommand());
         commands.put(ControllerActivity.REGISTER_TAXIDRIVER, new TaxiDriverRegistrationCommand());
         commands.put(ControllerActivity.LOCALIZE, new LocalizationCommand());
-        commands.put(ControllerActivity.DRIVERS_DISPLAYING, new DriversDisplayingCommand());
+        commands.put(ControllerActivity.DISPLAY_TAXIDRIVERS, new TaxiDriversDisplayingCommand());
+        commands.put(ControllerActivity.DISPLAY_TAXIDRIVER, new TaxiDriverDisplayingCommand());
+        commands.put(ControllerActivity.BLOCK_TAXIDRIVER, new TaxiDriverBlockingCommand());
+        commands.put(ControllerActivity.UNBLOCK_TAXIDRIVER, new TaxiDriverUnblockingCommand());
+        commands.put(ControllerActivity.DISPLAY_CUSTOMERS, new CustomersDisplayingCommand());
+        commands.put(ControllerActivity.DISPLAY_CUSTOMER, new CustomerDisplayingCommand());
+        commands.put(ControllerActivity.BLOCK_CUSTOMER, new CustomerBlockingCommand());
+        commands.put(ControllerActivity.UNBLOCK_CUSTOMER, new CustomerUnblockingCommand());
+        commands.put(ControllerActivity.DISCOUNT_CUSTOMER, new CustomerDiscountingCommand());
     }
 
     public static ControllerCommand takeCommand(String name) {

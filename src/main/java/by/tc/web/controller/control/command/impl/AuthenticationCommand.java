@@ -6,6 +6,7 @@ import by.tc.web.domain.user.impl.Administrator;
 import by.tc.web.domain.user.impl.Customer;
 import by.tc.web.domain.user.impl.TaxiDriver;
 import by.tc.web.service.authenticator.Authenticator;
+import by.tc.web.service.validator.AccountValidator;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -14,20 +15,27 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 public class AuthenticationCommand implements ControllerCommand {
-    private static final String LOGIN_PARAM = "phone";
+    private static final String PHONE_PARAM = "phone";
     private static final String PASSWORD_PARAM = "password";
     @Override
     public void execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = req.getSession();
-        String login = req.getParameter(LOGIN_PARAM);
+        String phone = req.getParameter(PHONE_PARAM);
         String password = req.getParameter(PASSWORD_PARAM);
 
-        User user = null;
-        try {
-            user = Authenticator.authenticate(Long.parseLong(login), password);
-        } catch (NumberFormatException e) {
-            //TODO
+        if (!AccountValidator.isPhoneValid(phone)) {
+            req.setAttribute("error", "Please provide a valid password");
+            req.getRequestDispatcher("/signin").forward(req, resp);
+            return;
         }
+
+        if (!AccountValidator.isPasswordValid(password)) {
+            req.setAttribute("error", "Please provide a valid password");
+            req.getRequestDispatcher("/signin").forward(req, resp);
+            return;
+        }
+
+        User user = Authenticator.authenticate(Long.parseLong(phone), password);
 
         if (user != null) {
             session.invalidate();

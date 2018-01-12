@@ -1,5 +1,6 @@
 package by.tc.web.controller.control.command.impl;
 
+import by.tc.web.controller.control.command.CommandProvider;
 import by.tc.web.controller.control.command.ControllerCommand;
 import by.tc.web.domain.car.Car;
 import by.tc.web.domain.car.builder.CarBuilder;
@@ -18,7 +19,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public class TaxiDriverRegistrationCommand implements ControllerCommand {
-    private static final Logger logger = Logger.getLogger(CustomerRegistrationCommand.class);
+    private static final Logger logger = Logger.getLogger(TaxiDriverRegistrationCommand.class);
     private static final String PHONE_PARAM = "phone";
     private static final String NAME_PARAM = "name";
     private static final String SURNAME_PARAM = "surname";
@@ -32,38 +33,44 @@ public class TaxiDriverRegistrationCommand implements ControllerCommand {
         String phone = req.getParameter(PHONE_PARAM);
         if (!AccountValidator.isPhoneValid(phone)) {
             req.setAttribute("error", "Please provide a valid phone number");
-            req.getRequestDispatcher("/signup.jsp");
+            req.getRequestDispatcher("/administrator/driver/create").forward(req, resp);
+            return;
         }
 
         String name = req.getParameter(NAME_PARAM);
         if (!AccountValidator.isNameValid(name)) {
             req.setAttribute("error", "Please provide a valid name");
-            req.getRequestDispatcher("/signup.jsp");
+            req.getRequestDispatcher("/administrator/driver/create").forward(req, resp);
+            return;
         }
 
         String surname = req.getParameter(SURNAME_PARAM);
         if (!AccountValidator.isSurnameValid(surname)) {
             req.setAttribute("error", "Please provide a valid surname");
-            req.getRequestDispatcher("/signup.jsp");
+            req.getRequestDispatcher("/administrator/driver/create").forward(req, resp);
+            return;
         }
 
         String firstPassword = req.getParameter(FIRST_PASSWORD_PARAM);
         String secondPassword = req.getParameter(SECOND_PASSWORD_PARAM);
         if (!AccountValidator.isPasswordsValid(firstPassword, secondPassword)) {
             req.setAttribute("error", "Please provide provide valid passwords");
-            req.getRequestDispatcher("/signup.jsp");
+            req.getRequestDispatcher("/administrator/driver/create").forward(req, resp);
+            return;
         }
 
         String carNumber = req.getParameter(CAR_NUMBER_PARAM);
         if (!CarValidator.isNumberValid(carNumber)) {
             req.setAttribute("error", "Please provide a valid car number");
-            req.getRequestDispatcher("/signup.jsp");
+            req.getRequestDispatcher("/administrator/driver/create").forward(req, resp);
+            return;
         }
 
         String carModel = req.getParameter(CAR_MODEL_PARAM);
         if (!CarValidator.isModelValid(carModel)) {
             req.setAttribute("error", "Please provide a valid car model");
-            req.getRequestDispatcher("/signup.jsp");
+            req.getRequestDispatcher("/administrator/driver/create").forward(req, resp);
+            return;
         }
 
         Car car = new CarBuilder().number(carNumber.toCharArray()).model(carModel).build();
@@ -71,14 +78,13 @@ public class TaxiDriverRegistrationCommand implements ControllerCommand {
                           .password(firstPassword.toCharArray()).car(car).build();
 
         try {
-            UserRegistrar registrar = RegistrarFactory.getInstance().createCustomerRegistrar();
+            UserRegistrar registrar = RegistrarFactory.getInstance().createTaxiDriverRegistrar();
             registrar.register(taxiDriver);
-            req.getSession().setAttribute("user", taxiDriver);
-            resp.sendRedirect("index");
+            CommandProvider.takeCommand("display_taxidrivers").execute(req, resp);
         } catch (RegistrarException e) {
             logger.error("Cannot register taxi driver: " + e.getMessage(), e);
             req.setAttribute("error", "An error has occurred. Please try again later.");
-            req.getRequestDispatcher("/signup.jsp");
+            req.getRequestDispatcher("/administrator/driver/create").forward(req, resp);
         }
     }
 }
