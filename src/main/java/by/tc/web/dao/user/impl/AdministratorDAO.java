@@ -84,6 +84,35 @@ public class AdministratorDAO implements UserDAO {
     }
 
     @Override
+    public User readById(int id) throws DAOException {
+        final String query = "SELECT * FROM administrators WHERE administrator_id=?;";
+
+        try (PooledConnection connection = dbPool.takeConnection()) {
+
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setInt(1, id);
+            ResultSet result = statement.executeQuery();
+
+            while (result.next()) {
+                Administrator administrator = new Administrator();
+                administrator.setId(result.getInt("administrator_id"));
+                administrator.setPhone(result.getLong("phone"));
+                administrator.setName(result.getString("name"));
+                administrator.setSurname(result.getString("surname"));
+                administrator.setPassword(result.getString("password").toCharArray());
+                return administrator;
+            }
+
+        } catch (InterruptedException e) {
+            //TODO
+        } catch (SQLException e) {
+            //TODO
+        }
+
+        return null;
+    }
+
+    @Override
     public User[] readInRange(int begin, int end) throws DAOException {
         final String query = "SELECT * FROM administrators WHERE administrator_id BETWEEN ? AND ?";
         try (PooledConnection connection = dbPool.takeConnection()) {
@@ -187,8 +216,8 @@ public class AdministratorDAO implements UserDAO {
 
     @Override
     public void update(User user) throws DAOException {
-        final String query = "UPDATE administrators" +
-                             "SET phone=?, name=?, surname=?, password=?" +
+        final String query = "UPDATE administrators " +
+                             "SET phone=?, name=?, surname=?, password=? " +
                              "WHERE administrator_id=?;";
 
         Administrator administrator = (Administrator) user;

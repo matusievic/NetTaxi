@@ -1,8 +1,9 @@
 package by.tc.web.dao.user.impl;
 
-import by.tc.web.dao.user.UserDAO;
 import by.tc.web.dao.exception.DAOException;
+import by.tc.web.dao.user.UserDAO;
 import by.tc.web.domain.car.Car;
+import by.tc.web.domain.car.builder.CarBuilder;
 import by.tc.web.domain.user.User;
 import by.tc.web.domain.user.impl.TaxiDriver;
 import by.tc.web.service.database.DatabaseFactory;
@@ -81,6 +82,43 @@ public class TaxiDriverDAO implements UserDAO {
             logger.error("The thread was interrupted during waiting time", e);
             throw new DAOException("Cannot register due to server error");
         }
+    }
+
+    @Override
+    public User readById(int id) throws DAOException {
+        final String query = "SELECT * FROM drivers WHERE driver_id=?;";
+
+        try (PooledConnection connection = dbPool.takeConnection()) {
+
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setInt(1, id);
+            ResultSet result = statement.executeQuery();
+
+            while (result.next()) {
+                TaxiDriver taxiDriver = new TaxiDriver();
+
+                taxiDriver.setId(result.getInt("driver_id"));
+                taxiDriver.setPhone(result.getLong("phone"));
+                taxiDriver.setName(result.getString("name"));
+                taxiDriver.setSurname(result.getString("surname"));
+                taxiDriver.setPassword(result.getString("password").toCharArray());
+                taxiDriver.setBanned(result.getBoolean("is_banned"));
+                taxiDriver.setRating(result.getFloat("rating"));
+
+                char[] car_number = result.getString("car_number").toCharArray();
+                String car_model = result.getString("car_model");
+                taxiDriver.setCar(new CarBuilder().number(car_number).model(car_model).build());
+
+                return taxiDriver;
+            }
+
+        } catch (InterruptedException e) {
+            //TODO
+        } catch (SQLException e) {
+            //TODO
+        }
+
+        return null;
     }
 
     @Override
@@ -193,9 +231,9 @@ public class TaxiDriverDAO implements UserDAO {
 
     @Override
     public void update(User user) throws DAOException {
-        final String query = "UPDATE drivers" +
-                "SET phone=?, name=?, surname=?, password=?, is_banned=?, car_number=?, car_model=?, rating=?" +
-                "WHERE administrator_id=?;";
+        final String query = "UPDATE drivers " +
+                             "SET phone=?, name=?, surname=?, password=?, is_banned=?, car_number=?, car_model=?, rating=? " +
+                             "WHERE driver_id=?;";
 
         TaxiDriver taxiDriver = (TaxiDriver) user;
 

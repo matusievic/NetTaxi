@@ -86,6 +86,39 @@ public class CustomerDAO implements UserDAO {
     }
 
     @Override
+    public User readById(int id) throws DAOException {
+        final String query = "SELECT * FROM customers WHERE customer_id=?;";
+
+        try (PooledConnection connection = dbPool.takeConnection()) {
+
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setInt(1, id);
+            ResultSet result = statement.executeQuery();
+
+            while (result.next()) {
+                Customer customer = new Customer();
+
+                customer.setId(result.getInt("customer_id"));
+                customer.setPhone(result.getLong("phone"));
+                customer.setName(result.getString("name"));
+                customer.setSurname(result.getString("surname"));
+                customer.setPassword(result.getString("password").toCharArray());
+                customer.setBanned(result.getBoolean("is_banned"));
+                customer.setDiscount(result.getFloat("discount"));
+
+                return customer;
+            }
+
+        } catch (InterruptedException e) {
+            //TODO
+        } catch (SQLException e) {
+            //TODO
+        }
+
+        return null;
+    }
+
+    @Override
     public User[] readInRange(int begin, int end) throws DAOException {
         final String query = "SELECT * FROM customers WHERE customer_id BETWEEN ? AND ?";
         try (PooledConnection connection = dbPool.takeConnection()) {
@@ -193,8 +226,8 @@ public class CustomerDAO implements UserDAO {
 
     @Override
     public void update(User user) throws DAOException {
-        final String query = "UPDATE customers" +
-                "SET phone=?, name=?, surname=?, password=?, is_banned=?, discount=?" +
+        final String query = "UPDATE customers " +
+                "SET phone=?, name=?, surname=?, password=?, is_banned=?, discount=? " +
                 "WHERE customer_id=?;";
 
         Customer customer = (Customer) user;
