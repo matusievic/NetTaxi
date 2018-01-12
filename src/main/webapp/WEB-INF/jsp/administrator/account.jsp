@@ -4,6 +4,7 @@
     <title>Administrator - NetTaxi</title>
 </head>
 <body>
-
+<a href="/controller?command=display_taxidrivers">Drivers</a>
+<a href="/controller?command=display_customers">Customers</a>
 </body>
 </html>

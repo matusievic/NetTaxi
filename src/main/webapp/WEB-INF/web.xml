@@ -125,11 +125,20 @@
 
     <servlet>
         <servlet-name>AdministratorCustomers</servlet-name>
-        <jsp-file>/WEB-INF/jsp/administrator/customers/jsp</jsp-file>
+        <jsp-file>/WEB-INF/jsp/administrator/customers.jsp</jsp-file>
     </servlet>
     <servlet-mapping>
         <servlet-name>AdministratorCustomers</servlet-name>
         <url-pattern>/administrator/customers</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>AdministratorDisplayCustomer</servlet-name>
+        <jsp-file>/WEB-INF/jsp/administrator/customer/display.jsp</jsp-file>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AdministratorDisplayCustomer</servlet-name>
+        <url-pattern>/administrator/customer/display</url-pattern>
     </servlet-mapping>
 
     <servlet>
@@ -139,6 +148,24 @@
     <servlet-mapping>
         <servlet-name>AdministratorDrivers</servlet-name>
         <url-pattern>/administrator/drivers</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>AdministratorCreateDriver</servlet-name>
+        <jsp-file>/WEB-INF/jsp/administrator/driver/create.jsp</jsp-file>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AdministratorCreateDriver</servlet-name>
+        <url-pattern>/administrator/driver/create</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>AdministratorDisplayDriver</servlet-name>
+        <jsp-file>/WEB-INF/jsp/administrator/driver/display.jsp</jsp-file>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AdministratorDisplayDriver</servlet-name>
+        <url-pattern>/administrator/driver/display</url-pattern>
     </servlet-mapping>
 
     <servlet>

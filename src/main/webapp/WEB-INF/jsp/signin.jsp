@@ -5,16 +5,16 @@
 <head>
     <fmt:setLocale value="${sessionScope.locale}"/>
     <fmt:setBundle basename="localization.local" var="loc"/>
-    <fmt:message bundle="${loc}" key="local.user.phone" var="phoneLabel"/>
-    <fmt:message bundle="${loc}" key="local.login.activity" var="pageTitleLabel"/>
-    <fmt:message bundle="${loc}" key="local.user.password" var="passwordLabel"/>
-    <fmt:message bundle="${loc}" key="local.login.button" var="signinButtonLabel"/>
-    <fmt:message bundle="${loc}" key="local.application.name" var="applicationNameLabel"/>
+    <fmt:message bundle="${loc}" key="common.account.phone" var="phoneLabel"/>
+    <fmt:message bundle="${loc}" key="page.sign_in.title" var="pageTitleLabel"/>
+    <fmt:message bundle="${loc}" key="common.account.password" var="passwordLabel"/>
+    <fmt:message bundle="${loc}" key="common.account.sign_in" var="signinButtonLabel"/>
+    <fmt:message bundle="${loc}" key="application.name" var="applicationNameLabel"/>
 
     <title>${pageTitleLabel} - ${applicationNameLabel}</title>
 </head>
 <body>
-<jsp:directive.include file="include/language.jsp" />
+<jsp:directive.include file="common/language.jsp" />
 <c:out value="${error}"/>
 <form action="/controller" method="get">
     <input type="hidden" name="command" value="authenticate">
