@@ -4,7 +4,12 @@ import by.tc.web.domain.user.User;
 import by.tc.web.domain.user.impl.TaxiDriver;
 import org.apache.log4j.Logger;
 
-import javax.servlet.*;
+import javax.servlet.Filter;
+import javax.servlet.FilterChain;
+import javax.servlet.FilterConfig;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -25,8 +30,8 @@ public class TaxiDriverFilter implements Filter {
         HttpSession session = req.getSession(false);
 
         if (session == null) {
-            req.setAttribute("error", "You must sign in to view this page");
-            resp.sendRedirect("/login");
+            req.setAttribute(FilterConstants.ERROR, "You must sign in to view this page");
+            resp.sendRedirect(FilterConstants.SIGN_IN);
         }
 
         User user = (User) session.getAttribute("user");
@@ -35,8 +40,8 @@ public class TaxiDriverFilter implements Filter {
         } else if (user.getClass() == TaxiDriver.class) {
             filterChain.doFilter(servletRequest, servletResponse);
         } else {
-            req.setAttribute("error", "You must sign in to view this page");
-            resp.sendRedirect("/login");
+            req.setAttribute(FilterConstants.ERROR, "You must sign in to view this page");
+            resp.sendRedirect(FilterConstants.SIGN_IN);
         }
     }
 

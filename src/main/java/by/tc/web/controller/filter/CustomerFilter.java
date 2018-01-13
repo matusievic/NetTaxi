@@ -4,7 +4,12 @@ import by.tc.web.domain.user.User;
 import by.tc.web.domain.user.impl.Customer;
 import org.apache.log4j.Logger;
 
-import javax.servlet.*;
+import javax.servlet.Filter;
+import javax.servlet.FilterChain;
+import javax.servlet.FilterConfig;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -15,7 +20,7 @@ public class CustomerFilter implements Filter {
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
-        logger.info("Customer filter initialized");
+        logger.info("CustomerTag filter initialized");
     }
 
     @Override
@@ -25,23 +30,23 @@ public class CustomerFilter implements Filter {
         HttpSession session = req.getSession(false);
 
         if (session == null) {
-            req.setAttribute("error", "You must sign in to view this page");
-            resp.sendRedirect("/login");
+            req.setAttribute(FilterConstants.ERROR, "You must sign in to view this page");
+            resp.sendRedirect(FilterConstants.SIGN_IN);
         }
 
-        User user = (User) session.getAttribute("user");
+        User user = (User) session.getAttribute(FilterConstants.USER_PARAM);
         if (user == null) {
             resp.sendRedirect("/403");
         } else if (user.getClass() == Customer.class) {
             filterChain.doFilter(servletRequest, servletResponse);
         } else {
-            req.setAttribute("error", "You must sign in to view this page");
-            resp.sendRedirect("/login");
+            req.setAttribute(FilterConstants.ERROR, "You must sign in to view this page");
+            resp.sendRedirect(FilterConstants.SIGN_IN);
         }
     }
 
     @Override
     public void destroy() {
-        logger.info("Customer filter destroyed");
+        logger.info("CustomerTag filter destroyed");
     }
 }

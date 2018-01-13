@@ -1,7 +1,7 @@
 package by.tc.web.controller.filter;
 
 import by.tc.web.domain.user.User;
-import by.tc.web.domain.user.impl.Administrator;
+import by.tc.web.domain.user.impl.Customer;
 import org.apache.log4j.Logger;
 
 import javax.servlet.Filter;
@@ -15,12 +15,12 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
-public class AdministratorFilter implements Filter {
-    private static final Logger logger = Logger.getLogger(AdministratorFilter.class);
+public class AccountFilter implements Filter {
+    private static final Logger logger = Logger.getLogger(AccountFilter.class);
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
-        logger.info("Administrator filter initialized");
+        logger.info("Account filter initialized");
     }
 
     @Override
@@ -36,17 +36,15 @@ public class AdministratorFilter implements Filter {
 
         User user = (User) session.getAttribute(FilterConstants.USER_PARAM);
         if (user == null) {
-            resp.sendRedirect("/403");
-        } else if (user.getClass() == Administrator.class) {
-            filterChain.doFilter(servletRequest, servletResponse);
-        } else {
             req.setAttribute(FilterConstants.ERROR, "You must sign in to view this page");
             resp.sendRedirect(FilterConstants.SIGN_IN);
+        } else {
+            filterChain.doFilter(servletRequest, servletResponse);
         }
     }
 
     @Override
     public void destroy() {
-        logger.info("Administrator filter destroyed");
+        logger.info("Account  filter destroyed");
     }
 }
