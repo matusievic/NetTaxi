@@ -5,13 +5,13 @@
 <head>
     <fmt:setLocale value="${sessionScope.locale}"/>
     <fmt:setBundle basename="localization.local" var="loc"/>
-    <fmt:message bundle="${loc}" key="user.customer.id" var="idLabel"/>
-    <fmt:message bundle="${loc}" key="user.customer.phone" var="phoneLabel"/>
-    <fmt:message bundle="${loc}" key="user.customer.name" var="nameLabel"/>
-    <fmt:message bundle="${loc}" key="user.customer.surname" var="surnameLabel"/>
-    <fmt:message bundle="${loc}" key="user.customer.banned" var="bannedLabel"/>
-    <fmt:message bundle="${loc}" key="user.customer.discount" var="discountLabel"/>
-    <fmt:message bundle="${loc}" key="page.administrator.customers.title" var="pageTitleLabel"/>
+    <fmt:message bundle="${loc}" key="account.id" var="idLabel"/>
+    <fmt:message bundle="${loc}" key="account.phone" var="phoneLabel"/>
+    <fmt:message bundle="${loc}" key="account.name" var="nameLabel"/>
+    <fmt:message bundle="${loc}" key="account.surname" var="surnameLabel"/>
+    <fmt:message bundle="${loc}" key="account.banned" var="bannedLabel"/>
+    <fmt:message bundle="${loc}" key="account.discount" var="discountLabel"/>
+    <fmt:message bundle="${loc}" key="title.customers" var="pageTitleLabel"/>
     <fmt:message bundle="${loc}" key="application.name" var="applicationNameLabel"/>
 
     <title>${pageTitleLabel} - ${applicationNameLabel}</title>

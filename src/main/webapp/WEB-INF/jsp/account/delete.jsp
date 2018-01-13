@@ -5,11 +5,13 @@
 <head>
     <fmt:setLocale value="${sessionScope.locale}"/>
     <fmt:setBundle basename="localization.local" var="loc"/>
-    <fmt:message bundle="${loc}" key="user.administrator.password" var="passwordLabel"/>
-    <fmt:message bundle="${loc}" key="page.administrator.account.delete.sure" var="sureLabel"/>
-    <fmt:message bundle="${loc}" key="page.administrator.account.delete.delete" var="deleteLabel"/>
-    <fmt:message bundle="${loc}" key="page.administrator.account.delete.title" var="pageTitleLabel"/>
+
+    <fmt:message bundle="${loc}" key="title.delete" var="pageTitleLabel"/>
     <fmt:message bundle="${loc}" key="application.name" var="applicationNameLabel"/>
+
+    <fmt:message bundle="${loc}" key="account.password" var="passwordLabel"/>
+    <fmt:message bundle="${loc}" key="activity.sure" var="sureLabel"/>
+    <fmt:message bundle="${loc}" key="activity.delete" var="deleteLabel"/>
 
     <title>${pageTitleLabel} - ${applicationNameLabel}</title>
 </head>

@@ -7,21 +7,19 @@
     <fmt:setBundle basename="localization.local" var="loc"/>
 
     <fmt:message bundle="${loc}" key="application.name" var="applicationNameLabel"/>
-    <fmt:message bundle="${loc}" key="common.account.sign_up" var="signupPageLabel"/>
-    <fmt:message bundle="${loc}" key="common.account.repeat_password" var="repeatPasswordLabel"/>
+    <fmt:message bundle="${loc}" key="title.sign_up" var="signupPageLabel"/>
 
-    <fmt:message bundle="${loc}" key="common.account.phone" var="phoneLabel"/>
-    <fmt:message bundle="${loc}" key="common.account.password" var="passwordLabel"/>
-    <fmt:message bundle="${loc}" key="common.account.name" var="nameLabel"/>
-    <fmt:message bundle="${loc}" key="common.account.surname" var="surnameLabel"/>
-
-
-    <fmt:message bundle="${loc}" key="common.account.sign_up" var="signupButtonLabel"/>
+    <fmt:message bundle="${loc}" key="account.phone" var="phoneLabel"/>
+    <fmt:message bundle="${loc}" key="account.password" var="passwordLabel"/>
+    <fmt:message bundle="${loc}" key="account.repeat_password" var="repeatPasswordLabel"/>
+    <fmt:message bundle="${loc}" key="account.name" var="nameLabel"/>
+    <fmt:message bundle="${loc}" key="account.surname" var="surnameLabel"/>
+    <fmt:message bundle="${loc}" key="account.sign_up" var="signupButtonLabel"/>
 
     <title>${signupPageLabel} - ${applicationNameLabel}</title>
 </head>
 <body>
-<jsp:directive.include file="common/language.jsp" />
+<jsp:directive.include file="language.jsp" />
 <form action="/controller" method="post">
     <input type="hidden" name="command" value="register_customer">
     <input type="text" name="phone" placeholder="${phoneLabel}" required><br>

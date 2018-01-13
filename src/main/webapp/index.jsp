@@ -6,9 +6,9 @@
     <fmt:setLocale value="${sessionScope.locale}"/>
     <fmt:setBundle basename="localization.local" var="loc"/>
     <fmt:message bundle="${loc}" key="application.name" var="applicationNameLabel"/>
-    <fmt:message bundle="${loc}" key="page.main.title" var="pageTitleLabel"/>
-    <fmt:message bundle="${loc}" key="common.account.sign_in" var="signinPageLabel"/>
-    <fmt:message bundle="${loc}" key="common.account.sign_up" var="signupPageLabel"/>
+    <fmt:message bundle="${loc}" key="title.main" var="pageTitleLabel"/>
+    <fmt:message bundle="${loc}" key="account.sign_in" var="signinPageLabel"/>
+    <fmt:message bundle="${loc}" key="account.sign_up" var="signupPageLabel"/>
 
     <title>${pageTitleLabel} - ${applicationNameLabel}</title>
 </head>

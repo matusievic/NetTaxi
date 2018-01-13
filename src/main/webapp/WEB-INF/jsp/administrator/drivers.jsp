@@ -5,16 +5,16 @@
 <head>
     <fmt:setLocale value="${sessionScope.locale}"/>
     <fmt:setBundle basename="localization.local" var="loc"/>
-    <fmt:message bundle="${loc}" key="user.taxi_driver.id" var="idLabel"/>
-    <fmt:message bundle="${loc}" key="user.taxi_driver.phone" var="phoneLabel"/>
-    <fmt:message bundle="${loc}" key="user.taxi_driver.name" var="nameLabel"/>
-    <fmt:message bundle="${loc}" key="user.taxi_driver.surname" var="surnameLabel"/>
-    <fmt:message bundle="${loc}" key="user.taxi_driver.car_number" var="carNumberLabel"/>
-    <fmt:message bundle="${loc}" key="user.taxi_driver.car_model" var="carModelLabel"/>
-    <fmt:message bundle="${loc}" key="user.taxi_driver.rating" var="ratingLabel"/>
-    <fmt:message bundle="${loc}" key="user.taxi_driver.banned" var="bannedLabel"/>
-    <fmt:message bundle="${loc}" key="page.administrator.drivers.title" var="pageTitleLabel"/>
-    <fmt:message bundle="${loc}" key="page.administrator.drivers.create" var="createButtonLabel"/>
+    <fmt:message bundle="${loc}" key="account.id" var="idLabel"/>
+    <fmt:message bundle="${loc}" key="account.phone" var="phoneLabel"/>
+    <fmt:message bundle="${loc}" key="account.name" var="nameLabel"/>
+    <fmt:message bundle="${loc}" key="account.surname" var="surnameLabel"/>
+    <fmt:message bundle="${loc}" key="account.car_number" var="carNumberLabel"/>
+    <fmt:message bundle="${loc}" key="account.car_model" var="carModelLabel"/>
+    <fmt:message bundle="${loc}" key="account.rating" var="ratingLabel"/>
+    <fmt:message bundle="${loc}" key="account.banned" var="bannedLabel"/>
+    <fmt:message bundle="${loc}" key="title.drivers" var="pageTitleLabel"/>
+    <fmt:message bundle="${loc}" key="activity.create" var="createButtonLabel"/>
     <fmt:message bundle="${loc}" key="application.name" var="applicationNameLabel"/>
 
     <title>${pageTitleLabel} - ${applicationNameLabel}</title>

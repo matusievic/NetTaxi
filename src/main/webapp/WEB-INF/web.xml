@@ -37,38 +37,7 @@
 
 
 
-    <!--Sign In and Sign Up pages-->
-
-    <servlet>
-        <servlet-name>SignInPage</servlet-name>
-        <jsp-file>/WEB-INF/jsp/signin.jsp</jsp-file>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>SignInPage</servlet-name>
-        <url-pattern>/signin</url-pattern>
-    </servlet-mapping>
-
-    <servlet>
-        <servlet-name>SignUpPage</servlet-name>
-        <jsp-file>/WEB-INF/jsp/signup.jsp</jsp-file>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>SignUpPage</servlet-name>
-        <url-pattern>/signup</url-pattern>
-    </servlet-mapping>
-
-
-
-    <!--Customer pages-->
-
-    <servlet>
-        <servlet-name>CustomerAccount</servlet-name>
-        <jsp-file>/WEB-INF/jsp/customer/account.jsp</jsp-file>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>CustomerAccount</servlet-name>
-        <url-pattern>/customer/account</url-pattern>
-    </servlet-mapping>
+    <!--CustomerTag pages-->
 
     <servlet>
         <servlet-name>CustomerOrder</servlet-name>
@@ -79,49 +48,9 @@
         <url-pattern>/customer/order</url-pattern>
     </servlet-mapping>
 
-    <servlet>
-        <servlet-name>CustomerHistory</servlet-name>
-        <jsp-file>/WEB-INF/jsp/customer/history.jsp</jsp-file>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>CustomerHistory</servlet-name>
-        <url-pattern>/customer/history</url-pattern>
-    </servlet-mapping>
-
-
-
-    <!--Driver pages-->
-
-    <servlet>
-        <servlet-name>DriverAccount</servlet-name>
-        <jsp-file>/WEB-INF/jsp/driver/account.jsp</jsp-file>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>DriverAccount</servlet-name>
-        <url-pattern>/driver/account</url-pattern>
-    </servlet-mapping>
-
-    <servlet>
-        <servlet-name>DriverHistory</servlet-name>
-        <jsp-file>/WEB-INF/jsp/driver/history.jsp</jsp-file>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>DriverHistory</servlet-name>
-        <url-pattern>/driver/history</url-pattern>
-    </servlet-mapping>
-
 
 
     <!--Administrator pages-->
-
-    <servlet>
-        <servlet-name>AdministratorAccount</servlet-name>
-        <jsp-file>/WEB-INF/jsp/administrator/account.jsp</jsp-file>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>AdministratorAccount</servlet-name>
-        <url-pattern>/administrator/account</url-pattern>
-    </servlet-mapping>
 
     <servlet>
         <servlet-name>AdministratorCustomers</servlet-name>
@@ -177,22 +106,57 @@
         <url-pattern>/administrator/orders</url-pattern>
     </servlet-mapping>
 
+
+
+    <!--Account pages-->
+
     <servlet>
-        <servlet-name>AdministratorAccountEditing</servlet-name>
-        <jsp-file>/WEB-INF/jsp/administrator/account/edit.jsp</jsp-file>
+        <servlet-name>Account</servlet-name>
+        <jsp-file>/WEB-INF/jsp/account/account.jsp</jsp-file>
     </servlet>
     <servlet-mapping>
-        <servlet-name>AdministratorAccountEditing</servlet-name>
-        <url-pattern>/administrator/account/edit</url-pattern>
+        <servlet-name>Account</servlet-name>
+        <url-pattern>/account</url-pattern>
     </servlet-mapping>
 
     <servlet>
-        <servlet-name>AdministratorAccountDeleting</servlet-name>
-        <jsp-file>/WEB-INF/jsp/administrator/account/delete.jsp</jsp-file>
+        <servlet-name>AccountEditing</servlet-name>
+        <jsp-file>/WEB-INF/jsp/account/edit.jsp</jsp-file>
     </servlet>
     <servlet-mapping>
-        <servlet-name>AdministratorAccountDeleting</servlet-name>
-        <url-pattern>/administrator/account/delete</url-pattern>
+        <servlet-name>AccountEditing</servlet-name>
+        <url-pattern>/account/edit</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>AccountDeleting</servlet-name>
+        <jsp-file>/WEB-INF/jsp/account/delete.jsp</jsp-file>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AccountDeleting</servlet-name>
+        <url-pattern>/account/delete</url-pattern>
+    </servlet-mapping>
+
+
+
+    <!--Sign In and Sign Up page-->
+
+    <servlet>
+        <servlet-name>SignInPage</servlet-name>
+        <jsp-file>/WEB-INF/jsp/common/signin.jsp</jsp-file>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>SignInPage</servlet-name>
+        <url-pattern>/signin</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>SignUpPage</servlet-name>
+        <jsp-file>/WEB-INF/jsp/common/signup.jsp</jsp-file>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>SignUpPage</servlet-name>
+        <url-pattern>/signup</url-pattern>
     </servlet-mapping>
 
 
@@ -226,6 +190,14 @@
         <url-pattern>/administrator/*</url-pattern>
     </filter-mapping>
 
+    <filter>
+        <filter-name>AccountFilter</filter-name>
+        <filter-class>by.tc.web.controller.filter.AccountFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>AccountFilter</filter-name>
+        <url-pattern>/account/*</url-pattern>
+    </filter-mapping>
 
 
     <!--Error pages-->

@@ -1,18 +1,23 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="taxi" uri="/WEB-INF/tag/taxi" %>
 <html>
 <head>
     <fmt:setLocale value="${sessionScope.locale}"/>
     <fmt:setBundle basename="localization.local" var="loc"/>
-    <fmt:message bundle="${loc}" key="common.account.phone" var="phoneLabel"/>
-    <fmt:message bundle="${loc}" key="common.account.name" var="nameLabel"/>
-    <fmt:message bundle="${loc}" key="common.account.surname" var="surnameLabel"/>
-    <fmt:message bundle="${loc}" key="common.account.old_password" var="oldPasswordLabel"/>
-    <fmt:message bundle="${loc}" key="common.account.password" var="firstPasswordLabel"/>
-    <fmt:message bundle="${loc}" key="common.account.repeat_password" var="secondPasswordLabel"/>
-    <fmt:message bundle="${loc}" key="page.administrator.account.title" var="pageTitleLabel"/>
+
+    <fmt:message bundle="${loc}" key="title.account" var="pageTitleLabel"/>
     <fmt:message bundle="${loc}" key="application.name" var="applicationNameLabel"/>
+
+    <fmt:message bundle="${loc}" key="account.phone" var="phoneLabel"/>
+    <fmt:message bundle="${loc}" key="account.name" var="nameLabel"/>
+    <fmt:message bundle="${loc}" key="account.surname" var="surnameLabel"/>
+    <fmt:message bundle="${loc}" key="account.old_password" var="oldPasswordLabel"/>
+    <fmt:message bundle="${loc}" key="account.password" var="firstPasswordLabel"/>
+    <fmt:message bundle="${loc}" key="account.repeat_password" var="secondPasswordLabel"/>
+    <fmt:message bundle="${loc}" key="account.car_number" var="carNumberLabel"/>
+    <fmt:message bundle="${loc}" key="account.car_model" var="carModelLabel"/>
 
     <title>${pageTitleLabel} - ${applicationNameLabel}</title>
 </head>
@@ -35,6 +40,15 @@
 
     <label for="second-password">${secondPasswordLabel}</label>
     <input type="password" name="second_password" id="second-password">
+
+    <taxi:driver>
+        <label for="car-number">${carNumberLabel}</label>
+        <input type="text" name="car_number" value="${String.valueOf(user.car.number)}" id="car-number" required>
+
+        <label type="car-model">${carModelLabel}</label>
+        <input type="text" name="car_model" value="${user.car.model}" id="car-model" required>
+    </taxi:driver>
+
     <input type="submit" value="OK">
 </form>
 </body>
