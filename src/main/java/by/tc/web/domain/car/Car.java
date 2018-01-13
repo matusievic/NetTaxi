@@ -38,4 +38,12 @@ public class Car implements Serializable {
         result = 31 * result + Arrays.hashCode(number);
         return result;
     }
+
+    @Override
+    public String toString() {
+        return "Car{" +
+                "number=" + Arrays.toString(number) +
+                ", model='" + model + '\'' +
+                '}';
+    }
 }

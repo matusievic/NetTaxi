@@ -6,6 +6,7 @@ import by.tc.web.service.database.pool.DBPool;
 import by.tc.web.service.database.pool.impl.MySQLPool;
 
 import java.sql.Connection;
+import java.sql.SQLException;
 
 public final class DatabaseFactory {
     private static final DatabaseFactory instance = new DatabaseFactory();
@@ -19,7 +20,7 @@ public final class DatabaseFactory {
     public DBPool createDBPool() {
         return MySQLPool.getInstance();
     }
-    public PooledConnection createDBPooledConnection(Connection connection, DBPool pool) {
+    public PooledConnection createDBPooledConnection(Connection connection, DBPool pool) throws SQLException {
         return new MySQLPooledConnection(connection, pool);
     }
 }

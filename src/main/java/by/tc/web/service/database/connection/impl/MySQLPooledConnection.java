@@ -1,9 +1,24 @@
 package by.tc.web.service.database.connection.impl;
 
+import by.tc.web.domain.order.point.Point;
 import by.tc.web.service.database.connection.PooledConnection;
 import by.tc.web.service.database.pool.DBPool;
 
-import java.sql.*;
+import java.sql.Array;
+import java.sql.Blob;
+import java.sql.CallableStatement;
+import java.sql.Clob;
+import java.sql.Connection;
+import java.sql.DatabaseMetaData;
+import java.sql.NClob;
+import java.sql.PreparedStatement;
+import java.sql.SQLClientInfoException;
+import java.sql.SQLException;
+import java.sql.SQLWarning;
+import java.sql.SQLXML;
+import java.sql.Savepoint;
+import java.sql.Statement;
+import java.sql.Struct;
 import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.Executor;
@@ -12,7 +27,10 @@ public class MySQLPooledConnection implements PooledConnection, Connection {
     private Connection connection;
     private DBPool pool;
 
-    public MySQLPooledConnection(Connection connection, DBPool pool) {
+    public MySQLPooledConnection(Connection connection, DBPool pool) throws SQLException {
+        Map<String, Class<?>> map = connection.getTypeMap();
+        map.put("GEOPOINT", Point.class);
+        connection.setTypeMap(map);
         this.connection = connection;
         this.pool = pool;
     }

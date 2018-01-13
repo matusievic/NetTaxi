@@ -1,6 +1,7 @@
 package by.tc.web.domain.user;
 
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.Objects;
 
 public abstract class User implements Serializable {
@@ -11,8 +12,7 @@ public abstract class User implements Serializable {
     private String surname;
     private char[] password;
 
-    public User() {
-    }
+    public User() {}
 
     public int getId() {
         return id;
