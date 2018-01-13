@@ -1,5 +1,7 @@
 package by.tc.web.dao;
 
+import by.tc.web.dao.order.OrderDAO;
+import by.tc.web.dao.order.impl.MySQLOrderDAO;
 import by.tc.web.dao.user.impl.AdministratorDAO;
 import by.tc.web.dao.user.impl.CustomerDAO;
 import by.tc.web.dao.user.impl.TaxiDriverDAO;
@@ -10,6 +12,7 @@ public final class DAOFactory {
     private UserDAO customerDAO = new CustomerDAO();
     private UserDAO taxiDriverDAO = new TaxiDriverDAO();
     private UserDAO administratorDAO = new AdministratorDAO();
+    private OrderDAO orderDAO = new MySQLOrderDAO();
 
     private DAOFactory() {}
 
@@ -27,5 +30,9 @@ public final class DAOFactory {
 
     public UserDAO getAdministratorDAO() {
         return administratorDAO;
+    }
+
+    public OrderDAO getOrderDAO() {
+        return orderDAO;
     }
 }
