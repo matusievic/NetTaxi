@@ -1,6 +1,8 @@
-package by.tc.web.controller.control.command.impl;
+package by.tc.web.controller.control.command.impl.administrator;
 
 import by.tc.web.controller.control.command.ControllerCommand;
+import by.tc.web.controller.control.command.constants.ControllerConstants;
+import by.tc.web.controller.control.command.impl.AbstractCommand;
 import by.tc.web.domain.user.User;
 import by.tc.web.service.user.UserService;
 import by.tc.web.service.user.UserServiceFactory;
@@ -10,25 +12,22 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-public class CustomerDisplayingCommand implements ControllerCommand {
-    private static final String ID_PARAM = "id";
-
+public class TaxiDriverDisplayingCommand extends AbstractCommand implements ControllerCommand {
     @Override
     public void execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String idString = req.getParameter(ID_PARAM);
+        String idString = req.getParameter(ControllerConstants.ID_PARAM);
 
         int id = 0;
         try {
             id = Integer.parseInt(idString);
         } catch (NumberFormatException e) {
-            req.setAttribute("error", "Incorrect driver id");
-            req.getRequestDispatcher("/500").forward(req, resp);
+            show404Message("There's no such user", req, resp);
             return;
         }
 
-        UserService service = UserServiceFactory.getInstance().getCustomerService();
+        UserService service = UserServiceFactory.getInstance().getTaxiDriverService();
         User taxiDriver = service.get(id);
-        req.setAttribute("customer", taxiDriver);
-        req.getRequestDispatcher("administrator/customer/display").forward(req, resp);
+        req.setAttribute("taxiDriver", taxiDriver);
+        req.getRequestDispatcher("administrator/driver/display").forward(req, resp);
     }
 }

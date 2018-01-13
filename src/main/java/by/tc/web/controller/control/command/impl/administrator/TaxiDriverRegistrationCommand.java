@@ -1,7 +1,9 @@
-package by.tc.web.controller.control.command.impl;
+package by.tc.web.controller.control.command.impl.administrator;
 
 import by.tc.web.controller.control.command.CommandProvider;
 import by.tc.web.controller.control.command.ControllerCommand;
+import by.tc.web.controller.control.command.constants.ControllerConstants;
+import by.tc.web.controller.control.command.impl.AbstractCommand;
 import by.tc.web.domain.car.Car;
 import by.tc.web.domain.car.builder.CarBuilder;
 import by.tc.web.domain.user.User;
@@ -18,58 +20,45 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-public class TaxiDriverRegistrationCommand implements ControllerCommand {
+public class TaxiDriverRegistrationCommand extends AbstractCommand implements ControllerCommand {
     private static final Logger logger = Logger.getLogger(TaxiDriverRegistrationCommand.class);
-    private static final String PHONE_PARAM = "phone";
-    private static final String NAME_PARAM = "name";
-    private static final String SURNAME_PARAM = "surname";
-    private static final String FIRST_PASSWORD_PARAM = "first_password";
-    private static final String SECOND_PASSWORD_PARAM = "second_password";
-    private static final String CAR_NUMBER_PARAM = "car_number";
-    private static final String CAR_MODEL_PARAM = "car_model";
 
     @Override
     public void execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String phone = req.getParameter(PHONE_PARAM);
+        String phone = req.getParameter(ControllerConstants.PHONE_PARAM);
         if (!AccountValidator.isPhoneValid(phone)) {
-            req.setAttribute("error", "Please provide a valid phone number");
-            req.getRequestDispatcher("/administrator/driver/create").forward(req, resp);
+            displayError("Please provide a valid phone number", req, resp);
             return;
         }
 
-        String name = req.getParameter(NAME_PARAM);
+        String name = req.getParameter(ControllerConstants.NAME_PARAM);
         if (!AccountValidator.isNameValid(name)) {
-            req.setAttribute("error", "Please provide a valid name");
-            req.getRequestDispatcher("/administrator/driver/create").forward(req, resp);
+            displayError("Please provide a valid name", req, resp);
             return;
         }
 
-        String surname = req.getParameter(SURNAME_PARAM);
+        String surname = req.getParameter(ControllerConstants.SURNAME_PARAM);
         if (!AccountValidator.isSurnameValid(surname)) {
-            req.setAttribute("error", "Please provide a valid surname");
-            req.getRequestDispatcher("/administrator/driver/create").forward(req, resp);
+            displayError("Please provide a valid surname", req, resp);
             return;
         }
 
-        String firstPassword = req.getParameter(FIRST_PASSWORD_PARAM);
-        String secondPassword = req.getParameter(SECOND_PASSWORD_PARAM);
+        String firstPassword = req.getParameter(ControllerConstants.FIRST_PASSWORD_PARAM);
+        String secondPassword = req.getParameter(ControllerConstants.SECOND_PASSWORD_PARAM);
         if (!AccountValidator.isPasswordsValid(firstPassword, secondPassword)) {
-            req.setAttribute("error", "Please provide provide valid passwords");
-            req.getRequestDispatcher("/administrator/driver/create").forward(req, resp);
+            displayError("Please provide provide valid passwords", req, resp);
             return;
         }
 
-        String carNumber = req.getParameter(CAR_NUMBER_PARAM);
+        String carNumber = req.getParameter(ControllerConstants.CAR_NUMBER_PARAM);
         if (!CarValidator.isNumberValid(carNumber)) {
-            req.setAttribute("error", "Please provide a valid car number");
-            req.getRequestDispatcher("/administrator/driver/create").forward(req, resp);
+            displayError("Please provide a valid car number", req, resp);
             return;
         }
 
-        String carModel = req.getParameter(CAR_MODEL_PARAM);
+        String carModel = req.getParameter(ControllerConstants.CAR_MODEL_PARAM);
         if (!CarValidator.isModelValid(carModel)) {
-            req.setAttribute("error", "Please provide a valid car model");
-            req.getRequestDispatcher("/administrator/driver/create").forward(req, resp);
+            displayError("Please provide a valid car model", req, resp);
             return;
         }
 
@@ -83,8 +72,12 @@ public class TaxiDriverRegistrationCommand implements ControllerCommand {
             CommandProvider.takeCommand("display_taxidrivers").execute(req, resp);
         } catch (RegistrarException e) {
             logger.error("Cannot register taxi driver: " + e.getMessage(), e);
-            req.setAttribute("error", "An error has occurred. Please try again later.");
-            req.getRequestDispatcher("/administrator/driver/create").forward(req, resp);
+            displayError("An error has occurred. Please try again later.", req, resp);
         }
+    }
+
+    private void displayError(String error, HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        req.setAttribute(ControllerConstants.ERROR, error);
+        req.getRequestDispatcher("/administrator/driver/create").forward(req, resp);
     }
 }

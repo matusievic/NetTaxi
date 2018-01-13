@@ -28,13 +28,13 @@
     <input type="text" name="phone" id="phone" value="${user.phone}" required>
 
     <label for="old-password">${oldPasswordLabel}</label>
-    <input type="password" name="oldPassword" id="old-password">
+    <input type="password" name="old_password" id="old-password">
 
     <label for="first-password">${firstPasswordLabel}</label>
-    <input type="password" name="firstPassword" id="first-password">
+    <input type="password" name="first_password" id="first-password">
 
     <label for="second-password">${secondPasswordLabel}</label>
-    <input type="password" name="secondPassword" id="second-password">
+    <input type="password" name="second_password" id="second-password">
     <input type="submit" value="OK">
 </form>
 </body>

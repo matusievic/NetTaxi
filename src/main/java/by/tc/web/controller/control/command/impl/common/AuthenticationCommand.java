@@ -1,6 +1,8 @@
-package by.tc.web.controller.control.command.impl;
+package by.tc.web.controller.control.command.impl.common;
 
 import by.tc.web.controller.control.command.ControllerCommand;
+import by.tc.web.controller.control.command.constants.ControllerConstants;
+import by.tc.web.controller.control.command.impl.AbstractCommand;
 import by.tc.web.domain.user.User;
 import by.tc.web.domain.user.impl.Administrator;
 import by.tc.web.domain.user.impl.Customer;
@@ -14,24 +16,20 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
-public class AuthenticationCommand implements ControllerCommand {
-    private static final String PHONE_PARAM = "phone";
-    private static final String PASSWORD_PARAM = "password";
+public class AuthenticationCommand extends AbstractCommand implements ControllerCommand {
     @Override
     public void execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = req.getSession();
-        String phone = req.getParameter(PHONE_PARAM);
-        String password = req.getParameter(PASSWORD_PARAM);
+        String phone = req.getParameter(ControllerConstants.PHONE_PARAM);
+        String password = req.getParameter(ControllerConstants.PASSWORD_PARAM);
 
         if (!AccountValidator.isPhoneValid(phone)) {
-            req.setAttribute("error", "Please provide a valid password");
-            req.getRequestDispatcher("/signin").forward(req, resp);
+            displayError("Please provide a valid password", req, resp);
             return;
         }
 
         if (!AccountValidator.isPasswordValid(password)) {
-            req.setAttribute("error", "Please provide a valid password");
-            req.getRequestDispatcher("/signin").forward(req, resp);
+            displayError("Please provide a valid password", req, resp);
             return;
         }
 
@@ -51,8 +49,12 @@ public class AuthenticationCommand implements ControllerCommand {
                 resp.sendRedirect("/500");
             }
         } else {
-            req.setAttribute("error", "Incorrect login/password combination");
-            req.getRequestDispatcher("/signin").forward(req, resp);
+            displayError("Incorrect login/password combination", req, resp);
         }
+    }
+
+    private void displayError(String error, HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        req.setAttribute(ControllerConstants.ERROR, error);
+        req.getRequestDispatcher("/signin").forward(req, resp);
     }
 }

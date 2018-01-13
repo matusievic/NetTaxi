@@ -1,14 +1,13 @@
-package by.tc.web.service.encryptor.impl;
+package by.tc.web.service.encoder.impl;
 
-import by.tc.web.service.encryptor.Encryptor;
-import by.tc.web.service.encryptor.exception.EncryptorException;
+import by.tc.web.service.encoder.Encoder;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-public class MD5Encryptor implements Encryptor {
+public class MD5Encoder implements Encoder {
     @Override
-    public char[] encrypt(String source) throws EncryptorException {
+    public char[] encrypt(String source) {
         String result = null;
         try {
             MessageDigest md = MessageDigest.getInstance("MD5");
@@ -23,7 +22,7 @@ public class MD5Encryptor implements Encryptor {
             }
             result = sb.toString();
         } catch (NoSuchAlgorithmException e) {
-            throw new EncryptorException(e);
+            return null;
         }
         return result.toCharArray();
     }

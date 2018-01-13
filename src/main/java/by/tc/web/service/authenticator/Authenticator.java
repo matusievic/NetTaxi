@@ -4,23 +4,21 @@ import by.tc.web.dao.DAOFactory;
 import by.tc.web.dao.exception.DAOException;
 import by.tc.web.dao.user.UserDAO;
 import by.tc.web.domain.user.User;
-import by.tc.web.service.encryptor.Encryptor;
-import by.tc.web.service.encryptor.EncryptorFactory;
-import by.tc.web.service.encryptor.exception.EncryptorException;
+import by.tc.web.service.encoder.Encoder;
+import by.tc.web.service.encoder.EncoderFactory;
 
 public final class Authenticator {
     private static final DAOFactory daoFactory = DAOFactory.getInstance();
-    private static final EncryptorFactory encryptorFactory = EncryptorFactory.getInstance();
+    private static final EncoderFactory ENCODER_FACTORY = EncoderFactory.getInstance();
 
     public static User authenticate(long phone, String password) {
-        Encryptor encryptor = encryptorFactory.createEncryptor();
+        Encoder encoder = ENCODER_FACTORY.createEncryptor();
 
-        char[] encryptedPassword = null;
-        try {
-            encryptedPassword = encryptor.encrypt(password);
-        } catch (EncryptorException e) {
+        char[] encryptedPassword = encoder.encrypt(password);
+        if (encryptedPassword == null) {
             //TODO
         }
+
 
         UserDAO customerDAO = daoFactory.getCustomerDAO();
         UserDAO driverDAO = daoFactory.getTaxiDriverDAO();
