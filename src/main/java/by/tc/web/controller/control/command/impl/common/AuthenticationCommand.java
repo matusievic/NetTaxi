@@ -39,15 +39,7 @@ public class AuthenticationCommand extends AbstractCommand implements Controller
             session.invalidate();
             session = req.getSession();
             session.setAttribute("user", user);
-            if (user.getClass() == Customer.class) {
-                resp.sendRedirect("/customer/account");
-            } else if (user.getClass() == TaxiDriver.class) {
-                resp.sendRedirect("/driver/account");
-            } else if (user.getClass() == Administrator.class) {
-                resp.sendRedirect("/administrator/account");
-            } else {
-                resp.sendRedirect("/500");
-            }
+            resp.sendRedirect("/account");
         } else {
             displayError("Incorrect login/password combination", req, resp);
         }

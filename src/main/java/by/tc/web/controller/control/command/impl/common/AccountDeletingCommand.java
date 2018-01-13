@@ -59,6 +59,6 @@ public class AccountDeletingCommand extends AbstractCommand implements Controlle
         }
 
         req.setAttribute("error", "Please provide a valid password");
-        req.getRequestDispatcher("/administrator/account/delete").forward(req, resp);
+        req.getRequestDispatcher("/account/delete").forward(req, resp);
     }
 }

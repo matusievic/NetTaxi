@@ -112,11 +112,11 @@ public class AccountUpdatingCommand extends AbstractCommand implements Controlle
         }
 
         service.update(user);
-        resp.sendRedirect("/administrator/account");
+        resp.sendRedirect("/account");
     }
 
     private void displayError(String error, HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setAttribute(ControllerConstants.ERROR, error);
-        req.getRequestDispatcher("/administrator/account/edit").forward(req, resp);
+        req.getRequestDispatcher("/account/edit").forward(req, resp);
     }
 }
