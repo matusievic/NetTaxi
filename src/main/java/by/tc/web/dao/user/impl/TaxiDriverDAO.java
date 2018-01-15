@@ -28,9 +28,9 @@ public class TaxiDriverDAO implements UserDAO {
         TaxiDriver taxiDriver = (TaxiDriver) user;
         String pointParam = taxiDriver.getLocation().getX() + " " + taxiDriver.getLocation().getY();
         Car car = taxiDriver.getCar();
-        try {
-            PooledConnection connection = dbPool.takeConnection();
-            PreparedStatement statement = connection.prepareStatement("INSERT INTO drivers (phone, name, surname, password, is_banned, car_number, car_model, rating, is_free, location) VALUE (?, ?, ?, ?, ?, ?, ?, ?, ?, PointFromText('" + pointParam + "'));");
+        try (PooledConnection connection = dbPool.takeConnection();
+             PreparedStatement statement = connection.prepareStatement("INSERT INTO drivers (phone, name, surname, password, is_banned, car_number, car_model, rating, is_free, location) VALUE (?, ?, ?, ?, ?, ?, ?, ?, ?, PointFromText('" + pointParam + "'));")) {
+
             statement.setString(1, String.valueOf(taxiDriver.getPhone()));
             statement.setString(2, taxiDriver.getName());
             statement.setString(3, taxiDriver.getSurname());
@@ -42,7 +42,9 @@ public class TaxiDriverDAO implements UserDAO {
             statement.setBoolean(9, taxiDriver.isFree());
             statement.setFloat(10, taxiDriver.getLocation().getX());
             statement.setFloat(11, taxiDriver.getLocation().getY());
+
             statement.execute();
+
         } catch (SQLException e) {
             logger.error("Cannot register user: ", e);
             throw new DAOException("Cannot register user due to server error");
@@ -52,57 +54,13 @@ public class TaxiDriverDAO implements UserDAO {
         }
     }
 
-    /*@Override
-    public TaxiDriver[] read() throws DAOException {
-        final String readQuery = "SELECT driver_id, phone, name, surname, password, is_banned, car_number, car_model, rating, is_free, X(location), Y(location) FROM drivers;";
-        try {
-            PooledConnection connection = dbPool.takeConnection();
-            Statement statement = connection.createStatement();
-            ResultSet result = statement.executeQuery(readQuery);
-
-            int rowCount = 0;
-            if (result.last()) {
-                rowCount = result.getRow();
-                result.beforeFirst();
-            }
-
-            TaxiDriver[] taxiDrivers = new TaxiDriver[rowCount];
-            int currentPosition = 0;
-            while (result.next()) {
-                TaxiDriver taxiDriver = new TaxiDriver();
-                taxiDriver.setId(result.getInt("driver_id"));
-                taxiDriver.setPhone(result.getLong("phone"));
-                taxiDriver.setName(result.getString("name"));
-                taxiDriver.setSurname(result.getString("surname"));
-                taxiDriver.setPassword(result.getString("password").toCharArray());
-                taxiDriver.setBanned(result.getBoolean("is_banned"));
-                taxiDriver.setCar(new Car(result.getString("car_number").toCharArray(), result.getString("car_model")));
-                taxiDriver.setRating(result.getFloat("rating"));
-                taxiDriver.setFree(result.getBoolean("is_free"));
-                Point point = new Point();
-                point.setX(result.getFloat("X(location)"));
-                point.setY(result.getFloat("Y(location)"));
-                taxiDriver.setLocation(point);
-                taxiDrivers[currentPosition] = taxiDriver;
-                currentPosition++;
-            }
-            return taxiDrivers;
-        } catch (SQLException e) {
-            logger.error("Cannot register user: ", e);
-            throw new DAOException("Cannot register user due to server error");
-        } catch (InterruptedException e) {
-            logger.error("The thread was interrupted during waiting time", e);
-            throw new DAOException("Cannot register due to server error");
-        }
-    }*/
-
     @Override
     public User readById(int id) throws DAOException {
         final String query = "SELECT driver_id, phone, name, surname, password, is_banned, car_number, car_model, rating, is_free, X(location), Y(location) FROM drivers WHERE driver_id=?;";
 
-        try (PooledConnection connection = dbPool.takeConnection()) {
+        try (PooledConnection connection = dbPool.takeConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
 
-            PreparedStatement statement = connection.prepareStatement(query);
             statement.setInt(1, id);
             ResultSet result = statement.executeQuery();
 
@@ -141,9 +99,9 @@ public class TaxiDriverDAO implements UserDAO {
     @Override
     public User[] readInRange(int begin, int end) throws DAOException {
         final String query = "SELECT driver_id, phone, name, surname, password, is_banned, car_number, car_model, rating, is_free, X(location), Y(location) FROM drivers WHERE driver_id BETWEEN ? AND ?";
-        try (PooledConnection connection = dbPool.takeConnection()) {
+        try (PooledConnection connection = dbPool.takeConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
 
-            PreparedStatement statement = connection.prepareStatement(query);
             statement.setInt(1, begin);
             statement.setInt(2, end);
 
@@ -189,9 +147,9 @@ public class TaxiDriverDAO implements UserDAO {
     public User readByPhoneAndPassword(long phone, char[] password) throws DAOException {
         final String query = "SELECT driver_id, phone, name, surname, password, is_banned, car_number, car_model, rating, is_free, X(location), Y(location) FROM drivers WHERE phone=? AND password=?";
 
-        try {
-            PooledConnection connection = dbPool.takeConnection();
-            PreparedStatement statement = connection.prepareStatement(query);
+        try (PooledConnection connection = dbPool.takeConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+
             statement.setLong(1, phone);
             statement.setString(2, String.valueOf(password));
             ResultSet result = statement.executeQuery();
@@ -239,9 +197,9 @@ public class TaxiDriverDAO implements UserDAO {
 
         final String query = "SELECT COUNT(*) FROM drivers;";
 
-        try (PooledConnection connection = dbPool.takeConnection()) {
+        try (PooledConnection connection = dbPool.takeConnection();
+             Statement statement = connection.createStatement()) {
 
-            Statement statement = connection.createStatement();
             ResultSet result = statement.executeQuery(query);
 
             while (result.next()) {
@@ -265,9 +223,8 @@ public class TaxiDriverDAO implements UserDAO {
                 "SET phone=?, name=?, surname=?, password=?, is_banned=?, car_number=?, car_model=?, rating=?, is_free=?, location=PointFromText('POINT(" + pointParam + ")') " +
                 "WHERE driver_id=?;";
 
-        try (PooledConnection connection = dbPool.takeConnection()) {
-
-            PreparedStatement statement = connection.prepareStatement(query);
+        try (PooledConnection connection = dbPool.takeConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
 
             statement.setLong(1, taxiDriver.getPhone());
             statement.setString(2, taxiDriver.getName());
@@ -295,9 +252,9 @@ public class TaxiDriverDAO implements UserDAO {
     public void delete(User user) throws DAOException {
         final String query = "DELETE FROM drivers WHERE driver_id=?;";
 
-        try (PooledConnection connection = dbPool.takeConnection()) {
+        try (PooledConnection connection = dbPool.takeConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
 
-            PreparedStatement statement = connection.prepareStatement(query);
             statement.setInt(1, user.getId());
             if (statement.executeUpdate() != 1) {
                 //TODO

@@ -27,9 +27,9 @@ public class MySQLOrderDAO implements OrderDAO {
         String endPointParam = order.getEnd().getX() + " " + order.getEnd().getY();
         final String query = "INSERT INTO orders (price, begin, end, customers_customer_id, drivers_driver_id, status) VALUE (?, PointFromText('POINT(" + beginPointParam + ")'), PointFromText('POINT(" + endPointParam + ")'), ?, ?, ?);";
 
-        try (PooledConnection connection = dbPool.takeConnection()) {
+        try (PooledConnection connection = dbPool.takeConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
 
-            PreparedStatement statement = connection.prepareStatement(query);
             statement.setFloat(1, order.getPrice());
             statement.setFloat(2, order.getBegin().getX());
             statement.setFloat(3, order.getBegin().getY());
@@ -56,9 +56,9 @@ public class MySQLOrderDAO implements OrderDAO {
     public Order readById(int id) throws DAOException {
         final String query = "SELECT order_id, price, X(begin), Y(begin), X(end), Y(end), customers_customer_id, drivers_driver_id, status FROM orders WHERE order_id=?;";
 
-        try (PooledConnection connection = dbPool.takeConnection()) {
+        try (PooledConnection connection = dbPool.takeConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
 
-            PreparedStatement statement = connection.prepareStatement(query);
             statement.setInt(1, id);
             ResultSet result = statement.executeQuery();
 
@@ -92,9 +92,9 @@ public class MySQLOrderDAO implements OrderDAO {
     @Override
     public Order[] readInRange(int begin, int end) throws DAOException {
         final String query = "SELECT order_id, price, X(begin), Y(begin), X(end), Y(end), customers_customer_id, drivers_driver_id, status FROM orders WHERE order_id BETWEEN ? AND ?";
-        try (PooledConnection connection = dbPool.takeConnection()) {
+        try (PooledConnection connection = dbPool.takeConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
 
-            PreparedStatement statement = connection.prepareStatement(query);
             statement.setInt(1, begin);
             statement.setInt(2, end);
 
@@ -140,9 +140,9 @@ public class MySQLOrderDAO implements OrderDAO {
     public int readLength() throws DAOException {
         final String query = "SELECT COUNT(*) FROM orders;";
 
-        try (PooledConnection connection = dbPool.takeConnection()) {
+        try (PooledConnection connection = dbPool.takeConnection();
+             Statement statement = connection.createStatement()) {
 
-            Statement statement = connection.createStatement();
             ResultSet result = statement.executeQuery(query);
 
             while (result.next()) {
@@ -162,12 +162,11 @@ public class MySQLOrderDAO implements OrderDAO {
         String beginPointParam = order.getBegin().getX() + " " + order.getBegin().getY();
         String endPointParam = order.getEnd().getX() + " " + order.getEnd().getY();
         final String query = "UPDATE orders " +
-                             "SET price=?, begin=PointFromText('POINT(" + beginPointParam + ")'), end=PointFromText('POINT(" + endPointParam + ")'), customers_customer_id=?, drivers_driver_id=?, status=? " +
-                             "WHERE order_id=?;";
+                "SET price=?, begin=PointFromText('POINT(" + beginPointParam + ")'), end=PointFromText('POINT(" + endPointParam + ")'), customers_customer_id=?, drivers_driver_id=?, status=? " +
+                "WHERE order_id=?;";
 
-        try (PooledConnection connection = dbPool.takeConnection()) {
-
-            PreparedStatement statement = connection.prepareStatement(query);
+        try (PooledConnection connection = dbPool.takeConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
 
             statement.setFloat(1, order.getPrice());
             statement.setFloat(2, order.getBegin().getX());
@@ -194,9 +193,9 @@ public class MySQLOrderDAO implements OrderDAO {
     public void delete(Order order) throws DAOException {
         final String query = "DELETE FROM orders WHERE order_id=?;";
 
-        try (PooledConnection connection = dbPool.takeConnection()) {
+        try (PooledConnection connection = dbPool.takeConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
 
-            PreparedStatement statement = connection.prepareStatement(query);
             statement.setInt(1, order.getId());
             if (statement.executeUpdate() != 1) {
                 //TODO

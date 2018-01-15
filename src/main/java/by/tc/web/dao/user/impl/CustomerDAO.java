@@ -23,9 +23,8 @@ public class CustomerDAO implements UserDAO {
     @Override
     public void create(User user) throws DAOException {
         Customer customer = (Customer) user;
-        try {
-            PooledConnection connection = dbPool.takeConnection();
-            PreparedStatement statement = connection.prepareStatement("INSERT INTO customers (phone, name, surname, password, is_banned, discount) VALUE (?, ?, ?, ?, false, 0);");
+        try (PooledConnection connection = dbPool.takeConnection();
+             PreparedStatement statement = connection.prepareStatement("INSERT INTO customers (phone, name, surname, password, is_banned, discount) VALUE (?, ?, ?, ?, false, 0);")) {
 
             statement.setString(1, String.valueOf(customer.getPhone()));
             statement.setString(2, customer.getName());
@@ -89,9 +88,9 @@ public class CustomerDAO implements UserDAO {
     public User readById(int id) throws DAOException {
         final String query = "SELECT * FROM customers WHERE customer_id=?;";
 
-        try (PooledConnection connection = dbPool.takeConnection()) {
+        try (PooledConnection connection = dbPool.takeConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
 
-            PreparedStatement statement = connection.prepareStatement(query);
             statement.setInt(1, id);
             ResultSet result = statement.executeQuery();
 
@@ -121,9 +120,9 @@ public class CustomerDAO implements UserDAO {
     @Override
     public User[] readInRange(int begin, int end) throws DAOException {
         final String query = "SELECT * FROM customers WHERE customer_id BETWEEN ? AND ?";
-        try (PooledConnection connection = dbPool.takeConnection()) {
+        try (PooledConnection connection = dbPool.takeConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
 
-            PreparedStatement statement = connection.prepareStatement(query);
             statement.setInt(1, begin);
             statement.setInt(2, end);
 
@@ -164,9 +163,9 @@ public class CustomerDAO implements UserDAO {
     public User readByPhoneAndPassword(long phone, char[] password) throws DAOException {
         final String query = "SELECT * FROM customers WHERE phone=? AND password=?";
 
-        try {
-            PooledConnection connection = dbPool.takeConnection();
-            PreparedStatement statement = connection.prepareStatement(query);
+        try (PooledConnection connection = dbPool.takeConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+
             statement.setLong(1, phone);
             statement.setString(2, String.valueOf(password));
             ResultSet result = statement.executeQuery();
@@ -194,22 +193,29 @@ public class CustomerDAO implements UserDAO {
 
             return customer;
 
-        } catch (SQLException e) {
+        } catch (
+                SQLException e)
+
+        {
             logger.error("Cannot register user: ", e);
             throw new DAOException("Cannot register user due to server error");
-        } catch (InterruptedException e) {
+        } catch (
+                InterruptedException e)
+
+        {
             logger.error("The thread was interrupted during waiting time", e);
             throw new DAOException("Cannot register due to server error");
         }
+
     }
 
     @Override
     public int readLength() throws DAOException {
         final String query = "SELECT COUNT(*) FROM customers;";
 
-        try (PooledConnection connection = dbPool.takeConnection()) {
+        try (PooledConnection connection = dbPool.takeConnection();
+             Statement statement = connection.createStatement()) {
 
-            Statement statement = connection.createStatement();
             ResultSet result = statement.executeQuery(query);
 
             while (result.next()) {
@@ -232,9 +238,8 @@ public class CustomerDAO implements UserDAO {
 
         Customer customer = (Customer) user;
 
-        try (PooledConnection connection = dbPool.takeConnection()) {
-
-            PreparedStatement statement = connection.prepareStatement(query);
+        try (PooledConnection connection = dbPool.takeConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
 
             statement.setLong(1, customer.getPhone());
             statement.setString(2, customer.getName());
@@ -259,9 +264,9 @@ public class CustomerDAO implements UserDAO {
     public void delete(User user) throws DAOException {
         final String query = "DELETE FROM customers WHERE customer_id=?;";
 
-        try (PooledConnection connection = dbPool.takeConnection()) {
+        try (PooledConnection connection = dbPool.takeConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
 
-            PreparedStatement statement = connection.prepareStatement(query);
             statement.setInt(1, user.getId());
             if (statement.executeUpdate() != 1) {
                 //TODO
