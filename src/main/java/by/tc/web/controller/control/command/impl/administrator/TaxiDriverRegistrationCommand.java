@@ -3,7 +3,6 @@ package by.tc.web.controller.control.command.impl.administrator;
 import by.tc.web.controller.control.command.CommandProvider;
 import by.tc.web.controller.control.command.ControllerCommand;
 import by.tc.web.controller.control.command.constants.ControllerConstants;
-import by.tc.web.controller.control.command.impl.AbstractCommand;
 import by.tc.web.domain.car.Car;
 import by.tc.web.domain.car.builder.CarBuilder;
 import by.tc.web.domain.user.User;
@@ -20,7 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-public class TaxiDriverRegistrationCommand extends AbstractCommand implements ControllerCommand {
+public class TaxiDriverRegistrationCommand implements ControllerCommand {
     private static final Logger logger = Logger.getLogger(TaxiDriverRegistrationCommand.class);
 
     @Override

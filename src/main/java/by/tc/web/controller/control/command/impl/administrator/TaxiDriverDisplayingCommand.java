@@ -2,8 +2,6 @@ package by.tc.web.controller.control.command.impl.administrator;
 
 import by.tc.web.controller.control.command.ControllerCommand;
 import by.tc.web.controller.control.command.constants.ControllerConstants;
-import by.tc.web.controller.control.command.impl.AbstractCommand;
-import by.tc.web.domain.user.User;
 import by.tc.web.service.user.UserService;
 import by.tc.web.service.user.UserServiceFactory;
 
@@ -12,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-public class TaxiDriverDisplayingCommand extends AbstractCommand implements ControllerCommand {
+public class TaxiDriverDisplayingCommand implements ControllerCommand {
     @Override
     public void execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String idString = req.getParameter(ControllerConstants.ID_PARAM);
@@ -21,12 +19,12 @@ public class TaxiDriverDisplayingCommand extends AbstractCommand implements Cont
         try {
             id = Integer.parseInt(idString);
         } catch (NumberFormatException e) {
-            show404Message("There's no such user", req, resp);
+            resp.sendError(HttpServletResponse.SC_NOT_FOUND);
             return;
         }
 
         UserService service = UserServiceFactory.getInstance().getTaxiDriverService();
-        User taxiDriver = service.get(id);
+        Object taxiDriver = service.get(id);
         req.setAttribute("taxiDriver", taxiDriver);
         req.getRequestDispatcher("administrator/driver/display").forward(req, resp);
     }

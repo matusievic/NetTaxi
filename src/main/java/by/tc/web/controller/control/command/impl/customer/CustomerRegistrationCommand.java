@@ -2,7 +2,6 @@ package by.tc.web.controller.control.command.impl.customer;
 
 import by.tc.web.controller.control.command.ControllerCommand;
 import by.tc.web.controller.control.command.constants.ControllerConstants;
-import by.tc.web.controller.control.command.impl.AbstractCommand;
 import by.tc.web.domain.user.User;
 import by.tc.web.domain.user.builder.impl.CustomerBuilder;
 import by.tc.web.service.registrar.RegistrarFactory;
@@ -16,7 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-public class CustomerRegistrationCommand extends AbstractCommand implements ControllerCommand {
+public class CustomerRegistrationCommand implements ControllerCommand {
     private static final Logger logger = Logger.getLogger(CustomerRegistrationCommand.class);
 
     @Override

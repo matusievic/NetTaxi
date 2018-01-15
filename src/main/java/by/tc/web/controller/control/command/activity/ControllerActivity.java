@@ -3,9 +3,28 @@ package by.tc.web.controller.control.command.activity;
 public enum ControllerActivity {
     // Common activities
     AUTHENTICATE,
-    REGISTER_CUSTOMER,
     LOCALIZE,
     CLOSE_SESSION,
+
+    UPDATE_ACCOUNT,
+    DELETE_ACCOUNT,
+
+    DISPLAY_ORDERS,
+
+
+    // Customer activities
+    REGISTER_CUSTOMER,
+    ORDER_TAXI,
+    CANCEL_ORDER,
+    RATE_TAXIDRIVER,
+
+
+    // Driver activities
+    CHECK_ORDERS,
+    CHOOSE_ORDER,
+    ACCEPT_ORDER,
+    FINISH_ORDER,
+
 
     // Administrator activities
     DISPLAY_CUSTOMERS,
@@ -20,6 +39,6 @@ public enum ControllerActivity {
     BLOCK_TAXIDRIVER,
     UNBLOCK_TAXIDRIVER,
 
-    UPDATE_ADMINISTRATOR,
-    DELETE_ADMINISTRATOR
+    DISPLAY_ORDER,
+    DELETE_ORDER
 }

@@ -3,7 +3,6 @@ package by.tc.web.controller.control.command.impl.common;
 import by.tc.web.controller.control.command.CommandProvider;
 import by.tc.web.controller.control.command.ControllerCommand;
 import by.tc.web.controller.control.command.constants.ControllerConstants;
-import by.tc.web.controller.control.command.impl.AbstractCommand;
 import by.tc.web.domain.user.User;
 import by.tc.web.domain.user.impl.Administrator;
 import by.tc.web.domain.user.impl.Customer;
@@ -18,13 +17,13 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Arrays;
 
-public class AccountDeletingCommand extends AbstractCommand implements ControllerCommand {
+public class AccountDeletingCommand implements ControllerCommand {
     @Override
     public void execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         User user = (User) req.getSession().getAttribute(ControllerConstants.USER_PARAM);
 
         if (user == null) {
-            show500Message("Internal server error", req, resp);
+            resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             return;
         }
 
@@ -33,13 +32,13 @@ public class AccountDeletingCommand extends AbstractCommand implements Controlle
         Class userClass = user.getClass();
 
         if (userClass == Customer.class) {
-            service = customerService;
+            service = ControllerConstants.customerService;
         } else if (userClass == TaxiDriver.class) {
-            service = taxiDriverService;
+            service = ControllerConstants.taxiDriverService;
         } else if (userClass == Administrator.class) {
-            service = administratorService;
+            service = ControllerConstants.administratorService;
         } else {
-            show500Message("Internal server error", req, resp);
+            resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             return;
         }
 
@@ -49,7 +48,7 @@ public class AccountDeletingCommand extends AbstractCommand implements Controlle
 
             char[] encryptedPassword = encryptedPassword = encoder.encrypt(password);
             if (encryptedPassword == null) {
-                show500Message("Please try again later", req, resp);
+                resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             }
 
             if (Arrays.equals(encryptedPassword, user.getPassword())) {

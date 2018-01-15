@@ -2,7 +2,6 @@ package by.tc.web.controller.control.command.impl.common;
 
 import by.tc.web.controller.control.command.ControllerCommand;
 import by.tc.web.controller.control.command.constants.ControllerConstants;
-import by.tc.web.controller.control.command.impl.AbstractCommand;
 import by.tc.web.domain.car.builder.CarBuilder;
 import by.tc.web.domain.user.User;
 import by.tc.web.domain.user.impl.Administrator;
@@ -20,13 +19,13 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Arrays;
 
-public class AccountUpdatingCommand extends AbstractCommand implements ControllerCommand {
+public class AccountUpdatingCommand implements ControllerCommand {
     @Override
     public void execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         User user = (User) req.getSession().getAttribute("user");
 
         if (user == null) {
-            show500Message("Internal server error", req, resp);
+            resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             return;
         }
 
@@ -34,9 +33,9 @@ public class AccountUpdatingCommand extends AbstractCommand implements Controlle
         UserService service = null;
 
         if (userClass == Customer.class) {
-            service = customerService;
+            service = ControllerConstants.customerService;
         } else if (userClass == TaxiDriver.class) {
-            service = taxiDriverService;
+            service = ControllerConstants.taxiDriverService;
 
             String carNumber = req.getParameter(ControllerConstants.CAR_NUMBER_PARAM);
             if (!CarValidator.isNumberValid(carNumber)) {
@@ -53,9 +52,10 @@ public class AccountUpdatingCommand extends AbstractCommand implements Controlle
             ((TaxiDriver) user).setCar(new CarBuilder().number(carNumber.toCharArray()).model(carModel).build());
 
         } else if (userClass == Administrator.class) {
-            service = administratorService;
+            service = ControllerConstants.administratorService;
         } else {
-            show500Message("Internal server error", req, resp);
+            resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            return;
         }
 
         String name = req.getParameter(ControllerConstants.NAME_PARAM);
@@ -85,7 +85,7 @@ public class AccountUpdatingCommand extends AbstractCommand implements Controlle
 
             char[] oldEncryptedPassword = encoder.encrypt(oldPassword);
             if (oldEncryptedPassword == null) {
-                show500Message("Internal server error", req, resp);
+                resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
                 return;
             }
 
@@ -100,7 +100,7 @@ public class AccountUpdatingCommand extends AbstractCommand implements Controlle
 
                 char[] encryptedPassword = encoder.encrypt(firstPassword);
                 if (encryptedPassword == null) {
-                    show500Message("Internal server error", req, resp);
+                    resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
                     return;
                 }
 
