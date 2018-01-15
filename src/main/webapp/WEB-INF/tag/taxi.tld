@@ -15,4 +15,18 @@
         <tag-class>by.tc.web.util.tag.DriverTag</tag-class>
         <body-content>scriptless</body-content>
     </tag>
+    <tag>
+        <name>admin</name>
+        <tag-class>by.tc.web.util.tag.AdministratorTag</tag-class>
+        <body-content>scriptless</body-content>
+    </tag>
+    <tag>
+        <name>pagination</name>
+        <tag-class>by.tc.web.util.tag.PaginationTag</tag-class>
+        <body-content>empty</body-content>
+        <attribute>
+            <name>command</name>
+            <required>true</required>
+        </attribute>
+    </tag>
 </taglib>
