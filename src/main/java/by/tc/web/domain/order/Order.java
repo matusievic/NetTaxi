@@ -1,6 +1,6 @@
 package by.tc.web.domain.order;
 
-import by.tc.web.domain.order.point.Point;
+import by.tc.web.domain.point.Point;
 
 import java.io.Serializable;
 import java.util.Objects;

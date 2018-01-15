@@ -4,7 +4,7 @@ import by.tc.web.dao.exception.DAOException;
 import by.tc.web.dao.order.OrderDAO;
 import by.tc.web.domain.order.Order;
 import by.tc.web.domain.order.OrderStatus;
-import by.tc.web.domain.order.point.Point;
+import by.tc.web.domain.point.Point;
 import by.tc.web.service.database.DatabaseFactory;
 import by.tc.web.service.database.connection.PooledConnection;
 import by.tc.web.service.database.pool.DBPool;
@@ -23,17 +23,21 @@ public class MySQLOrderDAO implements OrderDAO {
 
     @Override
     public void create(Order order) throws DAOException {
-        final String query = "INSERT INTO orders (price, begin, end, customers_customer_id, drivers_driver_id, status) VALUE (?, ?, ?, ?, ?, ?);";
+        String beginPointParam = order.getBegin().getX() + " " + order.getBegin().getY();
+        String endPointParam = order.getEnd().getX() + " " + order.getEnd().getY();
+        final String query = "INSERT INTO orders (price, begin, end, customers_customer_id, drivers_driver_id, status) VALUE (?, PointFromText('POINT(" + beginPointParam + ")'), PointFromText('POINT(" + endPointParam + ")'), ?, ?, ?);";
 
         try (PooledConnection connection = dbPool.takeConnection()) {
 
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setFloat(1, order.getPrice());
-            statement.setObject(2, order.getBegin());
-            statement.setObject(3, order.getEnd());
-            statement.setInt(4, order.getCustomerId());
-            statement.setInt(5, order.getTaxiDriverId());
-            statement.setInt(6, order.getStatus().ordinal());
+            statement.setFloat(2, order.getBegin().getX());
+            statement.setFloat(3, order.getBegin().getY());
+            statement.setFloat(4, order.getEnd().getX());
+            statement.setFloat(5, order.getEnd().getY());
+            statement.setInt(6, order.getCustomerId());
+            statement.setInt(7, order.getTaxiDriverId());
+            statement.setInt(8, order.getStatus().ordinal());
 
             if (statement.executeUpdate() != 1) {
                 throw new SQLException("Cannot perform update query");
@@ -50,7 +54,7 @@ public class MySQLOrderDAO implements OrderDAO {
 
     @Override
     public Order readById(int id) throws DAOException {
-        final String query = "SELECT * FROM orders WHERE order_id=?;";
+        final String query = "SELECT order_id, price, X(begin), Y(begin), X(end), Y(end), customers_customer_id, drivers_driver_id, status FROM orders WHERE order_id=?;";
 
         try (PooledConnection connection = dbPool.takeConnection()) {
 
@@ -62,8 +66,14 @@ public class MySQLOrderDAO implements OrderDAO {
                 Order order = new Order();
                 order.setId(result.getInt("order_id"));
                 order.setPrice(result.getInt("price"));
-                order.setBegin((Point) result.getObject("begin"));
-                order.setEnd((Point) result.getObject("end"));
+                Point begin = new Point();
+                begin.setX(result.getFloat("X(begin)"));
+                begin.setY(result.getFloat("Y(begin)"));
+                order.setBegin(begin);
+                Point end = new Point();
+                end.setX(result.getFloat("X(end)"));
+                end.setY(result.getFloat("Y(end)"));
+                order.setEnd(end);
                 order.setCustomerId(result.getInt("customers_customer_id"));
                 order.setTaxiDriverId(result.getInt("drivers_driver_id"));
                 order.setStatus(OrderStatus.values()[result.getInt("status")]);
@@ -81,7 +91,7 @@ public class MySQLOrderDAO implements OrderDAO {
 
     @Override
     public Order[] readInRange(int begin, int end) throws DAOException {
-        final String query = "SELECT * FROM orders WHERE order_id BETWEEN ? AND ?";
+        final String query = "SELECT order_id, price, X(begin), Y(begin), X(end), Y(end), customers_customer_id, drivers_driver_id, status FROM orders WHERE order_id BETWEEN ? AND ?";
         try (PooledConnection connection = dbPool.takeConnection()) {
 
             PreparedStatement statement = connection.prepareStatement(query);
@@ -102,8 +112,14 @@ public class MySQLOrderDAO implements OrderDAO {
                 Order order = new Order();
                 order.setId(result.getInt("order_id"));
                 order.setPrice(result.getInt("price"));
-                order.setBegin((Point) result.getObject("begin"));
-                order.setEnd((Point) result.getObject("end"));
+                Point beginPoint = new Point();
+                beginPoint.setX(result.getFloat("X(begin)"));
+                beginPoint.setY(result.getFloat("Y(begin)"));
+                order.setBegin(beginPoint);
+                Point endPoint = new Point();
+                endPoint.setX(result.getFloat("X(end)"));
+                endPoint.setY(result.getFloat("Y(end)"));
+                order.setEnd(endPoint);
                 order.setCustomerId(result.getInt("customers_customer_id"));
                 order.setTaxiDriverId(result.getInt("drivers_driver_id"));
                 order.setStatus(OrderStatus.values()[result.getInt("status")]);
@@ -143,8 +159,10 @@ public class MySQLOrderDAO implements OrderDAO {
 
     @Override
     public void update(Order order) throws DAOException {
+        String beginPointParam = order.getBegin().getX() + " " + order.getBegin().getY();
+        String endPointParam = order.getEnd().getX() + " " + order.getEnd().getY();
         final String query = "UPDATE orders " +
-                             "SET price=?, begin=?, end=?, customers_customer_id=?, drivers_driver_id=?, status=? " +
+                             "SET price=?, begin=PointFromText('POINT(" + beginPointParam + ")'), end=PointFromText('POINT(" + endPointParam + ")'), customers_customer_id=?, drivers_driver_id=?, status=? " +
                              "WHERE order_id=?;";
 
         try (PooledConnection connection = dbPool.takeConnection()) {
@@ -152,12 +170,14 @@ public class MySQLOrderDAO implements OrderDAO {
             PreparedStatement statement = connection.prepareStatement(query);
 
             statement.setFloat(1, order.getPrice());
-            statement.setObject(2, order.getBegin());
-            statement.setObject(3, order.getEnd());
-            statement.setInt(4, order.getCustomerId());
-            statement.setInt(5, order.getTaxiDriverId());
-            statement.setInt(6, order.getStatus().ordinal());
-            statement.setInt(7, order.getId());
+            statement.setFloat(2, order.getBegin().getX());
+            statement.setFloat(3, order.getBegin().getY());
+            statement.setFloat(4, order.getEnd().getX());
+            statement.setFloat(5, order.getEnd().getY());
+            statement.setInt(6, order.getCustomerId());
+            statement.setInt(7, order.getTaxiDriverId());
+            statement.setInt(8, order.getStatus().ordinal());
+            statement.setInt(9, order.getId());
 
             if (statement.executeUpdate() != 1) {
                 //TODO

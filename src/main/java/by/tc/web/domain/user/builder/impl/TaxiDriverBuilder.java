@@ -1,6 +1,7 @@
 package by.tc.web.domain.user.builder.impl;
 
 import by.tc.web.domain.car.Car;
+import by.tc.web.domain.point.Point;
 import by.tc.web.domain.user.builder.UserBuilder;
 import by.tc.web.domain.user.impl.TaxiDriver;
 
@@ -8,6 +9,8 @@ public class TaxiDriverBuilder extends UserBuilder {
     private Car car;
     private boolean banned;
     private float rating;
+    private boolean free;
+    private Point location;
 
     public TaxiDriverBuilder(int id) {
         super(id);
@@ -28,6 +31,16 @@ public class TaxiDriverBuilder extends UserBuilder {
         return this;
     }
 
+    public TaxiDriverBuilder free(boolean free) {
+        this.free = free;
+        return this;
+    }
+
+    public TaxiDriverBuilder location(Point location) {
+        this.location = location;
+        return this;
+    }
+
     @Override
     public TaxiDriver build() {
         TaxiDriver taxiDriver = new TaxiDriver();
@@ -37,7 +50,9 @@ public class TaxiDriverBuilder extends UserBuilder {
         taxiDriver.setPassword(password);
         taxiDriver.setCar(this.car);
         taxiDriver.setBanned(this.banned);
-        taxiDriver.setRating(rating);
+        taxiDriver.setRating(this.rating);
+        taxiDriver.setFree(this.free);
+        taxiDriver.setLocation(this.location);
         return taxiDriver;
     }
 

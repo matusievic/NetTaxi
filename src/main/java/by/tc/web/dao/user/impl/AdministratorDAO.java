@@ -45,7 +45,7 @@ public class AdministratorDAO implements UserDAO {
         }
     }
 
-    @Override
+    /*@Override
     public Administrator[] read() throws DAOException {
         final String query = "SELECT * FROM administrators;";
         try (PooledConnection connection = dbPool.takeConnection()) {
@@ -81,7 +81,7 @@ public class AdministratorDAO implements UserDAO {
             logger.error("The thread was interrupted during waiting time", e);
             throw new DAOException("Cannot register due to server error");
         }
-    }
+    }*/
 
     @Override
     public User readById(int id) throws DAOException {

@@ -45,7 +45,7 @@ public class CustomerDAO implements UserDAO {
         }
     }
 
-    @Override
+    /*@Override
     public Customer[] read() throws DAOException {
         final String query = "SELECT * FROM customers;";
         try {
@@ -83,7 +83,7 @@ public class CustomerDAO implements UserDAO {
             logger.error("The thread was interrupted during waiting time", e);
             throw new DAOException("Cannot register due to server error");
         }
-    }
+    }*/
 
     @Override
     public User readById(int id) throws DAOException {

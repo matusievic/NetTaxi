@@ -1,12 +1,8 @@
-package by.tc.web.domain.order.point;
+package by.tc.web.domain.point;
 
 import java.io.Serializable;
-import java.sql.SQLData;
-import java.sql.SQLException;
-import java.sql.SQLInput;
-import java.sql.SQLOutput;
 
-public class Point implements Serializable, SQLData {
+public class Point implements Serializable {
     private static final long serialVersionUID = 250354050051348684L;
     private String sqlTypeName;
     private float x;
@@ -33,24 +29,6 @@ public class Point implements Serializable, SQLData {
 
     public void setY(float y) {
         this.y = y;
-    }
-
-    @Override
-    public String getSQLTypeName() throws SQLException {
-        return sqlTypeName;
-    }
-
-    @Override
-    public void readSQL(SQLInput stream, String typeName) throws SQLException {
-        sqlTypeName = typeName;
-        x = stream.readFloat();
-        y = stream.readFloat();
-    }
-
-    @Override
-    public void writeSQL(SQLOutput stream) throws SQLException {
-        stream.writeFloat(x);
-        stream.writeFloat(y);
     }
 
     @Override
