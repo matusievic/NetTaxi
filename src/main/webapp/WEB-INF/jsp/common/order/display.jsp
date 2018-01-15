@@ -8,7 +8,6 @@
     <fmt:setBundle basename="localization.local" var="loc"/>
 
     <fmt:message bundle="${loc}" key="application.name" var="applicationNameLabel"/>
-    <fmt:message bundle="${loc}" key="title.orders" var="pageTitleLabel"/>
 
     <fmt:message bundle="${loc}" key="order.id" var="idLabel"/>
     <fmt:message bundle="${loc}" key="order.price" var="priceLabel"/>
@@ -17,36 +16,43 @@
     <fmt:message bundle="${loc}" key="order.cutomer" var="customerLabel"/>
     <fmt:message bundle="${loc}" key="order.driver" var="driverLabel"/>
     <fmt:message bundle="${loc}" key="order.status" var="statusLabel"/>
+    <fmt:message bundle="${loc}" key="activity.delete" var="deleteLabel"/>
 
-    <title>${pageTitleLabel} - ${applicationNameLabel}</title>
+    <title>#${order.id} - ${applicationNameLabel}</title>
 </head>
 <body>
 <table>
-    <thead>
     <tr>
         <th>${idLabel}</th>
-        <th>${customerLabel}</th>
-        <th>${driverLabel}</th>
-        <th>${beginLabel}</th>
-        <th>${endLabel}</th>
-        <th>${priceLabel}</th>
-        <th>${statusLabel}</th>
+        <td>${order.id}</td>
     </tr>
-    </thead>
-    <tbody>
-    <c:forEach var="order" items="${orders}">
-        <tr>
-            <td><a href="/controller?command=display_order&id=${order.id}">${order.id}</a></td>
-            <td><a href="/controller?command=display_customer&id=${order.customerId}">${order.customerId}</a></td>
-            <td><a href="/controller?command=display_taxidriver&id=${order.taxiDriverId}">${order.taxiDriverId}</a></td>
-            <td>${order.begin.x}, ${order.begin.y}</td>
-            <td>${order.end.x}, ${order.end.y}</td>
-            <td>${order.price}</td>
-            <td>${order.status}</td>
-        </tr>
-    </c:forEach>
-    </tbody>
+    <tr>
+        <th>${customerLabel}</th>
+        <td><a href="/controller?command=display_customer&id=${order.customerId}">${order.customerId}</a></td>
+    </tr>
+    <tr>
+        <th>${driverLabel}</th>
+        <td><a href="/controller?command=display_taxidriver&id=${order.taxiDriverId}">${order.taxiDriverId}</a></td>
+    </tr>
+    <tr>
+        <th>${beginLabel}</th>
+        <td>${order.begin.x}, ${order.begin.y}</td>
+    </tr>
+    <tr>
+        <th>${endLabel}</th>
+        <td>${order.end.x}, ${order.end.y}</td>
+    </tr>
+    <tr>
+        <th>${priceLabel}</th>
+        <td>${order.price}</td>
+    </tr>
+    <tr>
+        <th>${statusLabel}</th>
+        <td>${order.status}</td>
+    </tr>
 </table>
-<taxi:pagination command="display_orders"/>
+<taxi:admin>
+    <a href="/controller?command=delete_order&id=${order.id}">${deleteLabel}</a>
+</taxi:admin>
 </body>
 </html>

@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="taxi" uri="/WEB-INF/tag/taxi" %>
 <html>
 <head>
     <fmt:setLocale value="${sessionScope.locale}"/>
@@ -29,17 +30,18 @@
     </tr>
     </thead>
     <tbody>
-    <c:forEach var="customer" items="${customers}">
+    <c:forEach var="driver" items="${customers}">
         <tr>
-            <td><a href="/controller?command=display_customer&id=${customer.id}">${customer.id}</a></td>
-            <td>${customer.phone}</td>
-            <td>${customer.name}</td>
-            <td>${customer.surname}</td>
-            <td>${customer.banned}</td>
-            <td>${customer.discount}</td>
+            <td><a href="/controller?command=display_customer&id=${driver.id}">${driver.id}</a></td>
+            <td>${driver.phone}</td>
+            <td>${driver.name}</td>
+            <td>${driver.surname}</td>
+            <td>${driver.banned}</td>
+            <td>${driver.discount}</td>
         </tr>
     </c:forEach>
     </tbody>
 </table>
+<taxi:pagination command="display_customers"/>
 </body>
 </html>

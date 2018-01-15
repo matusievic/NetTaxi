@@ -13,6 +13,8 @@
     <fmt:message bundle="${loc}" key="account.car_model" var="carModelLabel"/>
     <fmt:message bundle="${loc}" key="account.banned" var="bannedLabel"/>
     <fmt:message bundle="${loc}" key="account.rating" var="ratingLabel"/>
+    <fmt:message bundle="${loc}" key="account.free" var="freeLabel"/>
+    <fmt:message bundle="${loc}" key="account.location" var="locationLabel"/>
     <fmt:message bundle="${loc}" key="activity.block" var="blockLabel"/>
     <fmt:message bundle="${loc}" key="activity.unblock" var="unblockLabel"/>
     <fmt:message bundle="${loc}" key="activity.back" var="backLabel"/>
@@ -54,6 +56,14 @@
     <tr>
         <th>${ratingLabel}</th>
         <td>${taxiDriver.rating}</td>
+    </tr>
+    <tr>
+        <th>${freeLabel}</th>
+        <td>${taxiDriver.free}</td>
+    </tr>
+    <tr>
+        <th>${locationLabel}</th>
+        <td>${taxiDriver.location.x}, ${taxiDriver.location.y}</td>
     </tr>
 </table>
 <c:choose>

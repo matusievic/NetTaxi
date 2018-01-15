@@ -37,7 +37,7 @@
 
 
 
-    <!--CustomerTag pages-->
+    <!--Customer pages-->
 
     <servlet>
         <servlet-name>CustomerOrder</servlet-name>
@@ -97,13 +97,26 @@
         <url-pattern>/administrator/driver/display</url-pattern>
     </servlet-mapping>
 
+
+
+    <!--Common pages-->
+
     <servlet>
-        <servlet-name>AdministratorOrders</servlet-name>
-        <jsp-file>/WEB-INF/jsp/administrator/orders.jsp</jsp-file>
+        <servlet-name>Orders</servlet-name>
+        <jsp-file>/WEB-INF/jsp/common/orders.jsp</jsp-file>
     </servlet>
     <servlet-mapping>
-        <servlet-name>AdministratorOrders</servlet-name>
-        <url-pattern>/administrator/orders</url-pattern>
+        <servlet-name>Orders</servlet-name>
+        <url-pattern>/orders</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>OrderDisplaying</servlet-name>
+        <jsp-file>/WEB-INF/jsp/common/order/display.jsp</jsp-file>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>OrderDisplaying</servlet-name>
+        <url-pattern>/order/display</url-pattern>
     </servlet-mapping>
 
 
@@ -202,31 +215,19 @@
 
     <!--Error pages-->
 
-    <servlet>
-        <servlet-name>Error403</servlet-name>
-        <jsp-file>/WEB-INF/jsp/error/403.jsp</jsp-file>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>Error403</servlet-name>
-        <url-pattern>/403</url-pattern>
-    </servlet-mapping>
+    <error-page>
+        <error-code>403</error-code>
+        <location>/WEB-INF/jsp/error/403.jsp</location>
+    </error-page>
 
-    <servlet>
-        <servlet-name>Error404</servlet-name>
-        <jsp-file>/WEB-INF/jsp/error/404.jsp</jsp-file>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>Error404</servlet-name>
-        <url-pattern>/404</url-pattern>
-    </servlet-mapping>
+    <error-page>
+        <error-code>404</error-code>
+        <location>/WEB-INF/jsp/error/404.jsp</location>
+    </error-page>
 
-    <servlet>
-        <servlet-name>Error500</servlet-name>
-        <jsp-file>/WEB-INF/jsp/error/500.jsp</jsp-file>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>Error500</servlet-name>
-        <url-pattern>/500</url-pattern>
-    </servlet-mapping>
+    <error-page>
+        <error-code>500</error-code>
+        <location>/WEB-INF/jsp/error/500.jsp</location>
+    </error-page>
 
 </web-app>
