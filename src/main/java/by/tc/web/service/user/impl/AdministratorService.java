@@ -1,16 +1,16 @@
 package by.tc.web.service.user.impl;
 
+import by.tc.web.dao.DAO;
 import by.tc.web.dao.DAOFactory;
 import by.tc.web.dao.exception.DAOException;
-import by.tc.web.dao.user.UserDAO;
 import by.tc.web.domain.user.User;
 import by.tc.web.service.user.UserService;
 
 public class AdministratorService implements UserService {
-    private static final UserDAO dao = DAOFactory.getInstance().getAdministratorDAO();
+    private static final DAO<User> dao = DAOFactory.getInstance().getAdministratorDAO();
 
     @Override
-    public User get(int userId) {
+    public Object get(int userId) {
         User administrator = null;
         try {
             administrator = dao.readById(userId);

@@ -1,5 +1,6 @@
 package by.tc.web.service.registrar.impl;
 
+import by.tc.web.dao.DAO;
 import by.tc.web.dao.DAOFactory;
 import by.tc.web.dao.exception.DAOException;
 import by.tc.web.dao.user.UserDAO;
@@ -17,7 +18,7 @@ public class TaxiDriverRegistrar implements UserRegistrar {
 
     @Override
     public void register(User user) throws RegistrarException {
-        UserDAO userDAO = daoFactory.getTaxiDriverDAO();
+        DAO<User> userDAO = daoFactory.getTaxiDriverDAO();
         Encoder encoder = encoderFactory.createEncryptor();
         try {
             char[] encryptedPassword = encoder.encrypt(String.valueOf(user.getPassword()));

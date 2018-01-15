@@ -1,8 +1,8 @@
 package by.tc.web.service.registrar.impl;
 
+import by.tc.web.dao.DAO;
 import by.tc.web.dao.DAOFactory;
 import by.tc.web.dao.exception.DAOException;
-import by.tc.web.dao.user.UserDAO;
 import by.tc.web.domain.user.User;
 import by.tc.web.service.encoder.Encoder;
 import by.tc.web.service.encoder.EncoderFactory;
@@ -17,7 +17,7 @@ public class CustomerRegistrar implements UserRegistrar {
 
     @Override
     public void register(User user) throws RegistrarException {
-        UserDAO userDAO = daoFactory.getCustomerDAO();
+        DAO userDAO = daoFactory.getCustomerDAO();
         Encoder encoder = encoderFactory.createEncryptor();
         try {
             char[] encryptedPassword = encoder.encrypt(String.valueOf(user.getPassword()));

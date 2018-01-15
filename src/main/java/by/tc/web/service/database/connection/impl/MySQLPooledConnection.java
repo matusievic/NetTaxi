@@ -1,6 +1,5 @@
 package by.tc.web.service.database.connection.impl;
 
-import by.tc.web.domain.order.point.Point;
 import by.tc.web.service.database.connection.PooledConnection;
 import by.tc.web.service.database.pool.DBPool;
 
@@ -29,7 +28,11 @@ public class MySQLPooledConnection implements PooledConnection, Connection {
 
     public MySQLPooledConnection(Connection connection, DBPool pool) throws SQLException {
         Map<String, Class<?>> map = connection.getTypeMap();
-        map.put("GEOPOINT", Point.class);
+        try {
+            map.put("GEOPOINT", Class.forName("Point"));
+        } catch (ClassNotFoundException e) {
+            //TODO
+        }
         connection.setTypeMap(map);
         this.connection = connection;
         this.pool = pool;

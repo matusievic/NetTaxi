@@ -20,9 +20,9 @@ public final class Authenticator {
         }
 
 
-        UserDAO customerDAO = daoFactory.getCustomerDAO();
-        UserDAO driverDAO = daoFactory.getTaxiDriverDAO();
-        UserDAO administratorDAO = daoFactory.getAdministratorDAO();
+        UserDAO customerDAO = (UserDAO) daoFactory.getCustomerDAO();
+        UserDAO driverDAO = (UserDAO) daoFactory.getTaxiDriverDAO();
+        UserDAO administratorDAO = (UserDAO) daoFactory.getAdministratorDAO();
 
         try {
             User customer = customerDAO.readByPhoneAndPassword(phone, encryptedPassword);

@@ -1,17 +1,17 @@
 package by.tc.web.service.user.impl;
 
+import by.tc.web.dao.DAO;
 import by.tc.web.dao.DAOFactory;
 import by.tc.web.dao.exception.DAOException;
-import by.tc.web.dao.user.UserDAO;
 import by.tc.web.domain.user.User;
 import by.tc.web.domain.user.impl.TaxiDriver;
 import by.tc.web.service.user.UserService;
 
 public class TaxiDriverService implements UserService {
-    private static final UserDAO dao = DAOFactory.getInstance().getTaxiDriverDAO();
+    private static final DAO<User> dao = DAOFactory.getInstance().getTaxiDriverDAO();
 
     @Override
-    public User get(int userId) {
+    public Object get(int userId) {
         User taxiDriver = null;
         try {
             taxiDriver = dao.readById(userId);
