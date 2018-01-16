@@ -16,7 +16,7 @@
     <title>${pageTitleLabel} - ${applicationNameLabel}</title>
 </head>
 <body>
-<jsp:directive.include file="language.jsp" />
+<jsp:directive.include file="../include/language.jsp" />
 <c:out value="${error}"/>
 <form action="/controller" method="get">
     <input type="hidden" name="command" value="authenticate">

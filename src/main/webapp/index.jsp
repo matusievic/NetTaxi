@@ -13,7 +13,7 @@
     <title>${pageTitleLabel} - ${applicationNameLabel}</title>
 </head>
 <body>
-<jsp:directive.include file="WEB-INF/jsp/common/language.jsp" />
+<jsp:directive.include file="WEB-INF/jsp/include/language.jsp" />
 <a href="/signin">${signinPageLabel}</a>
 <a href="/signup">${signupPageLabel}</a>
 </body>

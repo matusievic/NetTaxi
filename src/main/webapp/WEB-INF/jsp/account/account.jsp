@@ -26,6 +26,7 @@
 <a href="/controller?command=display_taxidrivers">Drivers</a>
 <a href="/controller?command=display_customers">Customers</a>
 <a href="/controller?command=display_orders">Orders</a>
+<a href="/controller?command=display_order_taxi_page">Orders</a>
 <table>
     <tr>
         <th>${idLabel}</th>

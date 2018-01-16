@@ -45,7 +45,7 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>CustomerOrder</servlet-name>
-        <url-pattern>/customer/order</url-pattern>
+        <url-pattern>/order</url-pattern>
     </servlet-mapping>
 
 
@@ -229,5 +229,22 @@
         <error-code>500</error-code>
         <location>/WEB-INF/jsp/error/500.jsp</location>
     </error-page>
+
+
+
+    <!--Reset path for static content-->
+
+    <servlet-mapping>
+        <servlet-name>default</servlet-name>
+        <url-pattern>/images</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>default</servlet-name>
+        <url-pattern>*.css</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>default</servlet-name>
+        <url-pattern>*.js</url-pattern>
+    </servlet-mapping>
 
 </web-app>

@@ -19,7 +19,7 @@
     <title>${signupPageLabel} - ${applicationNameLabel}</title>
 </head>
 <body>
-<jsp:directive.include file="language.jsp" />
+<jsp:directive.include file="../include/language.jsp" />
 <form action="/controller" method="post">
     <input type="hidden" name="command" value="register_customer">
     <input type="text" name="phone" placeholder="${phoneLabel}" required><br>

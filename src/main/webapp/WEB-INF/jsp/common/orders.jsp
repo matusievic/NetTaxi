@@ -17,6 +17,7 @@
     <fmt:message bundle="${loc}" key="order.cutomer" var="customerLabel"/>
     <fmt:message bundle="${loc}" key="order.driver" var="driverLabel"/>
     <fmt:message bundle="${loc}" key="order.status" var="statusLabel"/>
+    <fmt:message bundle="${loc}" key="order.rating" var="ratingLabel"/>
 
     <title>${pageTitleLabel} - ${applicationNameLabel}</title>
 </head>
@@ -31,6 +32,7 @@
         <th>${endLabel}</th>
         <th>${priceLabel}</th>
         <th>${statusLabel}</th>
+        <th>${ratingLabel}</th>
     </tr>
     </thead>
     <tbody>
@@ -43,6 +45,7 @@
             <td>${order.end.x}, ${order.end.y}</td>
             <td>${order.price}</td>
             <td>${order.status}</td>
+            <td>${order.rating}</td>
         </tr>
     </c:forEach>
     </tbody>
