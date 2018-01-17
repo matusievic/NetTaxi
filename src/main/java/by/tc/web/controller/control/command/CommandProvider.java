@@ -4,6 +4,8 @@ import by.tc.web.controller.control.command.activity.ControllerActivity;
 import by.tc.web.controller.control.command.impl.common.*;
 import by.tc.web.controller.control.command.impl.administrator.*;
 import by.tc.web.controller.control.command.impl.customer.CustomerRegistrationCommand;
+import by.tc.web.controller.control.command.impl.customer.OrderTaxiPageDisplayingCommand;
+import by.tc.web.controller.control.command.impl.customer.TaxiDriverFindingCommand;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -31,6 +33,8 @@ public final class CommandProvider {
         commands.put(ControllerActivity.DISPLAY_ORDERS, new OrdersDisplayingCommand());
         commands.put(ControllerActivity.DISPLAY_ORDER, new OrderDisplayingCommand());
         commands.put(ControllerActivity.DELETE_ORDER, new OrderDeletingCommand());
+        commands.put(ControllerActivity.DISPLAY_ORDER_TAXI_PAGE, new OrderTaxiPageDisplayingCommand());
+        commands.put(ControllerActivity.FIND_TAXIDRIVER, new TaxiDriverFindingCommand());
     }
 
     public static ControllerCommand takeCommand(String name) {

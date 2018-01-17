@@ -14,9 +14,11 @@ public enum ControllerActivity {
 
     // Customer activities
     REGISTER_CUSTOMER,
+    DISPLAY_ORDER_TAXI_PAGE,
     ORDER_TAXI,
     CANCEL_ORDER,
     RATE_TAXIDRIVER,
+    FIND_TAXIDRIVER,
 
 
     // Driver activities

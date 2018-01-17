@@ -34,7 +34,7 @@ public class OrdersDisplayingCommand implements ControllerCommand {
         if (userClass == Customer.class) {
             pagination = displayCustomerOrders(currentPage, ControllerConstants.ITEMS_PER_PAGE);
         } else if (userClass == TaxiDriver.class) {
-            pagination = displayDriverOrders(currentPage, ControllerConstants.ITEMS_PER_PAGE);
+            pagination = displayTaxiDriverOrders(currentPage, ControllerConstants.ITEMS_PER_PAGE);
         } else if (userClass == Administrator.class) {
             pagination = displayAllOrders(currentPage, ControllerConstants.ITEMS_PER_PAGE);
         } else {
@@ -54,11 +54,13 @@ public class OrdersDisplayingCommand implements ControllerCommand {
         return paginator.paginate(currentPage, itemsPerPage);
     }
 
-    private Pagination displayDriverOrders(int currentPage, int itemsPerPage) {
-        return null;
+    private Pagination displayTaxiDriverOrders(int currentPage, int itemsPerPage) {
+        Paginator paginator = ControllerConstants.taxiDriverPaginator;
+        return paginator.paginate(currentPage, itemsPerPage);
     }
 
     private Pagination displayCustomerOrders(int currentPage, int itemsPerPage) {
-        return null;
+        Paginator paginator = ControllerConstants.customerPaginator;
+        return paginator.paginate(currentPage, itemsPerPage);
     }
 }
