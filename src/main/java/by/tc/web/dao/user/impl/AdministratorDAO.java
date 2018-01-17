@@ -74,6 +74,11 @@ public class AdministratorDAO implements UserDAO {
     }
 
     @Override
+    public User[] readByLocation(float x, float y, int count) throws DAOException {
+        return new User[0];
+    }
+
+    @Override
     public User[] readInRange(int begin, int end) throws DAOException {
         final String query = "SELECT * FROM administrators WHERE administrator_id BETWEEN ? AND ?";
         try (PooledConnection connection = dbPool.takeConnection();

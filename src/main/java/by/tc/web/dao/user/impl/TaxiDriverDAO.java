@@ -97,6 +97,58 @@ public class TaxiDriverDAO implements UserDAO {
     }
 
     @Override
+    public User[] readByLocation(float x, float y, int count) throws DAOException {
+        final String query = "SELECT driver_id, phone, name, surname, password, is_banned, car_number, car_model, rating, is_free, X(location), Y(location) " +
+                "FROM drivers where is_banned = false AND is_free = true " +
+                "ORDER BY sqrt(pow((x(location) - " + x + "), 2) + pow(abs(y(location) - " + y + "), 2)) limit " + count + ";";
+
+        try (PooledConnection connection = dbPool.takeConnection();
+             Statement statement = connection.createStatement()) {
+
+            ResultSet result = statement.executeQuery(query);
+            int rowCount = 0;
+            if (result.last()) {
+                rowCount = result.getRow();
+                result.beforeFirst();
+            }
+
+            TaxiDriver[] drivers = new TaxiDriver[rowCount];
+            int currentRow = 0;
+            while (result.next()) {
+                TaxiDriver taxiDriver = new TaxiDriver();
+
+                taxiDriver.setId(result.getInt("driver_id"));
+                taxiDriver.setPhone(result.getLong("phone"));
+                taxiDriver.setName(result.getString("name"));
+                taxiDriver.setSurname(result.getString("surname"));
+                taxiDriver.setPassword(result.getString("password").toCharArray());
+                taxiDriver.setBanned(result.getBoolean("is_banned"));
+                taxiDriver.setRating(result.getFloat("rating"));
+                taxiDriver.setFree(result.getBoolean("is_free"));
+                Point point = new Point();
+                point.setX(result.getFloat("X(location)"));
+                point.setY(result.getFloat("Y(location)"));
+                taxiDriver.setLocation(point);
+
+                char[] car_number = result.getString("car_number").toCharArray();
+                String car_model = result.getString("car_model");
+                taxiDriver.setCar(new CarBuilder().number(car_number).model(car_model).build());
+
+                drivers[currentRow++] = taxiDriver;
+            }
+
+            return drivers;
+
+        } catch (InterruptedException e) {
+            //TODO
+        } catch (SQLException e) {
+            //TODO
+        }
+
+        return null;
+    }
+
+    @Override
     public User[] readInRange(int begin, int end) throws DAOException {
         final String query = "SELECT driver_id, phone, name, surname, password, is_banned, car_number, car_model, rating, is_free, X(location), Y(location) FROM drivers WHERE driver_id BETWEEN ? AND ?";
         try (PooledConnection connection = dbPool.takeConnection();

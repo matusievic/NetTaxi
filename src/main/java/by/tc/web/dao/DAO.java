@@ -5,6 +5,7 @@ import by.tc.web.dao.exception.DAOException;
 public interface DAO<T> {
     void create(T order) throws DAOException;
     T readById(int id) throws DAOException;
+    T[] readByLocation(float x, float y, int count) throws DAOException;
     T[] readInRange(int begin, int end) throws DAOException;
     int readLength() throws DAOException;
     void update(T order) throws DAOException;

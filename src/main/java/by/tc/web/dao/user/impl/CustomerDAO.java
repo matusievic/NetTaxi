@@ -118,6 +118,11 @@ public class CustomerDAO implements UserDAO {
     }
 
     @Override
+    public User[] readByLocation(float x, float y, int count) throws DAOException {
+        return new User[0];
+    }
+
+    @Override
     public User[] readInRange(int begin, int end) throws DAOException {
         final String query = "SELECT * FROM customers WHERE customer_id BETWEEN ? AND ?";
         try (PooledConnection connection = dbPool.takeConnection();
