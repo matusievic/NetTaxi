@@ -46,6 +46,11 @@ public class CustomerService implements UserService {
     }
 
     @Override
+    public User[] getByLocation(float x, float y) {
+        return new User[0];
+    }
+
+    @Override
     public void discount(int userId, float discount) {
         Customer customer = (Customer) this.get(userId);
         customer.setDiscount(discount);

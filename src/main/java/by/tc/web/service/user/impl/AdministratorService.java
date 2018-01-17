@@ -27,6 +27,11 @@ public class AdministratorService implements UserService {
     public void unblock(int userId) {}
 
     @Override
+    public User[] getByLocation(float x, float y) {
+        return new User[0];
+    }
+
+    @Override
     public void discount(int userId, float discount) {}
 
     @Override

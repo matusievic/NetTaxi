@@ -1,19 +1,18 @@
 package by.tc.web.service.paginator.impl;
 
-import by.tc.web.dao.DAO;
 import by.tc.web.dao.DAOFactory;
 import by.tc.web.dao.exception.DAOException;
-import by.tc.web.dao.user.UserDAO;
+import by.tc.web.dao.order.OrderDAO;
 import by.tc.web.service.paginator.AbstractPaginator;
 
-public final class TaxiDriverPaginator extends AbstractPaginator {
-    private static final DAO dao = DAOFactory.getInstance().getTaxiDriverDAO();
+public class TaxiDriverOrderPaginator extends AbstractPaginator {
+    private static final OrderDAO dao = (OrderDAO) DAOFactory.getInstance().getOrderDAO();
 
     @Override
     protected Object[] getData(int begin, int end, Object... params) {
         Object[] result = null;
         try {
-            result = dao.readInRange(begin, end);
+            dao.readByTaxiDriverInRange(begin, end, (int) params[0]);
         } catch (DAOException e) {
             //TODO
         }
@@ -22,12 +21,6 @@ public final class TaxiDriverPaginator extends AbstractPaginator {
 
     @Override
     protected int getLength() {
-        int result = 0;
-        try {
-            result = dao.readLength();
-        } catch (DAOException e) {
-            //TODO
-        }
-        return result;
+        return 0;
     }
 }

@@ -6,6 +6,7 @@ public interface UserService {
     Object get(int userId);
     void block(int userId);
     void unblock(int userId);
+    User[] getByLocation(float x, float y);
     void discount(int userId, float discount);
     void update(User user);
     void delete(User user);

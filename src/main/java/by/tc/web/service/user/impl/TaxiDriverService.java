@@ -9,6 +9,7 @@ import by.tc.web.service.user.UserService;
 
 public class TaxiDriverService implements UserService {
     private static final DAO<User> dao = DAOFactory.getInstance().getTaxiDriverDAO();
+    private static final int DRIVERS_COUNT = 5;
 
     @Override
     public Object get(int userId) {
@@ -46,7 +47,29 @@ public class TaxiDriverService implements UserService {
     }
 
     @Override
-    public void discount(int userId, float discount) {}
+    public User[] getByLocation(float x, float y) {
+        if (x < 0 || y < 0) {
+            return new User[0];
+        }
+
+        User[] result = null;
+        try {
+            result = dao.readByLocation(x, y, 5);
+        } catch (DAOException e) {
+            //TODO
+        }
+
+        for (User user : result) {
+            user.setId(0);
+            user.setPassword(new char[0]);
+        }
+
+        return result;
+    }
+
+    @Override
+    public void discount(int userId, float discount) {
+    }
 
     @Override
     public void update(User user) {
