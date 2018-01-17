@@ -15,6 +15,7 @@ public class Order implements Serializable {
     private int customerId;
     private int taxiDriverId;
     private OrderStatus status;
+    private byte rating;
 
     public Order() {}
 
@@ -74,6 +75,14 @@ public class Order implements Serializable {
         this.status = status;
     }
 
+    public byte getRating() {
+        return rating;
+    }
+
+    public void setRating(byte rating) {
+        this.rating = rating;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj) { return true; }
@@ -86,6 +95,7 @@ public class Order implements Serializable {
         if (status != order.status) { return false; }
         if (customerId != order.customerId) { return false; }
         if (taxiDriverId != order.taxiDriverId) { return false; }
+        if (rating != order.rating) { return false; }
 
         return true;
     }
@@ -99,6 +109,7 @@ public class Order implements Serializable {
         hash = 31 * hash + Objects.hashCode(status);
         hash = 31 * hash + customerId;
         hash = 31 * hash + taxiDriverId;
+        hash = 31 * hash + rating;
         return hash;
     }
 }

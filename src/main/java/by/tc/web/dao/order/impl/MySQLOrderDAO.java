@@ -25,7 +25,7 @@ public class MySQLOrderDAO implements OrderDAO {
     public void create(Order order) throws DAOException {
         String beginPointParam = order.getBegin().getX() + " " + order.getBegin().getY();
         String endPointParam = order.getEnd().getX() + " " + order.getEnd().getY();
-        final String query = "INSERT INTO orders (price, begin, end, customers_customer_id, drivers_driver_id, status) VALUE (?, PointFromText('POINT(" + beginPointParam + ")'), PointFromText('POINT(" + endPointParam + ")'), ?, ?, ?);";
+        final String query = "INSERT INTO orders (price, begin, end, customers_customer_id, drivers_driver_id, status, rating) VALUE (?, PointFromText('POINT(" + beginPointParam + ")'), PointFromText('POINT(" + endPointParam + ")'), ?, ?, ?, ?);";
 
         try (PooledConnection connection = dbPool.takeConnection();
              PreparedStatement statement = connection.prepareStatement(query)) {
@@ -38,6 +38,7 @@ public class MySQLOrderDAO implements OrderDAO {
             statement.setInt(6, order.getCustomerId());
             statement.setInt(7, order.getTaxiDriverId());
             statement.setInt(8, order.getStatus().ordinal());
+            statement.setInt(9, order.getRating());
 
             if (statement.executeUpdate() != 1) {
                 throw new SQLException("Cannot perform update query");
@@ -54,7 +55,7 @@ public class MySQLOrderDAO implements OrderDAO {
 
     @Override
     public Order readById(int id) throws DAOException {
-        final String query = "SELECT order_id, price, X(begin), Y(begin), X(end), Y(end), customers_customer_id, drivers_driver_id, status FROM orders WHERE order_id=?;";
+        final String query = "SELECT order_id, price, X(begin), Y(begin), X(end), Y(end), customers_customer_id, drivers_driver_id, status, rating FROM orders WHERE order_id=?;";
 
         try (PooledConnection connection = dbPool.takeConnection();
              PreparedStatement statement = connection.prepareStatement(query)) {
@@ -77,6 +78,7 @@ public class MySQLOrderDAO implements OrderDAO {
                 order.setCustomerId(result.getInt("customers_customer_id"));
                 order.setTaxiDriverId(result.getInt("drivers_driver_id"));
                 order.setStatus(OrderStatus.values()[result.getInt("status")]);
+                order.setRating((byte) result.getInt("rating"));
                 return order;
             }
 
@@ -90,8 +92,13 @@ public class MySQLOrderDAO implements OrderDAO {
     }
 
     @Override
+    public Order[] readByLocation(float x, float y, int count) throws DAOException {
+        return new Order[0];
+    }
+
+    @Override
     public Order[] readInRange(int begin, int end) throws DAOException {
-        final String query = "SELECT order_id, price, X(begin), Y(begin), X(end), Y(end), customers_customer_id, drivers_driver_id, status FROM orders WHERE order_id BETWEEN ? AND ?";
+        final String query = "SELECT order_id, price, X(begin), Y(begin), X(end), Y(end), customers_customer_id, drivers_driver_id, status, rating FROM orders WHERE order_id BETWEEN ? AND ?";
         try (PooledConnection connection = dbPool.takeConnection();
              PreparedStatement statement = connection.prepareStatement(query)) {
 
@@ -123,6 +130,105 @@ public class MySQLOrderDAO implements OrderDAO {
                 order.setCustomerId(result.getInt("customers_customer_id"));
                 order.setTaxiDriverId(result.getInt("drivers_driver_id"));
                 order.setStatus(OrderStatus.values()[result.getInt("status")]);
+                order.setRating((byte) result.getInt("rating"));
+                orders[currentPosition++] = order;
+            }
+
+            return orders;
+
+        } catch (InterruptedException e) {
+            //TODO
+        } catch (SQLException e) {
+            //TODO
+        }
+        return null;
+    }
+
+    @Override
+    public Order[] readByTaxiDriverInRange(int taxiDriverId, int begin, int end) throws DAOException {
+        final String query = "SELECT order_id, price, X(begin), Y(begin), X(end), Y(end), customers_customer_id, drivers_driver_id, status, rating FROM orders WHERE drivers_driver_id=? AND order_id BETWEEN ? AND ?";
+        try (PooledConnection connection = dbPool.takeConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+
+            statement.setInt(1, taxiDriverId);
+            statement.setInt(2, begin);
+            statement.setInt(3, end);
+
+            ResultSet result = statement.executeQuery();
+
+            int rowCount = 0;
+            if (result.last()) {
+                rowCount = result.getRow();
+                result.beforeFirst();
+            }
+
+            Order[] orders = new Order[rowCount];
+            int currentPosition = 0;
+            while (result.next()) {
+                Order order = new Order();
+                order.setId(result.getInt("order_id"));
+                order.setPrice(result.getInt("price"));
+                Point beginPoint = new Point();
+                beginPoint.setX(result.getFloat("X(begin)"));
+                beginPoint.setY(result.getFloat("Y(begin)"));
+                order.setBegin(beginPoint);
+                Point endPoint = new Point();
+                endPoint.setX(result.getFloat("X(end)"));
+                endPoint.setY(result.getFloat("Y(end)"));
+                order.setEnd(endPoint);
+                order.setCustomerId(result.getInt("customers_customer_id"));
+                order.setTaxiDriverId(result.getInt("drivers_driver_id"));
+                order.setStatus(OrderStatus.values()[result.getInt("status")]);
+                order.setRating((byte) result.getInt("rating"));
+                orders[currentPosition++] = order;
+            }
+
+            return orders;
+
+        } catch (InterruptedException e) {
+            //TODO
+        } catch (SQLException e) {
+            //TODO
+        }
+        return null;
+    }
+
+    @Override
+    public Order[] readByCustomerInRange(int customerId, int begin, int end) throws DAOException {
+        final String query = "SELECT order_id, price, X(begin), Y(begin), X(end), Y(end), customers_customer_id, drivers_driver_id, status, rating FROM orders WHERE customers_customer_id=? AND order_id BETWEEN ? AND ?";
+        try (PooledConnection connection = dbPool.takeConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+
+            statement.setInt(1, customerId);
+            statement.setInt(2, begin);
+            statement.setInt(3, end);
+
+            ResultSet result = statement.executeQuery();
+
+            int rowCount = 0;
+            if (result.last()) {
+                rowCount = result.getRow();
+                result.beforeFirst();
+            }
+
+            Order[] orders = new Order[rowCount];
+            int currentPosition = 0;
+            while (result.next()) {
+                Order order = new Order();
+                order.setId(result.getInt("order_id"));
+                order.setPrice(result.getInt("price"));
+                Point beginPoint = new Point();
+                beginPoint.setX(result.getFloat("X(begin)"));
+                beginPoint.setY(result.getFloat("Y(begin)"));
+                order.setBegin(beginPoint);
+                Point endPoint = new Point();
+                endPoint.setX(result.getFloat("X(end)"));
+                endPoint.setY(result.getFloat("Y(end)"));
+                order.setEnd(endPoint);
+                order.setCustomerId(result.getInt("customers_customer_id"));
+                order.setTaxiDriverId(result.getInt("drivers_driver_id"));
+                order.setStatus(OrderStatus.values()[result.getInt("status")]);
+                order.setRating((byte) result.getInt("rating"));
                 orders[currentPosition++] = order;
             }
 
@@ -162,7 +268,7 @@ public class MySQLOrderDAO implements OrderDAO {
         String beginPointParam = order.getBegin().getX() + " " + order.getBegin().getY();
         String endPointParam = order.getEnd().getX() + " " + order.getEnd().getY();
         final String query = "UPDATE orders " +
-                "SET price=?, begin=PointFromText('POINT(" + beginPointParam + ")'), end=PointFromText('POINT(" + endPointParam + ")'), customers_customer_id=?, drivers_driver_id=?, status=? " +
+                "SET price=?, begin=PointFromText('POINT(" + beginPointParam + ")'), end=PointFromText('POINT(" + endPointParam + ")'), customers_customer_id=?, drivers_driver_id=?, status=?, rating=? " +
                 "WHERE order_id=?;";
 
         try (PooledConnection connection = dbPool.takeConnection();
@@ -176,7 +282,8 @@ public class MySQLOrderDAO implements OrderDAO {
             statement.setInt(6, order.getCustomerId());
             statement.setInt(7, order.getTaxiDriverId());
             statement.setInt(8, order.getStatus().ordinal());
-            statement.setInt(9, order.getId());
+            statement.setInt(9, order.getRating());
+            statement.setInt(10, order.getId());
 
             if (statement.executeUpdate() != 1) {
                 //TODO
