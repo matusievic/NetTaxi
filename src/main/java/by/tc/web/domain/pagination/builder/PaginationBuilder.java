@@ -2,13 +2,13 @@ package by.tc.web.domain.pagination.builder;
 
 import by.tc.web.domain.pagination.Pagination;
 
-public final class PaginationBuilder {
-    private Object[] data;
+public final class PaginationBuilder<T> {
+    private T[] data;
     private int currentPage;
     private int lastPage;
     private int itemsPerPage;
 
-    public PaginationBuilder data(Object[] data) {
+    public PaginationBuilder data(T[] data) {
         this.data = data;
         return this;
     }
