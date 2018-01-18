@@ -1,14 +1,14 @@
 package by.tc.web.service.user.impl;
 
-import by.tc.web.dao.DAO;
 import by.tc.web.dao.DAOFactory;
 import by.tc.web.dao.exception.DAOException;
+import by.tc.web.dao.user.UserDAO;
 import by.tc.web.domain.user.User;
 import by.tc.web.domain.user.impl.TaxiDriver;
-import by.tc.web.service.user.UserService;
+import by.tc.web.service.user.AbstractUserService;
 
-public class TaxiDriverService implements UserService {
-    private static final DAO<User> dao = DAOFactory.getInstance().getTaxiDriverDAO();
+public class TaxiDriverService extends AbstractUserService {
+    private static final UserDAO dao = (UserDAO) DAOFactory.getInstance().getTaxiDriverDAO();
     private static final int DRIVERS_COUNT = 5;
 
     @Override
@@ -91,5 +91,10 @@ public class TaxiDriverService implements UserService {
         } catch (DAOException e) {
             //TODO
         }
+    }
+
+    @Override
+    protected UserDAO getDAO() {
+        return dao;
     }
 }
