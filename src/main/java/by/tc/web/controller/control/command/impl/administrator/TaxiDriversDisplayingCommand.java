@@ -15,7 +15,7 @@ public class TaxiDriversDisplayingCommand implements ControllerCommand {
     public void execute(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String currentPageParam = req.getParameter(ControllerConstants.CURRENT_PAGE_PARAM);
         int currentPage = Converter.parseInt(currentPageParam).orElse(1);
-        Pagination pagination = ControllerConstants.taxiDriverPaginator.paginate(currentPage, ControllerConstants.ITEMS_PER_PAGE);
+        Pagination pagination = ControllerConstants.taxiDriverService.getAllInRange(currentPage, ControllerConstants.ITEMS_PER_PAGE);
 
         req.setAttribute("drivers", pagination.getData());
         req.setAttribute("currentPage", pagination.getCurrentPage());

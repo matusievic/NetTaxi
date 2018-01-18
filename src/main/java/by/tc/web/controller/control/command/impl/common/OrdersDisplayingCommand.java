@@ -8,7 +8,6 @@ import by.tc.web.domain.user.impl.Administrator;
 import by.tc.web.domain.user.impl.Customer;
 import by.tc.web.domain.user.impl.TaxiDriver;
 import by.tc.web.service.converter.Converter;
-import by.tc.web.service.paginator.Paginator;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -29,12 +28,12 @@ public class OrdersDisplayingCommand implements ControllerCommand {
         int currentPage = Converter.parseInt(currentPageParam).orElse(1);
 
         Class userClass = user.getClass();
-        Pagination pagination = null;
+        Pagination pagination;
 
         if (userClass == Customer.class) {
-            pagination = displayCustomerOrders(currentPage, ControllerConstants.ITEMS_PER_PAGE);
+            pagination = displayCustomerOrders(currentPage, ControllerConstants.ITEMS_PER_PAGE, user.getId(), req);
         } else if (userClass == TaxiDriver.class) {
-            pagination = displayTaxiDriverOrders(currentPage, ControllerConstants.ITEMS_PER_PAGE);
+            pagination = displayTaxiDriverOrders(currentPage, ControllerConstants.ITEMS_PER_PAGE, user.getId(), req);
         } else if (userClass == Administrator.class) {
             pagination = displayAllOrders(currentPage, ControllerConstants.ITEMS_PER_PAGE);
         } else {
@@ -50,17 +49,16 @@ public class OrdersDisplayingCommand implements ControllerCommand {
     }
 
     private Pagination displayAllOrders(int currentPage, int itemsPerPage) {
-        Paginator paginator = ControllerConstants.orderPaginator;
-        return paginator.paginate(currentPage, itemsPerPage);
+         return ControllerConstants.orderService.getAllOrdersInRang(currentPage, itemsPerPage);
     }
 
-    private Pagination displayTaxiDriverOrders(int currentPage, int itemsPerPage) {
-        Paginator paginator = ControllerConstants.taxiDriverPaginator;
-        return paginator.paginate(currentPage, itemsPerPage);
+    private Pagination displayTaxiDriverOrders(int currentPage, int itemsPerPage, int taxiDriverId, HttpServletRequest req) {
+        req.setAttribute("activeOrder", ControllerConstants.orderService.getActiveOrderByTaxiDriverId(taxiDriverId));
+        return ControllerConstants.orderService.getOrdersByTaxiDriverIdInRange(currentPage, itemsPerPage, taxiDriverId);
     }
 
-    private Pagination displayCustomerOrders(int currentPage, int itemsPerPage) {
-        Paginator paginator = ControllerConstants.customerPaginator;
-        return paginator.paginate(currentPage, itemsPerPage);
+    private Pagination displayCustomerOrders(int currentPage, int itemsPerPage, int customerId, HttpServletRequest req) {
+        req.setAttribute("activeOrder", ControllerConstants.orderService.getActiveOrderByTaxiDriverId(customerId));
+        return ControllerConstants.orderService.getOrdersByCustomerIdInRange(currentPage, itemsPerPage, customerId);
     }
 }

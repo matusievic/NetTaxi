@@ -2,8 +2,6 @@ package by.tc.web.controller.control.command.constants;
 
 import by.tc.web.service.order.OrderService;
 import by.tc.web.service.order.OrderServiceFactory;
-import by.tc.web.service.paginator.Paginator;
-import by.tc.web.service.paginator.PaginatorFactory;
 import by.tc.web.service.user.UserService;
 import by.tc.web.service.user.UserServiceFactory;
 
@@ -34,8 +32,4 @@ public final class ControllerConstants {
     public static final UserService taxiDriverService = UserServiceFactory.getInstance().getTaxiDriverService();
     public static final UserService administratorService = UserServiceFactory.getInstance().getAdministratorService();
     public static final OrderService orderService = OrderServiceFactory.getInstance().getOrderService();
-
-    public static final Paginator customerPaginator = PaginatorFactory.getInstance().getCustomerPaginator();
-    public static final Paginator taxiDriverPaginator = PaginatorFactory.getInstance().getTaxiDriverPaginator();
-    public static final Paginator orderPaginator = PaginatorFactory.getInstance().getOrderPaginator();
 }

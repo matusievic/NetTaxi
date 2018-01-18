@@ -11,7 +11,6 @@ public enum ControllerActivity {
 
     DISPLAY_ORDERS,
 
-
     // Customer activities
     REGISTER_CUSTOMER,
     DISPLAY_ORDER_TAXI_PAGE,
@@ -19,9 +18,11 @@ public enum ControllerActivity {
     CANCEL_ORDER,
     RATE_TAXIDRIVER,
     FIND_TAXIDRIVER,
+    GET_ACTIVE_CUSTOMER_ORDER,
 
 
     // Driver activities
+    GET_ACTIVE_TAXIDRIVER_ORDER,
     CHECK_ORDERS,
     CHOOSE_ORDER,
     ACCEPT_ORDER,

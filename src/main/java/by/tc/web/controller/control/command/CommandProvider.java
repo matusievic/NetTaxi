@@ -3,9 +3,11 @@ package by.tc.web.controller.control.command;
 import by.tc.web.controller.control.command.activity.ControllerActivity;
 import by.tc.web.controller.control.command.impl.common.*;
 import by.tc.web.controller.control.command.impl.administrator.*;
+import by.tc.web.controller.control.command.impl.customer.CustomerActiveOrderReceivingCommand;
 import by.tc.web.controller.control.command.impl.customer.CustomerRegistrationCommand;
 import by.tc.web.controller.control.command.impl.customer.OrderTaxiPageDisplayingCommand;
 import by.tc.web.controller.control.command.impl.customer.TaxiDriverFindingCommand;
+import by.tc.web.controller.control.command.impl.driver.TaxiDriverActiveOrderReceivingCommand;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -35,6 +37,8 @@ public final class CommandProvider {
         commands.put(ControllerActivity.DELETE_ORDER, new OrderDeletingCommand());
         commands.put(ControllerActivity.DISPLAY_ORDER_TAXI_PAGE, new OrderTaxiPageDisplayingCommand());
         commands.put(ControllerActivity.FIND_TAXIDRIVER, new TaxiDriverFindingCommand());
+        commands.put(ControllerActivity.GET_ACTIVE_TAXIDRIVER_ORDER, new TaxiDriverActiveOrderReceivingCommand());
+        commands.put(ControllerActivity.GET_ACTIVE_CUSTOMER_ORDER, new CustomerActiveOrderReceivingCommand());
     }
 
     public static ControllerCommand takeCommand(String name) {

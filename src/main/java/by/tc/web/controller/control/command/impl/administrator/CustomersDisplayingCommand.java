@@ -16,7 +16,7 @@ public class CustomersDisplayingCommand implements ControllerCommand {
         String currentPageParam = req.getParameter(ControllerConstants.CURRENT_PAGE_PARAM);
         int currentPage = Converter.parseInt(currentPageParam).orElse(1);
 
-        Pagination pagination = ControllerConstants.customerPaginator.paginate(currentPage, ControllerConstants.ITEMS_PER_PAGE);
+        Pagination pagination = ControllerConstants.customerService.getAllInRange(currentPage, ControllerConstants.ITEMS_PER_PAGE);
 
         req.setAttribute("customers", pagination.getData());
         req.setAttribute("currentPage", pagination.getCurrentPage());

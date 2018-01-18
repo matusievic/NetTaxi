@@ -4,6 +4,7 @@
 <%@ taglib prefix="taxi" uri="/WEB-INF/tag/taxi" %>
 <html>
 <head>
+    <%@include file="../include/header.jsp"%>
     <fmt:setLocale value="${sessionScope.locale}"/>
     <fmt:setBundle basename="localization.local" var="loc"/>
 
@@ -14,14 +15,62 @@
     <fmt:message bundle="${loc}" key="order.price" var="priceLabel"/>
     <fmt:message bundle="${loc}" key="order.begin" var="beginLabel"/>
     <fmt:message bundle="${loc}" key="order.end" var="endLabel"/>
-    <fmt:message bundle="${loc}" key="order.cutomer" var="customerLabel"/>
+    <fmt:message bundle="${loc}" key="order.customer" var="customerLabel"/>
     <fmt:message bundle="${loc}" key="order.driver" var="driverLabel"/>
     <fmt:message bundle="${loc}" key="order.status" var="statusLabel"/>
     <fmt:message bundle="${loc}" key="order.rating" var="ratingLabel"/>
 
+    <fmt:message bundle="${loc}" key="account.name" var="nameLabel"/>
+    <fmt:message bundle="${loc}" key="account.surname" var="surnameLabel"/>
+    <fmt:message bundle="${loc}" key="account.car_number" var="carNumberLabel"/>
+    <fmt:message bundle="${loc}" key="account.car_model" var="carModelLabel"/>
+    <fmt:message bundle="${loc}" key="account.phone" var="phoneLabel"/>
+
     <title>${pageTitleLabel} - ${applicationNameLabel}</title>
 </head>
 <body>
+<taxi:customer>
+    <script type="text/javascript" src="js/customer_orders.js"></script>
+    <div id="active-customer-order">
+        <table id="active-customer-order-table">
+            <thead>
+            <tr>
+                <th>${idLabel}</th>
+                <th>${nameLabel}</th>
+                <th>${surnameLabel}</th>
+                <th>${phoneLabel}</th>
+                <th>${carModelLabel}</th>
+                <th>${carNumberLabel}</th>
+                <th>${beginLabel}</th>
+                <th>${endLabel}</th>
+                <th>${priceLabel}</th>
+                <th>${statusLabel}</th>
+                <th>${ratingLabel}</th>
+            </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+</taxi:customer>
+<taxi:driver>
+    <script type="text/javascript" src="js/driver_orders.js"></script>
+    <div id="active-driver-order">
+        <table id="active-driver-order-table">
+            <thead>
+            <tr>
+                <th>${idLabel}</th>
+                <th>${customerLabel}</th>
+                <th>${beginLabel}</th>
+                <th>${endLabel}</th>
+                <th>${priceLabel}</th>
+                <th>${statusLabel}</th>
+                <th>${ratingLabel}</th>
+            </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+</taxi:driver>
 <table>
     <thead>
     <tr>
