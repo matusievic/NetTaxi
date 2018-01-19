@@ -19,6 +19,7 @@
     <fmt:message bundle="${loc}" key="order.driver" var="driverLabel"/>
     <fmt:message bundle="${loc}" key="order.status" var="statusLabel"/>
     <fmt:message bundle="${loc}" key="order.rating" var="ratingLabel"/>
+    <fmt:message bundle="${loc}" key="activity.cancel" var="cancelLabel"/>
 
     <fmt:message bundle="${loc}" key="account.name" var="nameLabel"/>
     <fmt:message bundle="${loc}" key="account.surname" var="surnameLabel"/>
@@ -29,6 +30,7 @@
     <title>${pageTitleLabel} - ${applicationNameLabel}</title>
 </head>
 <body>
+<input type="hidden" id="cancel-label" value="${cancelLabel}">
 <taxi:customer>
     <script type="text/javascript" src="js/customer_orders.js"></script>
     <div id="active-customer-order">
@@ -66,6 +68,7 @@
                 <th>${priceLabel}</th>
                 <th>${statusLabel}</th>
                 <th>${ratingLabel}</th>
+                <th></th>
             </tr>
             </thead>
             <tbody></tbody>

@@ -9,7 +9,12 @@ function getActiveOrder() {
         url: 'controller?command=get_active_taxidriver_order',
         dataType: 'json',
         success: function(order) {
-            $('#active-driver-order').show();
+            if (order === null) {
+                $('#active-driver-order').hide();
+            } else {
+                $('#active-driver-order').show();
+            }
+
             $('#active-driver-order-table tbody > tr').remove();
             $('#active-driver-order-table tbody').append('<tr><td>' + order.id + '</td>'
                                             +'<td>' + order.customerId + '</td>'

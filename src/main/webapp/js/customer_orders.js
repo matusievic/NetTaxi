@@ -12,7 +12,18 @@ function getActiveOrder() {
             var order = data[0],
                 driver = data[1];
 
-            $('#active-customer-order').show();
+            var cancelButtonText = '';
+
+            if (order.status === 'NEW' || order.status === 'WAITING') {
+                cancelButtonText = '<td><button onclick="cancelOrder(' + order.id + ');">' + $('#cancel-label').val() + '</button></td>';
+            }
+
+            if (order === null) {
+                $('#active-customer-order').hide();
+            } else {
+                $('#active-customer-order').show();
+            }
+
             $('#active-customer-order-table tbody > tr').remove();
             $('#active-customer-order-table tbody').append('<tr><td>' + order.id + '</td>'
                 +'<td>' + driver.name + '</td>'
@@ -25,7 +36,13 @@ function getActiveOrder() {
                 +'<td>' + order.price + '</td>'
                 +'<td>' + order.status + '</td>'
                 +'<td>' + order.rating + '</td>'
+                + cancelButtonText
                 +'</tr>');
         }
     });
+}
+
+function cancelOrder(orderId) {
+    $.get("controller", {command: 'cancel_order', id: orderId});
+    $('#active-customer-order').hide();
 }
