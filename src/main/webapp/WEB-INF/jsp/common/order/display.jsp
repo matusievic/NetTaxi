@@ -13,7 +13,7 @@
     <fmt:message bundle="${loc}" key="order.price" var="priceLabel"/>
     <fmt:message bundle="${loc}" key="order.begin" var="beginLabel"/>
     <fmt:message bundle="${loc}" key="order.end" var="endLabel"/>
-    <fmt:message bundle="${loc}" key="order.cutomer" var="customerLabel"/>
+    <fmt:message bundle="${loc}" key="order.customer" var="customerLabel"/>
     <fmt:message bundle="${loc}" key="order.driver" var="driverLabel"/>
     <fmt:message bundle="${loc}" key="order.status" var="statusLabel"/>
     <fmt:message bundle="${loc}" key="activity.delete" var="deleteLabel"/>

@@ -10,7 +10,11 @@ public interface OrderDAO extends DAO<Order> {
     Order[] readInRange(int begin, int end) throws DAOException;
     Order[] readByTaxiDriverInRange(int taxiDriverId, int begin, int end) throws DAOException;
     Order[] readByCustomerInRange(int customerId, int begin, int end) throws DAOException;
+    Order readActiveOrderByTaxiDriverId(int driverId);
+    Order readActiveOrderByCustomerId(int customerId);
     int readLength() throws DAOException;
+    int readLengthByTaxiDriverId(int taxiDriverId) throws DAOException;
+    int readLengthByCustomerId(int customerId) throws DAOException;
     void update(Order order) throws DAOException;
     void delete(Order order) throws DAOException;
 }

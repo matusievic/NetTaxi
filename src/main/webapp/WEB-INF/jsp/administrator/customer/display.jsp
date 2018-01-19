@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="taxi" uri="/WEB-INF/tag/taxi" %>
 <html>
 <head>
     <fmt:setLocale value="${sessionScope.locale}"/>
@@ -46,19 +47,21 @@
         <td>${customer.discount}</td>
     </tr>
 </table>
-<c:choose>
-    <c:when test="${!customer.banned}">
-        <a href="/controller?command=block_customer&id=${customer.id}">${blockLabel}</a>
-    </c:when>
-    <c:when test="${customer.banned}">
-        <a href="/controller?command=unblock_customer&id=${customer.id}">${unblockLabel}</a>
-    </c:when>
-</c:choose>
+<taxi:admin>
+    <c:choose>
+        <c:when test="${!customer.banned}">
+            <a href="/controller?command=block_customer&id=${customer.id}">${blockLabel}</a>
+        </c:when>
+        <c:when test="${customer.banned}">
+            <a href="/controller?command=unblock_customer&id=${customer.id}">${unblockLabel}</a>
+        </c:when>
+    </c:choose>
 <form action="/controller?command=discount_customer&id=${customer.id}" method="post">
     <label for="discount">Discount: </label>
     <input type="text" name="discount" id="discount" placeholder="${discountLabel}">
     <input type="submit" value="OK">
 </form>
 <a href="/controller?command=display_customers">${backLabel}</a>
+</taxi:admin>
 </body>
 </html>

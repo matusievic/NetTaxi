@@ -243,11 +243,133 @@ public class MySQLOrderDAO implements OrderDAO {
     }
 
     @Override
+    public Order readActiveOrderByTaxiDriverId(int driverId) {
+        final String query = "SELECT order_id, price, X(begin), Y(begin), X(end), Y(end), customers_customer_id, drivers_driver_id, status, rating FROM orders WHERE status=0 AND drivers_driver_id=?;";
+
+        try (PooledConnection connection = dbPool.takeConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+
+            statement.setInt(1, driverId);
+            ResultSet result = statement.executeQuery();
+
+            while (result.next()) {
+                Order order = new Order();
+                order.setId(result.getInt("order_id"));
+                order.setPrice(result.getInt("price"));
+                Point begin = new Point();
+                begin.setX(result.getFloat("X(begin)"));
+                begin.setY(result.getFloat("Y(begin)"));
+                order.setBegin(begin);
+                Point end = new Point();
+                end.setX(result.getFloat("X(end)"));
+                end.setY(result.getFloat("Y(end)"));
+                order.setEnd(end);
+                order.setCustomerId(result.getInt("customers_customer_id"));
+                order.setTaxiDriverId(result.getInt("drivers_driver_id"));
+                order.setStatus(OrderStatus.values()[result.getInt("status")]);
+                order.setRating((byte) result.getInt("rating"));
+                return order;
+            }
+
+        } catch (InterruptedException e) {
+            //TODO
+        } catch (SQLException e) {
+            //TODO
+        }
+
+        return null;
+    }
+
+    @Override
+    public Order readActiveOrderByCustomerId(int customerId) {
+        final String query = "SELECT order_id, price, X(begin), Y(begin), X(end), Y(end), customers_customer_id, drivers_driver_id, status, rating FROM orders WHERE status=0 AND customers_customer_id=?;";
+
+        try (PooledConnection connection = dbPool.takeConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+
+            statement.setInt(1, customerId);
+            ResultSet result = statement.executeQuery();
+
+            while (result.next()) {
+                Order order = new Order();
+                order.setId(result.getInt("order_id"));
+                order.setPrice(result.getInt("price"));
+                Point begin = new Point();
+                begin.setX(result.getFloat("X(begin)"));
+                begin.setY(result.getFloat("Y(begin)"));
+                order.setBegin(begin);
+                Point end = new Point();
+                end.setX(result.getFloat("X(end)"));
+                end.setY(result.getFloat("Y(end)"));
+                order.setEnd(end);
+                order.setCustomerId(result.getInt("customers_customer_id"));
+                order.setTaxiDriverId(result.getInt("drivers_driver_id"));
+                order.setStatus(OrderStatus.values()[result.getInt("status")]);
+                order.setRating((byte) result.getInt("rating"));
+                return order;
+            }
+
+        } catch (InterruptedException e) {
+            //TODO
+        } catch (SQLException e) {
+            //TODO
+        }
+
+        return null;
+    }
+
+    @Override
     public int readLength() throws DAOException {
         final String query = "SELECT COUNT(*) FROM orders;";
 
         try (PooledConnection connection = dbPool.takeConnection();
              Statement statement = connection.createStatement()) {
+
+            ResultSet result = statement.executeQuery(query);
+
+            while (result.next()) {
+                return result.getInt(1);
+            }
+
+        } catch (InterruptedException e) {
+            //TODO
+        } catch (SQLException e) {
+            //TODO
+        }
+        return 0;
+    }
+
+    @Override
+    public int readLengthByTaxiDriverId(int taxiDriverId) throws DAOException {
+        final String query = "SELECT COUNT(*) FROM orders drivers_driver_id=?;";
+
+        try (PooledConnection connection = dbPool.takeConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+
+            statement.setInt(1, taxiDriverId);
+
+            ResultSet result = statement.executeQuery(query);
+
+            while (result.next()) {
+                return result.getInt(1);
+            }
+
+        } catch (InterruptedException e) {
+            //TODO
+        } catch (SQLException e) {
+            //TODO
+        }
+        return 0;
+    }
+
+    @Override
+    public int readLengthByCustomerId(int customerId) throws DAOException {
+        final String query = "SELECT COUNT(*) FROM orders customers_customer_id=?;";
+
+        try (PooledConnection connection = dbPool.takeConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+
+            statement.setInt(1, customerId);
 
             ResultSet result = statement.executeQuery(query);
 

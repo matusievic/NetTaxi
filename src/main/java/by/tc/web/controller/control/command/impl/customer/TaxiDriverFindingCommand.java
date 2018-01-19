@@ -2,7 +2,6 @@ package by.tc.web.controller.control.command.impl.customer;
 
 import by.tc.web.controller.control.command.ControllerCommand;
 import by.tc.web.controller.control.command.constants.ControllerConstants;
-import by.tc.web.dao.DAO;
 import by.tc.web.domain.user.User;
 import by.tc.web.service.converter.Converter;
 import com.google.gson.Gson;
