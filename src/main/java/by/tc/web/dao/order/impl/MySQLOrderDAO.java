@@ -31,14 +31,10 @@ public class MySQLOrderDAO implements OrderDAO {
              PreparedStatement statement = connection.prepareStatement(query)) {
 
             statement.setFloat(1, order.getPrice());
-            statement.setFloat(2, order.getBegin().getX());
-            statement.setFloat(3, order.getBegin().getY());
-            statement.setFloat(4, order.getEnd().getX());
-            statement.setFloat(5, order.getEnd().getY());
-            statement.setInt(6, order.getCustomerId());
-            statement.setInt(7, order.getTaxiDriverId());
-            statement.setInt(8, order.getStatus().ordinal());
-            statement.setInt(9, order.getRating());
+            statement.setInt(2, order.getCustomerId());
+            statement.setInt(3, order.getTaxiDriverId());
+            statement.setInt(4, order.getStatus().ordinal());
+            statement.setInt(5, order.getRating());
 
             if (statement.executeUpdate() != 1) {
                 throw new SQLException("Cannot perform update query");

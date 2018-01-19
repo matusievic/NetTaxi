@@ -60,7 +60,6 @@ public class TaxiDriverService extends AbstractUserService {
         }
 
         for (User user : result) {
-            user.setId(0);
             user.setPassword(new char[0]);
         }
 

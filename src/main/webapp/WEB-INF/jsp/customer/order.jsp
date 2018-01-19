@@ -13,13 +13,18 @@
     <fmt:message bundle="${loc}" key="application.name" var="applicationNameLabel"/>
     <fmt:message bundle="${loc}" key="title.order" var="pageTitleLabel"/>
 
-
+    <fmt:message bundle="${loc}" key="account.id" var="idLabel"/>
     <fmt:message bundle="${loc}" key="account.name" var="nameLabel"/>
     <fmt:message bundle="${loc}" key="account.surname" var="surnameLabel"/>
     <fmt:message bundle="${loc}" key="account.phone" var="phoneLabel"/>
     <fmt:message bundle="${loc}" key="account.car_number" var="carNumberLabel"/>
     <fmt:message bundle="${loc}" key="account.car_model" var="carModelLabel"/>
     <fmt:message bundle="${loc}" key="account.rating" var="ratingLabel"/>
+
+    <fmt:message bundle="${loc}" key="order.length" var="lengthLabel"/>
+    <fmt:message bundle="${loc}" key="order.price" var="priceLabel"/>
+
+    <fmt:message bundle="${loc}" key="activity.choose" var="chooseLabel"/>
 
     <fmt:message bundle="${loc}" key="account.sign_in" var="signinPageLabel"/>
     <fmt:message bundle="${loc}" key="account.sign_up" var="signupPageLabel"/>
@@ -36,12 +41,16 @@
     <table id="drivers-table">
         <thead>
         <tr>
+            <th>${idLabel}</th>
             <th>${nameLabel}</th>
             <th>${surnameLabel}</th>
             <th>${phoneLabel}</th>
             <th>${carModelLabel}</th>
             <th>${carNumberLabel}</th>
             <th>${ratingLabel}</th>
+            <th>${lengthLabel}</th>
+            <th>${priceLabel}</th>
+            <th>${chooseLabel}</th>
         </tr>
         </thead>
         <tbody>

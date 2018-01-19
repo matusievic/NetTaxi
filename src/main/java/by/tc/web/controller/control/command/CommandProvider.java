@@ -7,6 +7,7 @@ import by.tc.web.controller.control.command.impl.customer.CustomerActiveOrderRec
 import by.tc.web.controller.control.command.impl.customer.CustomerRegistrationCommand;
 import by.tc.web.controller.control.command.impl.customer.OrderTaxiPageDisplayingCommand;
 import by.tc.web.controller.control.command.impl.customer.TaxiDriverFindingCommand;
+import by.tc.web.controller.control.command.impl.customer.TaxiOrderingCommand;
 import by.tc.web.controller.control.command.impl.driver.TaxiDriverActiveOrderReceivingCommand;
 
 import java.util.HashMap;
@@ -39,6 +40,7 @@ public final class CommandProvider {
         commands.put(ControllerActivity.FIND_TAXIDRIVER, new TaxiDriverFindingCommand());
         commands.put(ControllerActivity.GET_ACTIVE_TAXIDRIVER_ORDER, new TaxiDriverActiveOrderReceivingCommand());
         commands.put(ControllerActivity.GET_ACTIVE_CUSTOMER_ORDER, new CustomerActiveOrderReceivingCommand());
+        commands.put(ControllerActivity.ORDER_TAXI, new TaxiOrderingCommand());
     }
 
     public static ControllerCommand takeCommand(String name) {

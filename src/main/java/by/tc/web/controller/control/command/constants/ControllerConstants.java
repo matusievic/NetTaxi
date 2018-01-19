@@ -26,6 +26,11 @@ public final class ControllerConstants {
     public static final String ORDER_PARAM = "order";
     public static final String X_PARAM = "x";
     public static final String Y_PARAM = "y";
+    public static final String BEGIN_X_PARAM = "begin_x";
+    public static final String BEGIN_Y_PARAM = "begin_y";
+    public static final String END_X_PARAM = "end_x";
+    public static final String END_Y_PARAM = "end_y";
+    public static final String PRICE_PARAM = "price";
 
 
     public static final UserService customerService = UserServiceFactory.getInstance().getCustomerService();

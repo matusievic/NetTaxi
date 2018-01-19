@@ -1,5 +1,7 @@
 ymaps.ready(init);
 
+var begin, end, length, price;
+
 function init() {
     // order
     $('#drivers').hide();
@@ -47,13 +49,15 @@ function init() {
             var activeRoute = route.getActiveRoute();
             if (activeRoute) {
                 // get distance
-                var length = route.getActiveRoute().properties.get("distance"),
+                length = route.getActiveRoute().properties.get("distance");
+
                 // get a price
-                    price = calculate(Math.round(length.value / 1000));
+                price = calculate(Math.round(length.value / 1000));
 
                 $('#cost').text(length.text + ", " + price);
 
-                var coord = route.getWayPoints().get(1).geometry.getCoordinates();
+                end = route.getWayPoints().get(0).geometry.getCoordinates();
+                begin = route.getWayPoints().get(1).geometry.getCoordinates();
 
                 $.ajax({
                     url: 'controller',
@@ -61,19 +65,23 @@ function init() {
                     dataType: 'json',
                     data: {
                             command: 'find_taxidriver',
-                            x : coord[0],
-                            y : coord[1]
+                            x: begin[0],
+                            y: begin[1]
                           },
                     success: function(data) {
                         $('#drivers').show();
                         $('#drivers-table tbody > tr').remove();
                         $.each(data, function (i, element) {
-                            $('#drivers-table tbody').append('<tr><td>' + element.name +
-                                                             '</td><td>' + element.surname +
-                                                             '</td><td>' + element.phone +
-                                                             '</td><td>' + element.car.model +
-                                                             '</td><td>' + element.car.number.join('') +
-                                                             '</td><td>' + element.rating + '</td></tr>');
+                            $('#drivers-table tbody').append('<tr><td>' + element.id + '</td>' +
+                                                             '<td>' + element.name + '</td>' +
+                                                             '<td>' + element.surname + '</td>' +
+                                                             '<td>' + element.phone + '</td>' +
+                                                             '<td>' + element.car.model + '</td>' +
+                                                             '<td>' + element.car.number.join('') + '</td>' +
+                                                             '<td>' + element.rating + '</td>' +
+                                                             '<td>' + length.text + '</td>' +
+                                                             '<td>' + price + '</td>' +
+                                                             '<td><button onclick="makeOrder(' + element.id + ')" href="#">OK</a></td></tr>');
                         });
                     }
                 });
@@ -86,4 +94,18 @@ function init() {
     function calculate(routeLength) {
         return Math.max(routeLength * DELIVERY_TARIFF, MINIMUM_COST);
     }
+}
+
+function makeOrder(driverId) {
+    $.get('controller', {
+                         command: 'order_taxi',
+                         id: driverId,
+                         price: price,
+                         begin_x: begin[0],
+                         begin_y: begin[1],
+                         end_x: end[0],
+                         end_y: end[1]
+                        }, function(data) {
+        document.location.href="/controller?command=display_orders";
+    });
 }
