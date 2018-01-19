@@ -5,9 +5,13 @@ import by.tc.web.controller.control.command.impl.common.*;
 import by.tc.web.controller.control.command.impl.administrator.*;
 import by.tc.web.controller.control.command.impl.customer.CustomerActiveOrderReceivingCommand;
 import by.tc.web.controller.control.command.impl.customer.CustomerRegistrationCommand;
+import by.tc.web.controller.control.command.impl.customer.OrderCancelingCommand;
 import by.tc.web.controller.control.command.impl.customer.OrderTaxiPageDisplayingCommand;
 import by.tc.web.controller.control.command.impl.customer.TaxiDriverFindingCommand;
 import by.tc.web.controller.control.command.impl.customer.TaxiOrderingCommand;
+import by.tc.web.controller.control.command.impl.driver.OrderAcceptingCommand;
+import by.tc.web.controller.control.command.impl.driver.OrderChoosingCommand;
+import by.tc.web.controller.control.command.impl.driver.OrderFinishingCommand;
 import by.tc.web.controller.control.command.impl.driver.TaxiDriverActiveOrderReceivingCommand;
 
 import java.util.HashMap;
@@ -41,6 +45,10 @@ public final class CommandProvider {
         commands.put(ControllerActivity.GET_ACTIVE_TAXIDRIVER_ORDER, new TaxiDriverActiveOrderReceivingCommand());
         commands.put(ControllerActivity.GET_ACTIVE_CUSTOMER_ORDER, new CustomerActiveOrderReceivingCommand());
         commands.put(ControllerActivity.ORDER_TAXI, new TaxiOrderingCommand());
+        commands.put(ControllerActivity.CHOOSE_ORDER, new OrderChoosingCommand());
+        commands.put(ControllerActivity.CANCEL_ORDER, new OrderCancelingCommand());
+        commands.put(ControllerActivity.ACCEPT_ORDER, new OrderAcceptingCommand());
+        commands.put(ControllerActivity.FINISH_ORDER, new OrderFinishingCommand());
     }
 
     public static ControllerCommand takeCommand(String name) {

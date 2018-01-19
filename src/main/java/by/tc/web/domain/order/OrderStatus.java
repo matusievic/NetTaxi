@@ -1,5 +1,5 @@
 package by.tc.web.domain.order;
 
 public enum OrderStatus {
-    NEW, WAITING, ACCEPTED, PERFORMED
+    NEW, WAITING, ACCEPTED, PERFORMED, CANCELED
 }

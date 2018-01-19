@@ -7,6 +7,7 @@ import by.tc.web.domain.user.User;
 import by.tc.web.domain.user.impl.Customer;
 import by.tc.web.domain.user.impl.TaxiDriver;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -23,12 +24,17 @@ public class CustomerActiveOrderReceivingCommand implements ControllerCommand {
             return;
         }
 
-        Order order = ControllerConstants.orderService.getActiveOrderByCustomerId(user.getId());
-        String orderJson = new Gson().toJson(order);
+        Gson gson = new GsonBuilder().serializeNulls().create();
 
-        TaxiDriver taxiDriver = (TaxiDriver) ControllerConstants.taxiDriverService.get(order.getTaxiDriverId());
-        taxiDriver.setPassword(new char[0]);
-        String taxiDriverJson = new Gson().toJson(taxiDriver);
+        Order order = ControllerConstants.orderService.getActiveOrderByCustomerId(user.getId());
+        String orderJson = gson.toJson(order);
+
+        TaxiDriver taxiDriver = null;
+        if (order != null) {
+            taxiDriver = (TaxiDriver) ControllerConstants.taxiDriverService.get(order.getTaxiDriverId());
+            taxiDriver.setPassword(new char[0]);
+        }
+        String taxiDriverJson = gson.toJson(taxiDriver);
 
         String json = '[' + orderJson + ',' + taxiDriverJson + ']';
 

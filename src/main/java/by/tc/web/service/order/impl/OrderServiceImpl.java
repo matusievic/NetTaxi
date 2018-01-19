@@ -35,14 +35,13 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Pagination<Order> getAllOrdersInRang(int currentPage, int itemsPerPage) {
-        final int begin = (currentPage - 1) * itemsPerPage + 1;
-        final int end = begin + itemsPerPage - 1;
+    public Pagination<Order> getAllOrdersInRange(int currentPage, int itemsPerPage) {
+        final int begin = (currentPage - 1) * itemsPerPage;
 
         Order[] data = null;
         float lastPage = 0;
         try {
-            data = dao.readInRange(begin, end);
+            data = dao.readInRange(begin, itemsPerPage);
             lastPage = (float) dao.readLength() / itemsPerPage;
             if (lastPage != (int) lastPage) {
                 lastPage++;
@@ -61,13 +60,12 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Pagination<Order> getOrdersByCustomerIdInRange(int currentPage, int itemsPerPage, int customerId) {
-        final int begin = (currentPage - 1) * itemsPerPage + 1;
-        final int end = begin + itemsPerPage - 1;
+        final int begin = (currentPage - 1) * itemsPerPage;
 
         Order[] data = null;
         float lastPage = 0;
         try {
-            data = dao.readByCustomerInRange(begin, end, customerId);
+            data = dao.readByCustomerInRange(customerId, begin, itemsPerPage);
             lastPage = (float) dao.readLengthByCustomerId(customerId) / itemsPerPage;
             if (lastPage != (int) lastPage) {
                 lastPage++;
@@ -86,13 +84,12 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Pagination<Order> getOrdersByTaxiDriverIdInRange(int currentPage, int itemsPerPage, int taxiDriverId) {
-        final int begin = (currentPage - 1) * itemsPerPage + 1;
-        final int end = begin + itemsPerPage - 1;
+        final int begin = (currentPage - 1) * itemsPerPage;
 
         Order[] data = null;
         float lastPage = 0;
         try {
-            data = dao.readByTaxiDriverInRange(begin, end, taxiDriverId);
+            data = dao.readByTaxiDriverInRange(taxiDriverId, begin, itemsPerPage);
             lastPage = (float) dao.readLengthByTaxiDriverId(taxiDriverId) / itemsPerPage;
             if (lastPage != (int) lastPage) {
                 lastPage++;

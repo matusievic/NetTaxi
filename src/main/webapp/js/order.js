@@ -81,7 +81,7 @@ function init() {
                                                              '<td>' + element.rating + '</td>' +
                                                              '<td>' + length.text + '</td>' +
                                                              '<td>' + price + '</td>' +
-                                                             '<td><button onclick="makeOrder(' + element.id + ')" href="#">OK</a></td></tr>');
+                                                             '<td><button onclick="makeOrder(' + element.id + ');">OK</button></td></tr>');
                         });
                     }
                 });

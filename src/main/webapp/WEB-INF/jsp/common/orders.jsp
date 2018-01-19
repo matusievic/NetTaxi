@@ -46,6 +46,7 @@
                 <th>${priceLabel}</th>
                 <th>${statusLabel}</th>
                 <th>${ratingLabel}</th>
+                <th></th>
             </tr>
             </thead>
             <tbody></tbody>

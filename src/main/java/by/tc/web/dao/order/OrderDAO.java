@@ -7,9 +7,9 @@ import by.tc.web.domain.order.Order;
 public interface OrderDAO extends DAO<Order> {
     void create(Order order) throws DAOException;
     Order readById(int id) throws DAOException;
-    Order[] readInRange(int begin, int end) throws DAOException;
-    Order[] readByTaxiDriverInRange(int taxiDriverId, int begin, int end) throws DAOException;
-    Order[] readByCustomerInRange(int customerId, int begin, int end) throws DAOException;
+    Order[] readInRange(int begin, int itemsPerPage) throws DAOException;
+    Order[] readByTaxiDriverInRange(int taxiDriverId, int begin, int itemsPerPage) throws DAOException;
+    Order[] readByCustomerInRange(int customerId, int begin, int itemsPerPage) throws DAOException;
     Order readActiveOrderByTaxiDriverId(int driverId);
     Order readActiveOrderByCustomerId(int customerId);
     int readLength() throws DAOException;

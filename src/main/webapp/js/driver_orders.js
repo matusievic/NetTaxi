@@ -17,7 +17,23 @@ function getActiveOrder() {
                                             +'<td>' + order.end.x + ', ' + order.end.y + '</td>'
                                             +'<td>' + order.price + '</td>'
                                             +'<td>' + order.status + '</td>'
-                                            +'<td>' + order.rating + '</td></tr>');
+                                            +'<td>' + order.rating + '</td>'
+                                            +'<td><button onclick="nextStep(' + '&quot;' + order.status + '&quot;' + ', ' + order.id + ');">OK</button></td></tr>');
         }
     });
+}
+
+function nextStep(status, orderId) {
+    switch (status) {
+        case 'NEW':
+            $.get('controller', {command: 'choose_order', id: orderId});
+            break;
+        case 'WAITING':
+            $.get('controller', {command: 'accept_order', id: orderId});
+            break;
+        case 'ACCEPTED':
+            $.get('controller', {command: 'finish_order', id: orderId});
+            break;
+    }
+    getActiveOrder();
 }

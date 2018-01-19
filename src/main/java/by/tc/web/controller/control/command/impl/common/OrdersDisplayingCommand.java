@@ -31,9 +31,9 @@ public class OrdersDisplayingCommand implements ControllerCommand {
         Pagination pagination;
 
         if (userClass == Customer.class) {
-            pagination = displayCustomerOrders(currentPage, ControllerConstants.ITEMS_PER_PAGE, user.getId(), req);
+            pagination = displayCustomerOrders(currentPage, ControllerConstants.ITEMS_PER_PAGE, user.getId());
         } else if (userClass == TaxiDriver.class) {
-            pagination = displayTaxiDriverOrders(currentPage, ControllerConstants.ITEMS_PER_PAGE, user.getId(), req);
+            pagination = displayTaxiDriverOrders(currentPage, ControllerConstants.ITEMS_PER_PAGE, user.getId());
         } else if (userClass == Administrator.class) {
             pagination = displayAllOrders(currentPage, ControllerConstants.ITEMS_PER_PAGE);
         } else {
@@ -49,16 +49,14 @@ public class OrdersDisplayingCommand implements ControllerCommand {
     }
 
     private Pagination displayAllOrders(int currentPage, int itemsPerPage) {
-         return ControllerConstants.orderService.getAllOrdersInRang(currentPage, itemsPerPage);
+         return ControllerConstants.orderService.getAllOrdersInRange(currentPage, itemsPerPage);
     }
 
-    private Pagination displayTaxiDriverOrders(int currentPage, int itemsPerPage, int taxiDriverId, HttpServletRequest req) {
-        req.setAttribute("activeOrder", ControllerConstants.orderService.getActiveOrderByTaxiDriverId(taxiDriverId));
+    private Pagination displayTaxiDriverOrders(int currentPage, int itemsPerPage, int taxiDriverId) {
         return ControllerConstants.orderService.getOrdersByTaxiDriverIdInRange(currentPage, itemsPerPage, taxiDriverId);
     }
 
-    private Pagination displayCustomerOrders(int currentPage, int itemsPerPage, int customerId, HttpServletRequest req) {
-        req.setAttribute("activeOrder", ControllerConstants.orderService.getActiveOrderByTaxiDriverId(customerId));
+    private Pagination displayCustomerOrders(int currentPage, int itemsPerPage, int customerId) {
         return ControllerConstants.orderService.getOrdersByCustomerIdInRange(currentPage, itemsPerPage, customerId);
     }
 }

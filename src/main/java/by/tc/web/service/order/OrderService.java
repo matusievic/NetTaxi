@@ -7,7 +7,7 @@ import by.tc.web.domain.pagination.Pagination;
 public interface OrderService {
     void add(Order order);
     Order get(int orderId);
-    Pagination<Order> getAllOrdersInRang(int currentPage, int itemsPerPage);
+    Pagination<Order> getAllOrdersInRange(int currentPage, int itemsPerPage);
     Pagination<Order> getOrdersByCustomerIdInRange(int currentPage, int itemsPerPage, int customerId);
     Pagination<Order> getOrdersByTaxiDriverIdInRange(int currentPage, int itemsPerPage, int taxiDriverId);
     Order getActiveOrderByTaxiDriverId(int taxiDriverId);
