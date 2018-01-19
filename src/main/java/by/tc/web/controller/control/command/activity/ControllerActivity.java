@@ -1,29 +1,33 @@
 package by.tc.web.controller.control.command.activity;
 
 public enum ControllerActivity {
-    // Common activities
+    // Unregistered user activities
     AUTHENTICATE,
     LOCALIZE,
-    CLOSE_SESSION,
+    REGISTER_CUSTOMER,
 
+
+    // Account related activities
     UPDATE_ACCOUNT,
     DELETE_ACCOUNT,
+    CLOSE_SESSION,
 
+
+    // Common activities
+    DISPLAY_ORDER,
     DISPLAY_ORDERS,
 
+
     // Customer activities
-    REGISTER_CUSTOMER,
-    DISPLAY_ORDER_TAXI_PAGE,
     ORDER_TAXI,
+    FIND_TAXIDRIVER,
     CANCEL_ORDER,
     RATE_ORDER,
-    FIND_TAXIDRIVER,
     GET_ACTIVE_CUSTOMER_ORDER,
 
 
     // Driver activities
     GET_ACTIVE_TAXIDRIVER_ORDER,
-    CHECK_ORDERS,
     CHOOSE_ORDER,
     ACCEPT_ORDER,
     FINISH_ORDER,
@@ -41,7 +45,5 @@ public enum ControllerActivity {
     REGISTER_TAXIDRIVER,
     BLOCK_TAXIDRIVER,
     UNBLOCK_TAXIDRIVER,
-
-    DISPLAY_ORDER,
     DELETE_ORDER
 }

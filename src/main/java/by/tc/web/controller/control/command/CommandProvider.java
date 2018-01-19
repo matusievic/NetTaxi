@@ -7,7 +7,6 @@ import by.tc.web.controller.control.command.impl.customer.CustomerActiveOrderRec
 import by.tc.web.controller.control.command.impl.customer.CustomerRegistrationCommand;
 import by.tc.web.controller.control.command.impl.customer.OrderCancelingCommand;
 import by.tc.web.controller.control.command.impl.customer.OrderRatingCommand;
-import by.tc.web.controller.control.command.impl.customer.OrderTaxiPageDisplayingCommand;
 import by.tc.web.controller.control.command.impl.customer.TaxiDriverFindingCommand;
 import by.tc.web.controller.control.command.impl.customer.TaxiOrderingCommand;
 import by.tc.web.controller.control.command.impl.driver.OrderAcceptingCommand;
@@ -41,7 +40,6 @@ public final class CommandProvider {
         commands.put(ControllerActivity.DISPLAY_ORDERS, new OrdersDisplayingCommand());
         commands.put(ControllerActivity.DISPLAY_ORDER, new OrderDisplayingCommand());
         commands.put(ControllerActivity.DELETE_ORDER, new OrderDeletingCommand());
-        commands.put(ControllerActivity.DISPLAY_ORDER_TAXI_PAGE, new OrderTaxiPageDisplayingCommand());
         commands.put(ControllerActivity.FIND_TAXIDRIVER, new TaxiDriverFindingCommand());
         commands.put(ControllerActivity.GET_ACTIVE_TAXIDRIVER_ORDER, new TaxiDriverActiveOrderReceivingCommand());
         commands.put(ControllerActivity.GET_ACTIVE_CUSTOMER_ORDER, new CustomerActiveOrderReceivingCommand());

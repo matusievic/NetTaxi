@@ -6,7 +6,6 @@
     <display-name>Internet taxi</display-name>
 
 
-
     <!--Welcome page-->
 
     <welcome-file-list>
@@ -23,7 +22,6 @@
     </servlet-mapping>
 
 
-
     <!--Controller-->
 
     <servlet>
@@ -36,7 +34,6 @@
     </servlet-mapping>
 
 
-
     <!--Customer pages-->
 
     <servlet>
@@ -47,7 +44,6 @@
         <servlet-name>CustomerOrder</servlet-name>
         <url-pattern>/order</url-pattern>
     </servlet-mapping>
-
 
 
     <!--Administrator pages-->
@@ -98,7 +94,6 @@
     </servlet-mapping>
 
 
-
     <!--Common pages-->
 
     <servlet>
@@ -118,7 +113,6 @@
         <servlet-name>OrderDisplaying</servlet-name>
         <url-pattern>/order/display</url-pattern>
     </servlet-mapping>
-
 
 
     <!--Account pages-->
@@ -151,7 +145,6 @@
     </servlet-mapping>
 
 
-
     <!--Sign In and Sign Up page-->
 
     <servlet>
@@ -173,8 +166,20 @@
     </servlet-mapping>
 
 
-
     <!--Filters-->
+
+    <filter>
+        <filter-name>CharsetFilter</filter-name>
+        <filter-class>by.tc.web.controller.filter.CharsetFilter</filter-class>
+        <init-param>
+            <param-name>characterEncoding</param-name>
+            <param-value>UTF-8</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>CharsetFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
 
     <filter>
         <filter-name>CustomerFilter</filter-name>
@@ -183,6 +188,7 @@
     <filter-mapping>
         <filter-name>CustomerFilter</filter-name>
         <url-pattern>/customer/*</url-pattern>
+        <url-pattern>/order</url-pattern>
     </filter-mapping>
 
     <filter>
@@ -192,6 +198,11 @@
     <filter-mapping>
         <filter-name>DriverFilter</filter-name>
         <url-pattern>/driver/*</url-pattern>
+        <url-pattern>/controller?command=get_active_taxidriver_order</url-pattern>
+        <url-pattern>/controller?command=choose_order</url-pattern>
+        <url-pattern>/controller?command=accept_order</url-pattern>
+        <url-pattern>/controller?command=accept_order</url-pattern>
+        <url-pattern>/controller?command=finish_order</url-pattern>
     </filter-mapping>
 
     <filter>
@@ -201,6 +212,14 @@
     <filter-mapping>
         <filter-name>AdministratorFilter</filter-name>
         <url-pattern>/administrator/*</url-pattern>
+        <url-pattern>/controller?command=display_customers</url-pattern>
+        <url-pattern>/controller?command=block_customer</url-pattern>
+        <url-pattern>/controller?command=unblock_customer</url-pattern>
+        <url-pattern>/controller?command=discount_customer</url-pattern>
+        <url-pattern>/controller?command=display_taxidriver</url-pattern>
+        <url-pattern>/controller?command=register_taxidriver</url-pattern>
+        <url-pattern>/controller?command=block_taxidriver</url-pattern>
+        <url-pattern>/controller?command=unblock_taxidriver</url-pattern>
     </filter-mapping>
 
     <filter>
@@ -210,6 +229,7 @@
     <filter-mapping>
         <filter-name>AccountFilter</filter-name>
         <url-pattern>/account/*</url-pattern>
+        <url-pattern>/common/*</url-pattern>
     </filter-mapping>
 
 
@@ -229,7 +249,6 @@
         <error-code>500</error-code>
         <location>/WEB-INF/jsp/error/500.jsp</location>
     </error-page>
-
 
 
     <!--Reset path for static content-->

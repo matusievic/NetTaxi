@@ -30,14 +30,12 @@ public class AccountFilter implements Filter {
         HttpSession session = req.getSession(false);
 
         if (session == null) {
-            req.setAttribute(FilterConstants.ERROR, "You must sign in to view this page");
-            resp.sendRedirect(FilterConstants.SIGN_IN);
+            resp.sendError(HttpServletResponse.SC_FORBIDDEN);
         }
 
         User user = (User) session.getAttribute(FilterConstants.USER_PARAM);
         if (user == null) {
-            req.setAttribute(FilterConstants.ERROR, "You must sign in to view this page");
-            resp.sendRedirect(FilterConstants.SIGN_IN);
+            resp.sendError(HttpServletResponse.SC_FORBIDDEN);
         } else {
             filterChain.doFilter(servletRequest, servletResponse);
         }

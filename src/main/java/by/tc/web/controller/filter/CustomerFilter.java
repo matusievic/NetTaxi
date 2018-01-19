@@ -30,18 +30,15 @@ public class CustomerFilter implements Filter {
         HttpSession session = req.getSession(false);
 
         if (session == null) {
-            req.setAttribute(FilterConstants.ERROR, "You must sign in to view this page");
-            resp.sendRedirect(FilterConstants.SIGN_IN);
+            resp.sendError(HttpServletResponse.SC_FORBIDDEN);
+            return;
         }
 
         User user = (User) session.getAttribute(FilterConstants.USER_PARAM);
-        if (user == null) {
+        if (user == null || user.getClass() != Customer.class) {
             resp.sendError(HttpServletResponse.SC_FORBIDDEN);
-        } else if (user.getClass() == Customer.class) {
-            filterChain.doFilter(servletRequest, servletResponse);
         } else {
-            req.setAttribute(FilterConstants.ERROR, "You must sign in to view this page");
-            resp.sendRedirect(FilterConstants.SIGN_IN);
+            filterChain.doFilter(servletRequest, servletResponse);
         }
     }
 
