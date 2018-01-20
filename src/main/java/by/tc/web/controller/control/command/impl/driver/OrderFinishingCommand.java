@@ -2,6 +2,7 @@ package by.tc.web.controller.control.command.impl.driver;
 
 import by.tc.web.controller.control.command.ControllerCommand;
 import by.tc.web.controller.control.command.constants.ControllerConstants;
+import by.tc.web.domain.order.Order;
 import by.tc.web.domain.order.OrderStatus;
 import by.tc.web.domain.user.User;
 import by.tc.web.domain.user.impl.TaxiDriver;
@@ -24,5 +25,7 @@ public class OrderFinishingCommand implements ControllerCommand {
         }
 
         ControllerConstants.orderService.changeStatus(id, OrderStatus.PERFORMED);
+        Order order = ControllerConstants.orderService.get(id);
+        ControllerConstants.taxiDriverService.changeLocation(user.getId(), order.getEnd());
     }
 }

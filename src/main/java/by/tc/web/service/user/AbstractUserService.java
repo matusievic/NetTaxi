@@ -4,6 +4,7 @@ import by.tc.web.dao.exception.DAOException;
 import by.tc.web.dao.user.UserDAO;
 import by.tc.web.domain.pagination.Pagination;
 import by.tc.web.domain.pagination.builder.PaginationBuilder;
+import by.tc.web.domain.point.Point;
 import by.tc.web.domain.user.User;
 
 public abstract class AbstractUserService implements UserService {
@@ -34,4 +35,7 @@ public abstract class AbstractUserService implements UserService {
     }
 
     protected abstract UserDAO getDAO();
+
+    @Override
+    public void changeLocation(int userId, Point location) {}
 }

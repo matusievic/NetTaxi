@@ -4,6 +4,7 @@ import by.tc.web.dao.DAOFactory;
 import by.tc.web.dao.exception.DAOException;
 import by.tc.web.dao.order.OrderDAO;
 import by.tc.web.dao.user.UserDAO;
+import by.tc.web.domain.point.Point;
 import by.tc.web.domain.user.User;
 import by.tc.web.domain.user.impl.TaxiDriver;
 import by.tc.web.service.user.AbstractUserService;
@@ -115,5 +116,12 @@ public class TaxiDriverService extends AbstractUserService {
     @Override
     protected UserDAO getDAO() {
         return dao;
+    }
+
+    @Override
+    public void changeLocation(int userId, Point location) {
+        TaxiDriver taxiDriver = (TaxiDriver) get(userId);
+        taxiDriver.setLocation(location);
+        update(taxiDriver);
     }
 }
