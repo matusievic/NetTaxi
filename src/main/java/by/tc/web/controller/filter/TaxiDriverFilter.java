@@ -36,7 +36,7 @@ public class TaxiDriverFilter implements Filter {
 
         User user = (User) session.getAttribute("user");
         if (user == null) {
-            resp.sendRedirect("/403");
+            resp.sendError(HttpServletResponse.SC_FORBIDDEN);
         } else if (user.getClass() == TaxiDriver.class) {
             filterChain.doFilter(servletRequest, servletResponse);
         } else {

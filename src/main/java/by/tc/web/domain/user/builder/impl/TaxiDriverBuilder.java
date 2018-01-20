@@ -11,6 +11,7 @@ public class TaxiDriverBuilder extends UserBuilder {
     private float rating;
     private boolean free;
     private Point location;
+    private float tariff;
 
     public TaxiDriverBuilder(int id) {
         super(id);
@@ -41,6 +42,11 @@ public class TaxiDriverBuilder extends UserBuilder {
         return this;
     }
 
+    public TaxiDriverBuilder tariff(float tariff) {
+        this.tariff = tariff;
+        return this;
+    }
+
     @Override
     public TaxiDriver build() {
         TaxiDriver taxiDriver = new TaxiDriver();
@@ -53,6 +59,7 @@ public class TaxiDriverBuilder extends UserBuilder {
         taxiDriver.setRating(this.rating);
         taxiDriver.setFree(this.free);
         taxiDriver.setLocation(this.location);
+        taxiDriver.setTariff(this.tariff);
         return taxiDriver;
     }
 

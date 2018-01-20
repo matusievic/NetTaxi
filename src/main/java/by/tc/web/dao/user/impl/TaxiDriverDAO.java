@@ -29,7 +29,7 @@ public class TaxiDriverDAO implements UserDAO {
         String pointParam = taxiDriver.getLocation().getX() + " " + taxiDriver.getLocation().getY();
         Car car = taxiDriver.getCar();
         try (PooledConnection connection = dbPool.takeConnection();
-             PreparedStatement statement = connection.prepareStatement("INSERT INTO drivers (phone, name, surname, password, is_banned, car_number, car_model, rating, is_free, location) VALUE (?, ?, ?, ?, ?, ?, ?, ?, ?, PointFromText('" + pointParam + "'));")) {
+             PreparedStatement statement = connection.prepareStatement("INSERT INTO drivers (phone, name, surname, password, is_banned, car_number, car_model, rating, is_free, tariff, location) VALUE (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, PointFromText('" + pointParam + "'));")) {
 
             statement.setString(1, String.valueOf(taxiDriver.getPhone()));
             statement.setString(2, taxiDriver.getName());
@@ -40,8 +40,7 @@ public class TaxiDriverDAO implements UserDAO {
             statement.setString(7, car.getModel());
             statement.setFloat(8, taxiDriver.getRating());
             statement.setBoolean(9, taxiDriver.isFree());
-            statement.setFloat(10, taxiDriver.getLocation().getX());
-            statement.setFloat(11, taxiDriver.getLocation().getY());
+            statement.setFloat(10, taxiDriver.getTariff());
 
             statement.execute();
 
@@ -56,7 +55,7 @@ public class TaxiDriverDAO implements UserDAO {
 
     @Override
     public User readById(int id) throws DAOException {
-        final String query = "SELECT driver_id, phone, name, surname, password, is_banned, car_number, car_model, rating, is_free, X(location), Y(location) FROM drivers WHERE driver_id=?;";
+        final String query = "SELECT driver_id, phone, name, surname, password, is_banned, car_number, car_model, rating, is_free, X(location), Y(location), tariff FROM drivers WHERE driver_id=?;";
 
         try (PooledConnection connection = dbPool.takeConnection();
              PreparedStatement statement = connection.prepareStatement(query)) {
@@ -79,6 +78,7 @@ public class TaxiDriverDAO implements UserDAO {
                 point.setX(result.getFloat("X(location)"));
                 point.setY(result.getFloat("Y(location)"));
                 taxiDriver.setLocation(point);
+                taxiDriver.setTariff(result.getFloat("tariff"));
 
                 char[] car_number = result.getString("car_number").toCharArray();
                 String car_model = result.getString("car_model");
@@ -98,7 +98,7 @@ public class TaxiDriverDAO implements UserDAO {
 
     @Override
     public User[] readByLocation(float x, float y, int count) throws DAOException {
-        final String query = "SELECT driver_id, phone, name, surname, password, is_banned, car_number, car_model, rating, is_free, X(location), Y(location) " +
+        final String query = "SELECT driver_id, phone, name, surname, password, is_banned, car_number, car_model, rating, is_free, X(location), Y(location), tariff " +
                 "FROM drivers where is_banned = false AND is_free = true " +
                 "ORDER BY sqrt(pow((x(location) - " + x + "), 2) + pow(abs(y(location) - " + y + "), 2)) limit " + count + ";";
 
@@ -129,6 +129,7 @@ public class TaxiDriverDAO implements UserDAO {
                 point.setX(result.getFloat("X(location)"));
                 point.setY(result.getFloat("Y(location)"));
                 taxiDriver.setLocation(point);
+                taxiDriver.setTariff(result.getFloat("tariff"));
 
                 char[] car_number = result.getString("car_number").toCharArray();
                 String car_model = result.getString("car_model");
@@ -150,7 +151,7 @@ public class TaxiDriverDAO implements UserDAO {
 
     @Override
     public User[] readInRange(int begin, int end) throws DAOException {
-        final String query = "SELECT driver_id, phone, name, surname, password, is_banned, car_number, car_model, rating, is_free, X(location), Y(location) FROM drivers WHERE driver_id BETWEEN ? AND ?";
+        final String query = "SELECT driver_id, phone, name, surname, password, is_banned, car_number, car_model, rating, is_free, X(location), Y(location), tariff FROM drivers WHERE driver_id BETWEEN ? AND ?";
         try (PooledConnection connection = dbPool.takeConnection();
              PreparedStatement statement = connection.prepareStatement(query)) {
 
@@ -182,6 +183,7 @@ public class TaxiDriverDAO implements UserDAO {
                 point.setX(result.getFloat("X(location)"));
                 point.setY(result.getFloat("Y(location)"));
                 taxiDriver.setLocation(point);
+                taxiDriver.setTariff(result.getFloat("tariff"));
                 taxiDrivers[currentPosition] = taxiDriver;
                 currentPosition++;
             }
@@ -197,7 +199,7 @@ public class TaxiDriverDAO implements UserDAO {
 
     @Override
     public User readByPhoneAndPassword(long phone, char[] password) throws DAOException {
-        final String query = "SELECT driver_id, phone, name, surname, password, is_banned, car_number, car_model, rating, is_free, X(location), Y(location) FROM drivers WHERE phone=? AND password=?";
+        final String query = "SELECT driver_id, phone, name, surname, password, is_banned, car_number, car_model, rating, is_free, X(location), Y(location), tariff FROM drivers WHERE phone=? AND password=?";
 
         try (PooledConnection connection = dbPool.takeConnection();
              PreparedStatement statement = connection.prepareStatement(query)) {
@@ -232,6 +234,7 @@ public class TaxiDriverDAO implements UserDAO {
             point.setX(result.getFloat("X(location)"));
             point.setY(result.getFloat("Y(location)"));
             taxiDriver.setLocation(point);
+            taxiDriver.setTariff(result.getFloat("tariff"));
 
             return taxiDriver;
 
@@ -272,7 +275,7 @@ public class TaxiDriverDAO implements UserDAO {
 
         String pointParam = taxiDriver.getLocation().getX() + " " + taxiDriver.getLocation().getY();
         final String query = "UPDATE drivers " +
-                "SET phone=?, name=?, surname=?, password=?, is_banned=?, car_number=?, car_model=?, rating=?, is_free=?, location=PointFromText('POINT(" + pointParam + ")') " +
+                "SET phone=?, name=?, surname=?, password=?, is_banned=?, car_number=?, car_model=?, rating=?, is_free=?, tariff=?, location=PointFromText('POINT(" + pointParam + ")') " +
                 "WHERE driver_id=?;";
 
         try (PooledConnection connection = dbPool.takeConnection();
@@ -287,7 +290,8 @@ public class TaxiDriverDAO implements UserDAO {
             statement.setString(7, String.valueOf(taxiDriver.getCar().getModel()));
             statement.setFloat(8, taxiDriver.getRating());
             statement.setBoolean(9, taxiDriver.isFree());
-            statement.setInt(10, taxiDriver.getId());
+            statement.setFloat(10, taxiDriver.getTariff());
+            statement.setInt(11, taxiDriver.getId());
 
             if (statement.executeUpdate() != 1) {
                 //TODO

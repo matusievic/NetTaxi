@@ -21,6 +21,7 @@ public final class ControllerConstants {
     public static final String CAR_MODEL_PARAM = "car_model";
     public static final String PASSWORD_PARAM = "password";
     public static final String OLD_PASSWORD_PARAM = "old_password";
+    public static final String TARIFF_PARAM = "tariff";
     public static final String USER_PARAM = "user";
     public static final String ERROR = "error";
     public static final String ORDER_PARAM = "order";

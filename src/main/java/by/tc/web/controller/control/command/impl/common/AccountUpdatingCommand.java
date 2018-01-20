@@ -43,13 +43,21 @@ public class AccountUpdatingCommand implements ControllerCommand {
                 return;
             }
 
-            String carModel = req.getHeader(ControllerConstants.CAR_MODEL_PARAM);
+            String carModel = req.getParameter(ControllerConstants.CAR_MODEL_PARAM);
             if (!CarValidator.isModelValid(carModel)) {
                 displayError("Please provide a correct car model", req, resp);
                 return;
             }
 
             ((TaxiDriver) user).setCar(new CarBuilder().number(carNumber.toCharArray()).model(carModel).build());
+
+            String tariff = req.getParameter(ControllerConstants.TARIFF_PARAM);
+            if (!AccountValidator.isTariffValid(tariff)) {
+                displayError("Please provide a correct tariff", req, resp);
+                return;
+            }
+
+            ((TaxiDriver) user).setTariff(Float.parseFloat(tariff));
 
         } else if (userClass == Administrator.class) {
             service = ControllerConstants.administratorService;

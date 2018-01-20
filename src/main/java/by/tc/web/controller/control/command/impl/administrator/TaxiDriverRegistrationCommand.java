@@ -61,6 +61,12 @@ public class TaxiDriverRegistrationCommand implements ControllerCommand {
             return;
         }
 
+        String tariff = req.getParameter(ControllerConstants.TARIFF_PARAM);
+        if (!AccountValidator.isTariffValid(tariff)) {
+            displayError("Please provide a valid tariff", req, resp);
+            return;
+        }
+
         Car car = new CarBuilder().number(carNumber.toCharArray()).model(carModel).build();
         User taxiDriver = new TaxiDriverBuilder(0).phone(Long.parseLong(phone)).name(name).surname(surname)
                           .password(firstPassword.toCharArray()).car(car).build();

@@ -36,7 +36,7 @@ public class AdministratorFilter implements Filter {
 
         User user = (User) session.getAttribute(FilterConstants.USER_PARAM);
         if (user == null) {
-            resp.sendRedirect("/403");
+            resp.sendError(HttpServletResponse.SC_FORBIDDEN);
         } else if (user.getClass() == Administrator.class) {
             filterChain.doFilter(servletRequest, servletResponse);
         } else {

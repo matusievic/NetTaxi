@@ -18,8 +18,11 @@
     <fmt:message bundle="${loc}" key="account.car_number" var="carNumberLabel"/>
     <fmt:message bundle="${loc}" key="account.car_model" var="carModelLabel"/>
     <fmt:message bundle="${loc}" key="account.rating" var="ratingLabel"/>
+    <fmt:message bundle="${loc}" key="account.tariff" var="tariffLabel"/>
+
     <fmt:message bundle="${loc}" key="activity.edit" var="editLabel"/>
     <fmt:message bundle="${loc}" key="activity.delete" var="deleteLabel"/>
+
     <title>${pageTitleLabel} - ${applicationNameLabel}</title>
 </head>
 <body>
@@ -66,6 +69,10 @@
         <tr>
             <th>${ratingLabel}</th>
             <td>${user.rating}</td>
+        </tr>
+        <tr>
+            <th>${tariffLabel}</th>
+            <td>${user.tariff}</td>
         </tr>
     </taxi:driver>
 </table>

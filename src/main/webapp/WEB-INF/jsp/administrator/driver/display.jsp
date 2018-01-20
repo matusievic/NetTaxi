@@ -15,9 +15,12 @@
     <fmt:message bundle="${loc}" key="account.rating" var="ratingLabel"/>
     <fmt:message bundle="${loc}" key="account.free" var="freeLabel"/>
     <fmt:message bundle="${loc}" key="account.location" var="locationLabel"/>
+    <fmt:message bundle="${loc}" key="account.tariff" var="tariffLabel"/>
+
     <fmt:message bundle="${loc}" key="activity.block" var="blockLabel"/>
     <fmt:message bundle="${loc}" key="activity.unblock" var="unblockLabel"/>
     <fmt:message bundle="${loc}" key="activity.back" var="backLabel"/>
+
     <fmt:message bundle="${loc}" key="application.name" var="applicationNameLabel"/>
     <fmt:message bundle="${loc}" key="title.display" var="pageTitleLabel"/>
 
@@ -64,6 +67,10 @@
     <tr>
         <th>${locationLabel}</th>
         <td>${taxiDriver.location.x}, ${taxiDriver.location.y}</td>
+    </tr>
+    <tr>
+        <th>${tariffLabel}</th>
+        <td>${taxiDriver.tariff}</td>
     </tr>
 </table>
 <c:choose>

@@ -18,11 +18,12 @@
     <fmt:message bundle="${loc}" key="account.repeat_password" var="secondPasswordLabel"/>
     <fmt:message bundle="${loc}" key="account.car_number" var="carNumberLabel"/>
     <fmt:message bundle="${loc}" key="account.car_model" var="carModelLabel"/>
+    <fmt:message bundle="${loc}" key="account.tariff" var="tariffLabel"/>
 
     <title>${pageTitleLabel} - ${applicationNameLabel}</title>
 </head>
 <body>
-<form action="/controller?command=update_administrator" method="post">
+<form action="/controller?command=update_account" method="post">
     <label for="name">${nameLabel}</label>
     <input type="text" name="name" id="name" value="${user.name}" required>
 
@@ -45,8 +46,11 @@
         <label for="car-number">${carNumberLabel}</label>
         <input type="text" name="car_number" value="${String.valueOf(user.car.number)}" id="car-number" required>
 
-        <label type="car-model">${carModelLabel}</label>
+        <label for="car-model">${carModelLabel}</label>
         <input type="text" name="car_model" value="${user.car.model}" id="car-model" required>
+
+        <label for="tariff">${tariffLabel}</label>
+        <input type="text" name="tariff" value="${user.tariff}" id="tariff" required>
     </taxi:driver>
 
     <input type="submit" value="OK">

@@ -36,7 +36,7 @@ public class CustomerFilter implements Filter {
 
         User user = (User) session.getAttribute(FilterConstants.USER_PARAM);
         if (user == null) {
-            resp.sendRedirect("/403");
+            resp.sendError(HttpServletResponse.SC_FORBIDDEN);
         } else if (user.getClass() == Customer.class) {
             filterChain.doFilter(servletRequest, servletResponse);
         } else {

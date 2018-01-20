@@ -16,8 +16,10 @@
     <fmt:message bundle="${loc}" key="account.banned" var="bannedLabel"/>
     <fmt:message bundle="${loc}" key="account.free" var="freeLabel"/>
     <fmt:message bundle="${loc}" key="account.location" var="locationLabel"/>
-    <fmt:message bundle="${loc}" key="title.drivers" var="pageTitleLabel"/>
+    <fmt:message bundle="${loc}" key="account.tariff" var="tariffLabel"/>
+
     <fmt:message bundle="${loc}" key="activity.create" var="createButtonLabel"/>
+    <fmt:message bundle="${loc}" key="title.drivers" var="pageTitleLabel"/>
     <fmt:message bundle="${loc}" key="application.name" var="applicationNameLabel"/>
 
     <title>${pageTitleLabel} - ${applicationNameLabel}</title>
@@ -37,6 +39,7 @@
         <th>${ratingLabel}</th>
         <th>${freeLabel}</th>
         <th>${locationLabel}</th>
+        <th>${tariffLabel}</th>
     </tr>
     </thead>
     <tbody>
@@ -52,6 +55,7 @@
             <td>${driver.rating}</td>
             <td>${driver.free}</td>
             <td>${driver.location.x} , ${driver.location.y}</td>
+            <td>${driver.tariff}</td>
         </tr>
     </c:forEach>
     </tbody>

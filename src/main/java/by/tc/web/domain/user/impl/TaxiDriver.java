@@ -13,6 +13,7 @@ public class TaxiDriver extends User {
     private float rating;
     private boolean free;
     private Point location;
+    private float tariff;
 
     public TaxiDriver() {}
 
@@ -56,6 +57,14 @@ public class TaxiDriver extends User {
         this.location = location;
     }
 
+    public float getTariff() {
+        return tariff;
+    }
+
+    public void setTariff(float tariff) {
+        this.tariff = tariff;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj) { return true; }
@@ -64,6 +73,11 @@ public class TaxiDriver extends User {
 
         TaxiDriver taxiDriver = (TaxiDriver) obj;
         if (!Objects.equals(car, taxiDriver.car)) { return false; }
+        if (rating != taxiDriver.rating) { return false; }
+        if (free != taxiDriver.free) { return false; }
+        if (!Objects.equals(location, taxiDriver.location)) { return false; }
+        if (tariff != taxiDriver.tariff) { return false; }
+
         return true;
     }
 
@@ -71,6 +85,10 @@ public class TaxiDriver extends User {
     public int hashCode() {
         int result = super.hashCode();
         result = 31 * result + Objects.hashCode(car);
+        result = 31 * result + (int) rating;
+        result = 31 * result + Boolean.hashCode(free);
+        result = 31 * result + Objects.hashCode(location);
+        result = 31 * result + (int) tariff;
         return result;
     }
 }

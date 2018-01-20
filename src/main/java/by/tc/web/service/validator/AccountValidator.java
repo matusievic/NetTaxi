@@ -37,4 +37,16 @@ public final class AccountValidator {
 
         return parsedRating >= 0 && parsedRating <= 5;
     }
+
+    public static boolean isTariffValid(String tariff) {
+        float parsedTariff = 0;
+
+        try {
+            parsedTariff = Float.parseFloat(tariff);
+        } catch (NumberFormatException e) {
+            return false;
+        }
+
+        return parsedTariff > 0;
+    }
 }

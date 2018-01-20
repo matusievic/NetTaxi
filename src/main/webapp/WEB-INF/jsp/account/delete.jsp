@@ -16,7 +16,7 @@
     <title>${pageTitleLabel} - ${applicationNameLabel}</title>
 </head>
 <body>
-<form action="/controller?command=delete_administrator" method="post">
+<form action="/controller?command=delete_account" method="post">
     <label for="password">${passwordLabel}</label>
     <input type="password" name="password" id="password" required>
     <label for="sure-box">${sureLabel}</label>
