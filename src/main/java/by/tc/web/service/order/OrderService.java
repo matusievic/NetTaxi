@@ -13,6 +13,7 @@ public interface OrderService {
     Order getActiveOrderByTaxiDriverId(int taxiDriverId);
     Order getActiveOrderByCustomerId(int customerId);
     void changeStatus(int id, OrderStatus status);
+    void rate(int orderId, byte rating);
     void update(Order order);
     void delete(Order order);
 }

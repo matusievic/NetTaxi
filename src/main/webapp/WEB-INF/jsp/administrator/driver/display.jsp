@@ -73,14 +73,16 @@
         <td>${taxiDriver.tariff}</td>
     </tr>
 </table>
-<c:choose>
-    <c:when test="${!taxiDriver.banned}">
-        <a href="/controller?command=block_taxidriver&id=${taxiDriver.id}">${blockLabel}</a>
-    </c:when>
-    <c:when test="${taxiDriver.banned}">
-        <a href="/controller?command=unblock_taxidriver&id=${taxiDriver.id}">${unblockLabel}</a>
-    </c:when>
-</c:choose>
+<taxi:admin>
+    <c:choose>
+        <c:when test="${!taxiDriver.banned}">
+            <a href="/controller?command=block_taxidriver&id=${taxiDriver.id}">${blockLabel}</a>
+        </c:when>
+        <c:when test="${taxiDriver.banned}">
+            <a href="/controller?command=unblock_taxidriver&id=${taxiDriver.id}">${unblockLabel}</a>
+        </c:when>
+    </c:choose>
+</taxi:admin>
 <a href="/controller?command=display_taxidrivers">${backLabel}</a>
 </body>
 </html>

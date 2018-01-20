@@ -14,6 +14,7 @@ public interface OrderDAO extends DAO<Order> {
     Order readActiveOrderByCustomerId(int customerId);
     int readLength() throws DAOException;
     int readLengthByTaxiDriverId(int taxiDriverId) throws DAOException;
+    int readLengthOfRatedOrdersByTaxiDriverId(int taxiDriverId) throws DAOException;
     int readLengthByCustomerId(int customerId) throws DAOException;
     void update(Order order) throws DAOException;
     void delete(Order order) throws DAOException;

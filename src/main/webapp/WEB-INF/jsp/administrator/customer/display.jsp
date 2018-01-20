@@ -57,7 +57,7 @@
         </c:when>
     </c:choose>
 <form action="/controller?command=discount_customer&id=${customer.id}" method="post">
-    <label for="discount">Discount: </label>
+    <label for="discount">${discountLabel}</label>
     <input type="text" name="discount" id="discount" placeholder="${discountLabel}">
     <input type="submit" value="OK">
 </form>

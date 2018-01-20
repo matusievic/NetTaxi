@@ -8,6 +8,8 @@ import by.tc.web.domain.order.OrderStatus;
 import by.tc.web.domain.pagination.Pagination;
 import by.tc.web.domain.pagination.builder.PaginationBuilder;
 import by.tc.web.service.order.OrderService;
+import by.tc.web.service.user.UserService;
+import by.tc.web.service.user.UserServiceFactory;
 
 public class OrderServiceImpl implements OrderService {
     private static final OrderDAO dao = (OrderDAO) DAOFactory.getInstance().getOrderDAO();
@@ -126,6 +128,16 @@ public class OrderServiceImpl implements OrderService {
         } catch (DAOException e) {
             //TODO
         }
+    }
+
+    @Override
+    public void rate(int orderId, byte rating) {
+        Order order = get(orderId);
+        order.setRating(rating);
+        update(order);
+
+        UserService userService = UserServiceFactory.getInstance().getTaxiDriverService();
+        userService.changeRating(order.getTaxiDriverId(), rating);
     }
 
     @Override

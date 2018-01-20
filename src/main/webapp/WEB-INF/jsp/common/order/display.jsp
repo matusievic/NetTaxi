@@ -16,6 +16,8 @@
     <fmt:message bundle="${loc}" key="order.customer" var="customerLabel"/>
     <fmt:message bundle="${loc}" key="order.driver" var="driverLabel"/>
     <fmt:message bundle="${loc}" key="order.status" var="statusLabel"/>
+    <fmt:message bundle="${loc}" key="order.rating" var="ratingLabel"/>
+
     <fmt:message bundle="${loc}" key="activity.delete" var="deleteLabel"/>
 
     <title>#${order.id} - ${applicationNameLabel}</title>
@@ -50,9 +52,22 @@
         <th>${statusLabel}</th>
         <td>${order.status}</td>
     </tr>
+    <tr>
+        <th>${ratingLabel}</th>
+        <td>${order.rating}</td>
+    </tr>
 </table>
 <taxi:admin>
     <a href="/controller?command=delete_order&id=${order.id}">${deleteLabel}</a>
 </taxi:admin>
+<taxi:customer>
+    <c:if test="${order.rating == 0}">
+        <form action="/controller?command=rate_order&id=${order.id}" method="post">
+            <label for="rating">${ratingLabel}</label>
+            <input type="text" name="rating" id="rating" required>
+            <input type="submit" value="OK">
+        </form>
+    </c:if>
+</taxi:customer>
 </body>
 </html>

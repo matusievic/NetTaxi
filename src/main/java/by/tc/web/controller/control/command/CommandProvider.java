@@ -6,6 +6,7 @@ import by.tc.web.controller.control.command.impl.administrator.*;
 import by.tc.web.controller.control.command.impl.customer.CustomerActiveOrderReceivingCommand;
 import by.tc.web.controller.control.command.impl.customer.CustomerRegistrationCommand;
 import by.tc.web.controller.control.command.impl.customer.OrderCancelingCommand;
+import by.tc.web.controller.control.command.impl.customer.OrderRatingCommand;
 import by.tc.web.controller.control.command.impl.customer.OrderTaxiPageDisplayingCommand;
 import by.tc.web.controller.control.command.impl.customer.TaxiDriverFindingCommand;
 import by.tc.web.controller.control.command.impl.customer.TaxiOrderingCommand;
@@ -49,6 +50,7 @@ public final class CommandProvider {
         commands.put(ControllerActivity.CANCEL_ORDER, new OrderCancelingCommand());
         commands.put(ControllerActivity.ACCEPT_ORDER, new OrderAcceptingCommand());
         commands.put(ControllerActivity.FINISH_ORDER, new OrderFinishingCommand());
+        commands.put(ControllerActivity.RATE_ORDER, new OrderRatingCommand());
     }
 
     public static ControllerCommand takeCommand(String name) {

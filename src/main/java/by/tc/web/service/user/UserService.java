@@ -12,4 +12,5 @@ public interface UserService {
     void discount(int userId, float discount);
     void update(User user);
     void delete(User user);
+    void changeRating(int userId, byte rating);
 }

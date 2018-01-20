@@ -337,14 +337,37 @@ public class MySQLOrderDAO implements OrderDAO {
 
     @Override
     public int readLengthByTaxiDriverId(int taxiDriverId) throws DAOException {
-        final String query = "SELECT COUNT(*) FROM orders drivers_driver_id=?;";
+        final String query = "SELECT COUNT(*) FROM orders WHERE drivers_driver_id=?;";
 
         try (PooledConnection connection = dbPool.takeConnection();
              PreparedStatement statement = connection.prepareStatement(query)) {
 
             statement.setInt(1, taxiDriverId);
 
-            ResultSet result = statement.executeQuery(query);
+            ResultSet result = statement.executeQuery();
+
+            while (result.next()) {
+                return result.getInt(1);
+            }
+
+        } catch (InterruptedException e) {
+            //TODO
+        } catch (SQLException e) {
+            //TODO
+        }
+        return 0;
+    }
+
+    @Override
+    public int readLengthOfRatedOrdersByTaxiDriverId(int taxiDriverId) throws DAOException {
+        final String query = "SELECT COUNT(*) FROM orders WHERE drivers_driver_id=? AND rating > 0;";
+
+        try (PooledConnection connection = dbPool.takeConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+
+            statement.setInt(1, taxiDriverId);
+
+            ResultSet result = statement.executeQuery();
 
             while (result.next()) {
                 return result.getInt(1);
@@ -360,14 +383,14 @@ public class MySQLOrderDAO implements OrderDAO {
 
     @Override
     public int readLengthByCustomerId(int customerId) throws DAOException {
-        final String query = "SELECT COUNT(*) FROM orders customers_customer_id=?;";
+        final String query = "SELECT COUNT(*) FROM orders WHERE customers_customer_id=?;";
 
         try (PooledConnection connection = dbPool.takeConnection();
              PreparedStatement statement = connection.prepareStatement(query)) {
 
             statement.setInt(1, customerId);
 
-            ResultSet result = statement.executeQuery(query);
+            ResultSet result = statement.executeQuery();
 
             while (result.next()) {
                 return result.getInt(1);

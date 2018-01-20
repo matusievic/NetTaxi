@@ -84,6 +84,11 @@ public class CustomerService extends AbstractUserService {
     }
 
     @Override
+    public void changeRating(int userId, byte rating) {
+
+    }
+
+    @Override
     protected UserDAO getDAO() {
         return dao;
     }

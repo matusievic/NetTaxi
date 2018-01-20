@@ -18,8 +18,9 @@ public class OrderDisplayingCommand implements ControllerCommand {
         User user = (User) req.getSession().getAttribute(ControllerConstants.USER_PARAM);
         int id = Converter.parseInt(req.getParameter(ControllerConstants.ID_PARAM)).orElse(-1);
 
-        if (id == -1 || user == null || user.getClass() != Administrator.class) {
+        if (id == -1 || user == null) {
             resp.sendError(HttpServletResponse.SC_FORBIDDEN);
+            return;
         }
 
         Order order = ControllerConstants.orderService.get(id);

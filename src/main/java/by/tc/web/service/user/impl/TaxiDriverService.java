@@ -2,6 +2,7 @@ package by.tc.web.service.user.impl;
 
 import by.tc.web.dao.DAOFactory;
 import by.tc.web.dao.exception.DAOException;
+import by.tc.web.dao.order.OrderDAO;
 import by.tc.web.dao.user.UserDAO;
 import by.tc.web.domain.user.User;
 import by.tc.web.domain.user.impl.TaxiDriver;
@@ -90,6 +91,25 @@ public class TaxiDriverService extends AbstractUserService {
         } catch (DAOException e) {
             //TODO
         }
+    }
+
+    @Override
+    public void changeRating(int userId, byte rating) {
+        TaxiDriver taxiDriver = (TaxiDriver) get(userId);
+        float currentRating = taxiDriver.getRating();
+        OrderDAO orderDAO = (OrderDAO) DAOFactory.getInstance().getOrderDAO();
+
+        int denominator = 0;
+        try {
+            denominator = orderDAO.readLengthOfRatedOrdersByTaxiDriverId(userId);
+        } catch (DAOException e) {
+            //TODO
+        }
+
+        float newRating = (currentRating + rating) / denominator;
+        taxiDriver.setRating(newRating);
+
+        update(taxiDriver);
     }
 
     @Override
