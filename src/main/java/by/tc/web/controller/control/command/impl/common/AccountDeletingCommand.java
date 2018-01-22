@@ -44,9 +44,9 @@ public class AccountDeletingCommand implements ControllerCommand {
 
         String password = req.getParameter(ControllerConstants.PASSWORD_PARAM);
         if (!password.equals("")) {
-            Encoder encoder = EncoderFactory.getInstance().createEncryptor();
+            Encoder encoder = EncoderFactory.getInstance().getEncoder();
 
-            char[] encryptedPassword = encryptedPassword = encoder.encrypt(password);
+            char[] encryptedPassword = encryptedPassword = encoder.encode(password);
             if (encryptedPassword == null) {
                 resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             }

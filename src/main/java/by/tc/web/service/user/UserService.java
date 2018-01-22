@@ -5,7 +5,7 @@ import by.tc.web.domain.point.Point;
 import by.tc.web.domain.user.User;
 
 public interface UserService {
-    Object get(int userId);
+    User get(int userId);
     void block(int userId);
     void unblock(int userId);
     Pagination<User> getAllInRange(int currentPage, int itemsPerPage);

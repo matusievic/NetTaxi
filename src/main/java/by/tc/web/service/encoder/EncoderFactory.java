@@ -13,7 +13,7 @@ public final class EncoderFactory {
         return instance;
     }
 
-    public Encoder createEncryptor() {
+    public Encoder getEncoder() {
         return encoder;
     }
 }

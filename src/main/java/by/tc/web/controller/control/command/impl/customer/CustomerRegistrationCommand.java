@@ -6,7 +6,7 @@ import by.tc.web.domain.user.User;
 import by.tc.web.domain.user.builder.impl.CustomerBuilder;
 import by.tc.web.service.registrar.RegistrarFactory;
 import by.tc.web.service.registrar.UserRegistrar;
-import by.tc.web.service.registrar.exception.RegistrarException;
+import by.tc.web.service.exception.ServiceException;
 import by.tc.web.service.validator.AccountValidator;
 import org.apache.log4j.Logger;
 
@@ -53,7 +53,7 @@ public class CustomerRegistrationCommand implements ControllerCommand {
             registrar.register(customer);
             req.getSession().setAttribute("user", customer);
             resp.sendRedirect("index");
-        } catch (RegistrarException e) {
+        } catch (ServiceException e) {
             logger.error("Cannot register customer: " + e.getMessage(), e);
             displayError("An error has occurred. Please try again later.", req, resp);
             return;

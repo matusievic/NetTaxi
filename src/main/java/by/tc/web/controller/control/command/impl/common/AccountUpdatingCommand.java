@@ -89,9 +89,9 @@ public class AccountUpdatingCommand implements ControllerCommand {
 
         String oldPassword = req.getParameter(ControllerConstants.OLD_PASSWORD_PARAM);
         if (!oldPassword.equals("")) {
-            Encoder encoder = EncoderFactory.getInstance().createEncryptor();
+            Encoder encoder = EncoderFactory.getInstance().getEncoder();
 
-            char[] oldEncryptedPassword = encoder.encrypt(oldPassword);
+            char[] oldEncryptedPassword = encoder.encode(oldPassword);
             if (oldEncryptedPassword == null) {
                 resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
                 return;
@@ -106,7 +106,7 @@ public class AccountUpdatingCommand implements ControllerCommand {
                     return;
                 }
 
-                char[] encryptedPassword = encoder.encrypt(firstPassword);
+                char[] encryptedPassword = encoder.encode(firstPassword);
                 if (encryptedPassword == null) {
                     resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
                     return;

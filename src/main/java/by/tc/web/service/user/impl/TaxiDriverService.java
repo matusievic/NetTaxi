@@ -10,19 +10,8 @@ import by.tc.web.domain.user.impl.TaxiDriver;
 import by.tc.web.service.user.AbstractUserService;
 
 public class TaxiDriverService extends AbstractUserService {
-    private static final DAO<User> dao = DAOFactory.getInstance().getTaxiDriverDAO();
+    private static final DAO<TaxiDriver> dao = DAOFactory.getInstance().getTaxiDriverDAO();
     private static final int DRIVERS_COUNT = 5;
-
-    @Override
-    public Object get(int userId) {
-        User taxiDriver = null;
-        try {
-            taxiDriver = dao.readById(userId);
-        } catch (DAOException e) {
-            //TODO
-        }
-        return taxiDriver;
-    }
 
     @Override
     public void block(int userId) {
@@ -32,7 +21,7 @@ public class TaxiDriverService extends AbstractUserService {
             taxiDriver.setBanned(true);
             dao.update(taxiDriver);
         } catch (DAOException e) {
-            //TODO
+            logger.error("Cannot block user -> DAO layer thrown an exception", e);
         }
     }
 
@@ -40,11 +29,11 @@ public class TaxiDriverService extends AbstractUserService {
     public void unblock(int userId) {
         TaxiDriver taxiDriver = null;
         try {
-            taxiDriver = (TaxiDriver) dao.readById(userId);
+            taxiDriver = dao.readById(userId);
             taxiDriver.setBanned(false);
             dao.update(taxiDriver);
         } catch (DAOException e) {
-            //TODO
+            logger.error("Cannot unblock user -> DAO layer thrown an exception", e);
         }
     }
 
@@ -58,7 +47,8 @@ public class TaxiDriverService extends AbstractUserService {
         try {
             result = dao.readByLocation(x, y, 5).toArray(new User[0]);
         } catch (DAOException e) {
-            //TODO
+            logger.error("Cannot get user by location -> DAO layer thrown an exception", e);
+            return null;
         }
 
         for (User user : result) {
@@ -68,31 +58,6 @@ public class TaxiDriverService extends AbstractUserService {
         return result;
     }
 
-    @Override
-    public void discount(int userId, float discount) {
-    }
-
-    @Override
-    public void update(User user) {
-        try {
-            if (user != null) {
-                dao.update(user);
-            }
-        } catch (DAOException e) {
-            //TODO
-        }
-    }
-
-    @Override
-    public void delete(User user) {
-        try {
-            if (user != null) {
-                dao.delete(user);
-            }
-        } catch (DAOException e) {
-            //TODO
-        }
-    }
 
     @Override
     public void changeRating(int userId, byte rating) {
@@ -104,7 +69,8 @@ public class TaxiDriverService extends AbstractUserService {
         try {
             denominator = orderDAO.readLengthOfRatedOrdersByTaxiDriverId(userId);
         } catch (DAOException e) {
-            //TODO
+            logger.error("Cannot change user rating -> DAO layer thrown an exception", e);
+            return;
         }
 
         float newRating = (currentRating + rating) / denominator;
@@ -114,7 +80,7 @@ public class TaxiDriverService extends AbstractUserService {
     }
 
     @Override
-    protected DAO<User> getDAO() {
+    protected DAO<TaxiDriver> getDAO() {
         return dao;
     }
 

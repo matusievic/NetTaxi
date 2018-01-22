@@ -1,9 +1,10 @@
 package by.tc.web.service.exception;
 
 public class ServiceException extends Exception {
-    private static final long serialVersionUID = -8759374565230207568L;
+    private static final long serialVersionUID = -772910873943086639L;
 
     public ServiceException() {
+        super();
     }
 
     public ServiceException(String message) {
@@ -16,5 +17,9 @@ public class ServiceException extends Exception {
 
     public ServiceException(Throwable cause) {
         super(cause);
+    }
+
+    protected ServiceException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
+        super(message, cause, enableSuppression, writableStackTrace);
     }
 }

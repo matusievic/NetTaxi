@@ -9,41 +9,38 @@ import by.tc.web.domain.user.impl.Customer;
 import by.tc.web.domain.user.impl.TaxiDriver;
 import by.tc.web.service.encoder.Encoder;
 import by.tc.web.service.encoder.EncoderFactory;
+import org.apache.log4j.Logger;
 
 public final class Authenticator {
-    private static final DAOFactory daoFactory = DAOFactory.getInstance();
-    private static final EncoderFactory ENCODER_FACTORY = EncoderFactory.getInstance();
+    private static final Logger logger = Logger.getLogger(Authenticator.class);
+    private static final DAO<Customer> customerDAO = DAOFactory.getInstance().getCustomerDAO();
+    private static final DAO<TaxiDriver> driverDAO = DAOFactory.getInstance().getTaxiDriverDAO();
+    private static final DAO<Administrator> administratorDAO = DAOFactory.getInstance().getAdministratorDAO();
+    private static final Encoder encoder = EncoderFactory.getInstance().getEncoder();
 
     public static User authenticate(long phone, String password) {
-        Encoder encoder = ENCODER_FACTORY.createEncryptor();
-
-        char[] encryptedPassword = encoder.encrypt(password);
-        if (encryptedPassword == null) {
-            //TODO
+        char[] encodedPassword = encoder.encode(password);
+        if (encodedPassword == null) {
+            logger.error("Cannot get encoded password -> encoder returned a null value");
         }
 
-
-        DAO<Customer> customerDAO = daoFactory.getCustomerDAO();
-        DAO<TaxiDriver> driverDAO = daoFactory.getTaxiDriverDAO();
-        DAO<Administrator> administratorDAO = daoFactory.getAdministratorDAO();
-
         try {
-            User customer = customerDAO.readByPhoneAndPassword(phone, encryptedPassword);
+            User customer = customerDAO.readByPhoneAndPassword(phone, encodedPassword);
             if (customer != null) {
                 return customer;
             }
 
-            User driver = driverDAO.readByPhoneAndPassword(phone, encryptedPassword);
+            User driver = driverDAO.readByPhoneAndPassword(phone, encodedPassword);
             if (driver != null) {
                 return driver;
             }
 
-            User administrator = administratorDAO.readByPhoneAndPassword(phone, encryptedPassword);
+            User administrator = administratorDAO.readByPhoneAndPassword(phone, encodedPassword);
             if (administrator != null) {
                 return administrator;
             }
         } catch (DAOException e) {
-            return null;
+            logger.error("Cannot authenticate -> DAO layer thrown an exception", e);
         }
 
         return null;

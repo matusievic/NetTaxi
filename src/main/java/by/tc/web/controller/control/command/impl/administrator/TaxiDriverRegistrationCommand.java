@@ -9,7 +9,7 @@ import by.tc.web.domain.user.User;
 import by.tc.web.domain.user.builder.impl.TaxiDriverBuilder;
 import by.tc.web.service.registrar.RegistrarFactory;
 import by.tc.web.service.registrar.UserRegistrar;
-import by.tc.web.service.registrar.exception.RegistrarException;
+import by.tc.web.service.exception.ServiceException;
 import by.tc.web.service.validator.AccountValidator;
 import by.tc.web.service.validator.CarValidator;
 import org.apache.log4j.Logger;
@@ -75,7 +75,7 @@ public class TaxiDriverRegistrationCommand implements ControllerCommand {
             UserRegistrar registrar = RegistrarFactory.getInstance().createTaxiDriverRegistrar();
             registrar.register(taxiDriver);
             CommandProvider.takeCommand("display_taxidrivers").execute(req, resp);
-        } catch (RegistrarException e) {
+        } catch (ServiceException e) {
             logger.error("Cannot register taxi driver: " + e.getMessage(), e);
             displayError("An error has occurred. Please try again later.", req, resp);
         }

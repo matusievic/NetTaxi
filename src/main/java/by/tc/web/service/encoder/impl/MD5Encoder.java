@@ -1,13 +1,16 @@
 package by.tc.web.service.encoder.impl;
 
 import by.tc.web.service.encoder.Encoder;
+import org.apache.log4j.Logger;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 public class MD5Encoder implements Encoder {
+    private static final Logger logger = Logger.getLogger(MD5Encoder.class);
+
     @Override
-    public char[] encrypt(String source) {
+    public char[] encode(String source) {
         String result = null;
         try {
             MessageDigest md = MessageDigest.getInstance("MD5");
@@ -22,6 +25,7 @@ public class MD5Encoder implements Encoder {
             }
             result = sb.toString();
         } catch (NoSuchAlgorithmException e) {
+            logger.error("Cannot encode source string -> MD5 algorithm not found", e);
             return null;
         }
         return result.toCharArray();

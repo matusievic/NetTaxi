@@ -10,8 +10,10 @@ import by.tc.web.domain.pagination.builder.PaginationBuilder;
 import by.tc.web.service.order.OrderService;
 import by.tc.web.service.user.UserService;
 import by.tc.web.service.user.UserServiceFactory;
+import org.apache.log4j.Logger;
 
 public class OrderServiceImpl implements OrderService {
+    private static final Logger logger = Logger.getLogger(OrderServiceImpl.class);
     private static final DAO<Order> dao = DAOFactory.getInstance().getOrderDAO();
 
     @Override
@@ -21,7 +23,7 @@ public class OrderServiceImpl implements OrderService {
                 dao.create(order);
             }
         } catch (DAOException e) {
-            //TODO
+            logger.error("Cannot create an order in db -> DAO layer thrown an exception", e);
         }
     }
 
@@ -31,7 +33,7 @@ public class OrderServiceImpl implements OrderService {
         try {
             order = dao.readById(orderId);
         } catch (DAOException e) {
-            //TODO
+            logger.error("Cannot get an order from db -> DAO layer thrown an exception", e);
         }
         return order;
     }
@@ -50,7 +52,8 @@ public class OrderServiceImpl implements OrderService {
             }
 
         } catch (DAOException e) {
-            //TODO
+            logger.error("Cannot prepare an orders pagination -> DAO layer thrown an exception", e);
+            return null;
         }
 
         Pagination<Order> result = new PaginationBuilder<Order>().data(data).
@@ -74,12 +77,13 @@ public class OrderServiceImpl implements OrderService {
             }
 
         } catch (DAOException e) {
-            //TODO
+            logger.error("Cannot prepare an orders pagination -> DAO layer thrown an exception", e);
+            return null;
         }
 
         Pagination<Order> result = new PaginationBuilder<Order>().data(data).
-                currentPage(currentPage).lastPage((int) lastPage).
-                itemsPerPage(itemsPerPage).build();
+                                       currentPage(currentPage).lastPage((int) lastPage).
+                                       itemsPerPage(itemsPerPage).build();
 
         return result;
     }
@@ -98,35 +102,48 @@ public class OrderServiceImpl implements OrderService {
             }
 
         } catch (DAOException e) {
-            //TODO
+            logger.error("Cannot prepare an orders pagination -> DAO layer thrown an exception");
+            return null;
         }
 
         Pagination<Order> result = new PaginationBuilder<Order>().data(data).
-                currentPage(currentPage).lastPage((int) lastPage).
-                itemsPerPage(itemsPerPage).build();
+                                   currentPage(currentPage).lastPage((int) lastPage).
+                                   itemsPerPage(itemsPerPage).build();
 
         return result;
     }
 
     @Override
     public Order getActiveOrderByTaxiDriverId(int taxiDriverId) {
-        return dao.readActiveOrderByTaxiDriverId(taxiDriverId);
+        Order order = null;
+        try {
+            order = dao.readActiveOrderByTaxiDriverId(taxiDriverId);
+        } catch (DAOException e) {
+            logger.error("Cannot get an active driver order -> DAO layer thrown an exception", e);
+        }
+
+        return order;
     }
 
     @Override
     public Order getActiveOrderByCustomerId(int customerId) {
-        return dao.readActiveOrderByCustomerId(customerId);
+        Order order = null;
+        try {
+            order = dao.readActiveOrderByCustomerId(customerId);
+        } catch (DAOException e) {
+            logger.error("Cannot get an active customer order -> DAO layer thrown an exception", e);
+        }
+        return order;
     }
 
     @Override
     public void changeStatus(int id, OrderStatus status) {
-        Order order = null;
         try {
-            order = dao.readById(id);
+            Order order = dao.readById(id);
             order.setStatus(status);
             dao.update(order);
         } catch (DAOException e) {
-            //TODO
+            logger.error("Cannot update an order -> DAO layer thrown an exception", e);
         }
     }
 
@@ -147,7 +164,7 @@ public class OrderServiceImpl implements OrderService {
                 dao.update(order);
             }
         } catch (DAOException e) {
-            //TODO
+            logger.error("Cannot update an order -> DAO layer thrown an exception", e);
         }
     }
 
@@ -158,7 +175,7 @@ public class OrderServiceImpl implements OrderService {
                 dao.delete(order);
             }
         } catch (DAOException e) {
-            //TODO
+            logger.error("Cannot delete an order -> DAO layer thrown an exception", e);
         }
     }
 }
