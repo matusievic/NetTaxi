@@ -1,7 +1,7 @@
 package by.tc.web.service.user;
 
+import by.tc.web.dao.DAO;
 import by.tc.web.dao.exception.DAOException;
-import by.tc.web.dao.user.UserDAO;
 import by.tc.web.domain.pagination.Pagination;
 import by.tc.web.domain.pagination.builder.PaginationBuilder;
 import by.tc.web.domain.point.Point;
@@ -13,11 +13,11 @@ public abstract class AbstractUserService implements UserService {
         final int end = begin + itemsPerPage - 1;
 
         User[] data = null;
-        UserDAO dao = this.getDAO();
+        DAO<User> dao = this.getDAO();
 
         float lastPage = 0;
         try {
-            data = dao.readInRange(begin, end);
+            data = dao.readInRange(begin, end).toArray(new User[0]);
             lastPage = (float) dao.readLength() / itemsPerPage;
             if (lastPage != (int) lastPage) {
                 lastPage++;
@@ -34,7 +34,7 @@ public abstract class AbstractUserService implements UserService {
         return result;
     }
 
-    protected abstract UserDAO getDAO();
+    protected abstract DAO<User> getDAO();
 
     @Override
     public void changeLocation(int userId, Point location) {}

@@ -1,8 +1,8 @@
 package by.tc.web.service.order.impl;
 
+import by.tc.web.dao.DAO;
 import by.tc.web.dao.DAOFactory;
 import by.tc.web.dao.exception.DAOException;
-import by.tc.web.dao.order.OrderDAO;
 import by.tc.web.domain.order.Order;
 import by.tc.web.domain.order.OrderStatus;
 import by.tc.web.domain.pagination.Pagination;
@@ -12,7 +12,7 @@ import by.tc.web.service.user.UserService;
 import by.tc.web.service.user.UserServiceFactory;
 
 public class OrderServiceImpl implements OrderService {
-    private static final OrderDAO dao = (OrderDAO) DAOFactory.getInstance().getOrderDAO();
+    private static final DAO<Order> dao = DAOFactory.getInstance().getOrderDAO();
 
     @Override
     public void add(Order order) {
@@ -43,7 +43,7 @@ public class OrderServiceImpl implements OrderService {
         Order[] data = null;
         float lastPage = 0;
         try {
-            data = dao.readInRange(begin, itemsPerPage);
+            data = dao.readInRange(begin, itemsPerPage).toArray(new Order[0]);
             lastPage = (float) dao.readLength() / itemsPerPage;
             if (lastPage != (int) lastPage) {
                 lastPage++;
@@ -67,7 +67,7 @@ public class OrderServiceImpl implements OrderService {
         Order[] data = null;
         float lastPage = 0;
         try {
-            data = dao.readByCustomerInRange(customerId, begin, itemsPerPage);
+            data = dao.readByCustomerInRange(customerId, begin, itemsPerPage).toArray(new Order[0]);
             lastPage = (float) dao.readLengthByCustomerId(customerId) / itemsPerPage;
             if (lastPage != (int) lastPage) {
                 lastPage++;
@@ -91,7 +91,7 @@ public class OrderServiceImpl implements OrderService {
         Order[] data = null;
         float lastPage = 0;
         try {
-            data = dao.readByTaxiDriverInRange(taxiDriverId, begin, itemsPerPage);
+            data = dao.readByTaxiDriverInRange(taxiDriverId, begin, itemsPerPage).toArray(new Order[0]);
             lastPage = (float) dao.readLengthByTaxiDriverId(taxiDriverId) / itemsPerPage;
             if (lastPage != (int) lastPage) {
                 lastPage++;

@@ -1,325 +1,147 @@
 package by.tc.web.dao.user.impl;
 
 import by.tc.web.dao.exception.DAOException;
-import by.tc.web.dao.user.UserDAO;
+import by.tc.web.dao.user.UserMySQLDAO;
 import by.tc.web.domain.car.Car;
 import by.tc.web.domain.car.builder.CarBuilder;
 import by.tc.web.domain.point.Point;
-import by.tc.web.domain.user.User;
 import by.tc.web.domain.user.impl.TaxiDriver;
-import by.tc.web.service.database.DatabaseFactory;
 import by.tc.web.service.database.connection.PooledConnection;
-import by.tc.web.service.database.pool.DBPool;
-import by.tc.web.service.registrar.impl.CustomerRegistrar;
-import org.apache.log4j.Logger;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
-public class TaxiDriverDAO implements UserDAO {
-    private static final Logger logger = Logger.getLogger(CustomerRegistrar.class);
-    private static final DatabaseFactory databaseFactory = DatabaseFactory.getInstance();
-    private static final DBPool dbPool = databaseFactory.createDBPool();
+public class TaxiDriverDAO extends UserMySQLDAO<TaxiDriver> {
+    private static final String CREATE_QUERY = "INSERT INTO drivers (phone, name, surname, password, is_banned, car_number, car_model, rating, is_free, tariff, location) VALUE (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, PointFromText('%s'));";
+    private static final String READ_BY_ID_QUERY = "SELECT driver_id, phone, name, surname, password, is_banned, car_number, car_model, rating, is_free, X(location), Y(location), tariff FROM drivers WHERE driver_id=?;";
+    private static final String READ_IN_RANGE_QUERY = "SELECT driver_id, phone, name, surname, password, is_banned, car_number, car_model, rating, is_free, X(location), Y(location), tariff FROM drivers WHERE driver_id BETWEEN ? AND ?";
+    private static final String READ_LENGTH_QUERY = "SELECT COUNT(*) FROM drivers;";
+    private static final String READ_BY_PHONE_AND_PASSWORD_QUERY = "SELECT driver_id, phone, name, surname, password, is_banned, car_number, car_model, rating, is_free, X(location), Y(location), tariff FROM drivers WHERE phone=? AND password=?";
+    private static final String READ_BY_LOCATION_QUERY = "SELECT driver_id, phone, name, surname, password, is_banned, car_number, car_model, rating, is_free, X(location), Y(location), tariff FROM drivers where is_banned = false AND is_free = true ORDER BY sqrt(pow((x(location) - %f), 2) + pow(abs(y(location) - %f), 2)) limit %d;";
+    private static final String UPDATE_QUERY = "UPDATE drivers SET phone=?, name=?, surname=?, password=?, is_banned=?, car_number=?, car_model=?, rating=?, is_free=?, tariff=?, location=PointFromText('POINT(%s)') WHERE driver_id=?;";
+    private static final String DELETE_QUERY = "DELETE FROM drivers WHERE driver_id=?;";
 
     @Override
-    public void create(User user) throws DAOException {
-        TaxiDriver taxiDriver = (TaxiDriver) user;
-        String pointParam = taxiDriver.getLocation().getX() + " " + taxiDriver.getLocation().getY();
-        Car car = taxiDriver.getCar();
-        try (PooledConnection connection = dbPool.takeConnection();
-             PreparedStatement statement = connection.prepareStatement("INSERT INTO drivers (phone, name, surname, password, is_banned, car_number, car_model, rating, is_free, tariff, location) VALUE (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, PointFromText('" + pointParam + "'));")) {
-
-            statement.setString(1, String.valueOf(taxiDriver.getPhone()));
-            statement.setString(2, taxiDriver.getName());
-            statement.setString(3, taxiDriver.getSurname());
-            statement.setString(4, String.valueOf(taxiDriver.getPassword()));
-            statement.setBoolean(5, taxiDriver.isBanned());
-            statement.setString(6, String.valueOf(car.getNumber()));
-            statement.setString(7, car.getModel());
-            statement.setFloat(8, taxiDriver.getRating());
-            statement.setBoolean(9, taxiDriver.isFree());
-            statement.setFloat(10, taxiDriver.getTariff());
-
-            statement.execute();
-
-        } catch (SQLException e) {
-            logger.error("Cannot register user: ", e);
-            throw new DAOException("Cannot register user due to server error");
-        } catch (InterruptedException e) {
-            logger.error("The thread was interrupted during waiting time", e);
-            throw new DAOException("Cannot register due to server error");
-        }
+    protected String getCreateQuery(TaxiDriver object) {
+        String pointParam = object.getLocation().getX() + " " + object.getLocation().getY();
+        return String.format(CREATE_QUERY, pointParam);
     }
 
     @Override
-    public User readById(int id) throws DAOException {
-        final String query = "SELECT driver_id, phone, name, surname, password, is_banned, car_number, car_model, rating, is_free, X(location), Y(location), tariff FROM drivers WHERE driver_id=?;";
-
-        try (PooledConnection connection = dbPool.takeConnection();
-             PreparedStatement statement = connection.prepareStatement(query)) {
-
-            statement.setInt(1, id);
-            ResultSet result = statement.executeQuery();
-
-            while (result.next()) {
-                TaxiDriver taxiDriver = new TaxiDriver();
-
-                taxiDriver.setId(result.getInt("driver_id"));
-                taxiDriver.setPhone(result.getLong("phone"));
-                taxiDriver.setName(result.getString("name"));
-                taxiDriver.setSurname(result.getString("surname"));
-                taxiDriver.setPassword(result.getString("password").toCharArray());
-                taxiDriver.setBanned(result.getBoolean("is_banned"));
-                taxiDriver.setRating(result.getFloat("rating"));
-                taxiDriver.setFree(result.getBoolean("is_free"));
-                Point point = new Point();
-                point.setX(result.getFloat("X(location)"));
-                point.setY(result.getFloat("Y(location)"));
-                taxiDriver.setLocation(point);
-                taxiDriver.setTariff(result.getFloat("tariff"));
-
-                char[] car_number = result.getString("car_number").toCharArray();
-                String car_model = result.getString("car_model");
-                taxiDriver.setCar(new CarBuilder().number(car_number).model(car_model).build());
-
-                return taxiDriver;
-            }
-
-        } catch (InterruptedException e) {
-            //TODO
-        } catch (SQLException e) {
-            //TODO
-        }
-
-        return null;
+    protected void prepareStatementForCreate(PreparedStatement statement, TaxiDriver object) throws SQLException {
+        Car car = object.getCar();
+        statement.setString(1, String.valueOf(object.getPhone()));
+        statement.setString(2, object.getName());
+        statement.setString(3, object.getSurname());
+        statement.setString(4, String.valueOf(object.getPassword()));
+        statement.setBoolean(5, object.isBanned());
+        statement.setString(6, String.valueOf(car.getNumber()));
+        statement.setString(7, car.getModel());
+        statement.setFloat(8, object.getRating());
+        statement.setBoolean(9, object.isFree());
+        statement.setFloat(10, object.getTariff());
     }
 
     @Override
-    public User[] readByLocation(float x, float y, int count) throws DAOException {
-        final String query = "SELECT driver_id, phone, name, surname, password, is_banned, car_number, car_model, rating, is_free, X(location), Y(location), tariff " +
-                "FROM drivers where is_banned = false AND is_free = true " +
-                "ORDER BY sqrt(pow((x(location) - " + x + "), 2) + pow(abs(y(location) - " + y + "), 2)) limit " + count + ";";
+    protected String getReadByIdQuery() {
+        return READ_BY_ID_QUERY;
+    }
 
+    @Override
+    protected String getReadInRangeQuery() {
+        return READ_IN_RANGE_QUERY;
+    }
+
+    @Override
+    protected String getReadLengthQuery() {
+        return READ_LENGTH_QUERY;
+    }
+
+    @Override
+    protected String getUpdateQuery(TaxiDriver object) {
+        String pointParam = object.getLocation().getX() + " " + object.getLocation().getY();
+        return String.format(UPDATE_QUERY, pointParam);
+    }
+
+    @Override
+    protected void prepareStatementForUpdate(PreparedStatement statement, TaxiDriver object) throws SQLException {
+        statement.setLong(1, object.getPhone());
+        statement.setString(2, object.getName());
+        statement.setString(3, object.getSurname());
+        statement.setString(4, String.valueOf(object.getPassword()));
+        statement.setBoolean(5, object.isBanned());
+        statement.setString(6, String.valueOf(object.getCar().getNumber()));
+        statement.setString(7, String.valueOf(object.getCar().getModel()));
+        statement.setFloat(8, object.getRating());
+        statement.setBoolean(9, object.isFree());
+        statement.setFloat(10, object.getTariff());
+        statement.setInt(11, object.getId());
+    }
+
+    @Override
+    protected String getDeleteQuery() {
+        return DELETE_QUERY;
+    }
+
+    @Override
+    protected void prepareStatementForDelete(PreparedStatement statement, TaxiDriver object) throws SQLException {
+        statement.setInt(1, object.getId());
+    }
+
+    @Override
+    protected TaxiDriver parseResultSet(ResultSet resultSet) throws SQLException {
+        TaxiDriver taxiDriver = new TaxiDriver();
+
+        taxiDriver.setId(resultSet.getInt(DRIVER_ID_COLUMN));
+        taxiDriver.setPhone(resultSet.getLong(PHONE_COLUMN));
+        taxiDriver.setName(resultSet.getString(NAME_COLUMN));
+        taxiDriver.setSurname(resultSet.getString(SURNAME_COLUMN));
+        taxiDriver.setPassword(resultSet.getString(PASSWORD_COLUMN).toCharArray());
+        taxiDriver.setBanned(resultSet.getBoolean(IS_BANNED_COLUMN));
+        taxiDriver.setRating(resultSet.getFloat(RATING_COLUMN));
+        taxiDriver.setFree(resultSet.getBoolean(IS_FREE_COLUMN));
+        Point point = new Point();
+        point.setX(resultSet.getFloat(LOCATION_X_COLUMN));
+        point.setY(resultSet.getFloat(LOCATION_Y_COLUMN));
+        taxiDriver.setLocation(point);
+        taxiDriver.setTariff(resultSet.getFloat(TARIFF_COLUMN));
+
+        char[] car_number = resultSet.getString(CAR_NUMBER_COLUMN).toCharArray();
+        String car_model = resultSet.getString(CAR_MODEL_COLUMN);
+        taxiDriver.setCar(new CarBuilder().number(car_number).model(car_model).build());
+
+        return taxiDriver;
+    }
+
+    @Override
+    public List<TaxiDriver> readByLocation(float x, float y, int count) throws DAOException {
         try (PooledConnection connection = dbPool.takeConnection();
              Statement statement = connection.createStatement()) {
 
-            ResultSet result = statement.executeQuery(query);
-            int rowCount = 0;
-            if (result.last()) {
-                rowCount = result.getRow();
-                result.beforeFirst();
-            }
-
-            TaxiDriver[] drivers = new TaxiDriver[rowCount];
-            int currentRow = 0;
+            ResultSet result = statement.executeQuery(String.format(READ_BY_LOCATION_QUERY, x, y, count));
+            List<TaxiDriver> taxiDrivers = new ArrayList<>();
             while (result.next()) {
-                TaxiDriver taxiDriver = new TaxiDriver();
-
-                taxiDriver.setId(result.getInt("driver_id"));
-                taxiDriver.setPhone(result.getLong("phone"));
-                taxiDriver.setName(result.getString("name"));
-                taxiDriver.setSurname(result.getString("surname"));
-                taxiDriver.setPassword(result.getString("password").toCharArray());
-                taxiDriver.setBanned(result.getBoolean("is_banned"));
-                taxiDriver.setRating(result.getFloat("rating"));
-                taxiDriver.setFree(result.getBoolean("is_free"));
-                Point point = new Point();
-                point.setX(result.getFloat("X(location)"));
-                point.setY(result.getFloat("Y(location)"));
-                taxiDriver.setLocation(point);
-                taxiDriver.setTariff(result.getFloat("tariff"));
-
-                char[] car_number = result.getString("car_number").toCharArray();
-                String car_model = result.getString("car_model");
-                taxiDriver.setCar(new CarBuilder().number(car_number).model(car_model).build());
-
-                drivers[currentRow++] = taxiDriver;
+                taxiDrivers.add(parseResultSet(result));
             }
 
-            return drivers;
-
-        } catch (InterruptedException e) {
-            //TODO
-        } catch (SQLException e) {
-            //TODO
-        }
-
-        return null;
-    }
-
-    @Override
-    public User[] readInRange(int begin, int end) throws DAOException {
-        final String query = "SELECT driver_id, phone, name, surname, password, is_banned, car_number, car_model, rating, is_free, X(location), Y(location), tariff FROM drivers WHERE driver_id BETWEEN ? AND ?";
-        try (PooledConnection connection = dbPool.takeConnection();
-             PreparedStatement statement = connection.prepareStatement(query)) {
-
-            statement.setInt(1, begin);
-            statement.setInt(2, end);
-
-            ResultSet result = statement.executeQuery();
-
-            int rowCount = 0;
-            if (result.last()) {
-                rowCount = result.getRow();
-                result.beforeFirst();
-            }
-
-            TaxiDriver[] taxiDrivers = new TaxiDriver[rowCount];
-            int currentPosition = 0;
-            while (result.next()) {
-                TaxiDriver taxiDriver = new TaxiDriver();
-                taxiDriver.setId(result.getInt("driver_id"));
-                taxiDriver.setPhone(result.getLong("phone"));
-                taxiDriver.setName(result.getString("name"));
-                taxiDriver.setSurname(result.getString("surname"));
-                taxiDriver.setPassword(result.getString("password").toCharArray());
-                taxiDriver.setBanned(result.getBoolean("is_banned"));
-                taxiDriver.setCar(new Car(result.getString("car_number").toCharArray(), result.getString("car_model")));
-                taxiDriver.setRating(result.getFloat("rating"));
-                taxiDriver.setFree(result.getBoolean("is_free"));
-                Point point = new Point();
-                point.setX(result.getFloat("X(location)"));
-                point.setY(result.getFloat("Y(location)"));
-                taxiDriver.setLocation(point);
-                taxiDriver.setTariff(result.getFloat("tariff"));
-                taxiDrivers[currentPosition] = taxiDriver;
-                currentPosition++;
-            }
             return taxiDrivers;
 
         } catch (InterruptedException e) {
-            //TODO
+            logger.error("Cannot execute query -> interrupted", e);
+            throw new DAOException(e);
         } catch (SQLException e) {
-            //TODO
+            logger.error("Cannot execute query -> SQL error", e);
+            throw new DAOException(e);
         }
-        return null;
+
     }
 
     @Override
-    public User readByPhoneAndPassword(long phone, char[] password) throws DAOException {
-        final String query = "SELECT driver_id, phone, name, surname, password, is_banned, car_number, car_model, rating, is_free, X(location), Y(location), tariff FROM drivers WHERE phone=? AND password=?";
-
-        try (PooledConnection connection = dbPool.takeConnection();
-             PreparedStatement statement = connection.prepareStatement(query)) {
-
-            statement.setLong(1, phone);
-            statement.setString(2, String.valueOf(password));
-            ResultSet result = statement.executeQuery();
-
-            if (result.last()) {
-                if (result.getRow() != 1) {
-                    return null;
-                } else {
-                    result.beforeFirst();
-                }
-            }
-
-            if (!result.next()) {
-                return null;
-            }
-
-            TaxiDriver taxiDriver = new TaxiDriver();
-            taxiDriver.setId(result.getInt("driver_id"));
-            taxiDriver.setPhone(result.getLong("phone"));
-            taxiDriver.setName(result.getString("name"));
-            taxiDriver.setSurname(result.getString("surname"));
-            taxiDriver.setPassword(result.getString("password").toCharArray());
-            taxiDriver.setBanned(result.getBoolean("is_banned"));
-            taxiDriver.setCar(new Car(result.getString("car_number").toCharArray(), result.getString("car_model")));
-            taxiDriver.setRating(result.getFloat("rating"));
-            taxiDriver.setFree(result.getBoolean("is_free"));
-            Point point = new Point();
-            point.setX(result.getFloat("X(location)"));
-            point.setY(result.getFloat("Y(location)"));
-            taxiDriver.setLocation(point);
-            taxiDriver.setTariff(result.getFloat("tariff"));
-
-            return taxiDriver;
-
-        } catch (SQLException e) {
-            logger.error("Cannot register user: ", e);
-            throw new DAOException("Cannot register user due to server error");
-        } catch (InterruptedException e) {
-            logger.error("The thread was interrupted during waiting time", e);
-            throw new DAOException("Cannot register due to server error");
-        }
-    }
-
-    @Override
-    public int readLength() throws DAOException {
-
-        final String query = "SELECT COUNT(*) FROM drivers;";
-
-        try (PooledConnection connection = dbPool.takeConnection();
-             Statement statement = connection.createStatement()) {
-
-            ResultSet result = statement.executeQuery(query);
-
-            while (result.next()) {
-                return result.getInt(1);
-            }
-
-        } catch (InterruptedException e) {
-            //TODO
-        } catch (SQLException e) {
-            //TODO
-        }
-        return 0;
-    }
-
-    @Override
-    public void update(User user) throws DAOException {
-        TaxiDriver taxiDriver = (TaxiDriver) user;
-
-        String pointParam = taxiDriver.getLocation().getX() + " " + taxiDriver.getLocation().getY();
-        final String query = "UPDATE drivers " +
-                "SET phone=?, name=?, surname=?, password=?, is_banned=?, car_number=?, car_model=?, rating=?, is_free=?, tariff=?, location=PointFromText('POINT(" + pointParam + ")') " +
-                "WHERE driver_id=?;";
-
-        try (PooledConnection connection = dbPool.takeConnection();
-             PreparedStatement statement = connection.prepareStatement(query)) {
-
-            statement.setLong(1, taxiDriver.getPhone());
-            statement.setString(2, taxiDriver.getName());
-            statement.setString(3, taxiDriver.getSurname());
-            statement.setString(4, String.valueOf(taxiDriver.getPassword()));
-            statement.setBoolean(5, taxiDriver.isBanned());
-            statement.setString(6, String.valueOf(taxiDriver.getCar().getNumber()));
-            statement.setString(7, String.valueOf(taxiDriver.getCar().getModel()));
-            statement.setFloat(8, taxiDriver.getRating());
-            statement.setBoolean(9, taxiDriver.isFree());
-            statement.setFloat(10, taxiDriver.getTariff());
-            statement.setInt(11, taxiDriver.getId());
-
-            if (statement.executeUpdate() != 1) {
-                //TODO
-            }
-
-        } catch (InterruptedException e) {
-            //TODO
-        } catch (SQLException e) {
-            //TODO
-        }
-    }
-
-    @Override
-    public void delete(User user) throws DAOException {
-        final String query = "DELETE FROM drivers WHERE driver_id=?;";
-
-        try (PooledConnection connection = dbPool.takeConnection();
-             PreparedStatement statement = connection.prepareStatement(query)) {
-
-            statement.setInt(1, user.getId());
-            if (statement.executeUpdate() != 1) {
-                //TODO
-            }
-
-        } catch (InterruptedException e) {
-            //TODO
-        } catch (SQLException e) {
-            //TODO
-        }
+    protected String getReadByPhoneAndPasswordQuery() {
+        return READ_BY_PHONE_AND_PASSWORD_QUERY;
     }
 }

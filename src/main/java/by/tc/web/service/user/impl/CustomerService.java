@@ -1,14 +1,14 @@
 package by.tc.web.service.user.impl;
 
+import by.tc.web.dao.DAO;
 import by.tc.web.dao.DAOFactory;
 import by.tc.web.dao.exception.DAOException;
-import by.tc.web.dao.user.UserDAO;
 import by.tc.web.domain.user.User;
 import by.tc.web.domain.user.impl.Customer;
 import by.tc.web.service.user.AbstractUserService;
 
 public class CustomerService extends AbstractUserService {
-    private static final UserDAO dao = (UserDAO) DAOFactory.getInstance().getCustomerDAO();
+    private static final DAO<User> dao = DAOFactory.getInstance().getCustomerDAO();
 
     @Override
     public Object get(int userId) {
@@ -89,7 +89,7 @@ public class CustomerService extends AbstractUserService {
     }
 
     @Override
-    protected UserDAO getDAO() {
+    protected DAO<User> getDAO() {
         return dao;
     }
 }

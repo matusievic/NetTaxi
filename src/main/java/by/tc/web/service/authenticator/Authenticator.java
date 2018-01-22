@@ -1,9 +1,12 @@
 package by.tc.web.service.authenticator;
 
+import by.tc.web.dao.DAO;
 import by.tc.web.dao.DAOFactory;
 import by.tc.web.dao.exception.DAOException;
-import by.tc.web.dao.user.UserDAO;
 import by.tc.web.domain.user.User;
+import by.tc.web.domain.user.impl.Administrator;
+import by.tc.web.domain.user.impl.Customer;
+import by.tc.web.domain.user.impl.TaxiDriver;
 import by.tc.web.service.encoder.Encoder;
 import by.tc.web.service.encoder.EncoderFactory;
 
@@ -20,9 +23,9 @@ public final class Authenticator {
         }
 
 
-        UserDAO customerDAO = (UserDAO) daoFactory.getCustomerDAO();
-        UserDAO driverDAO = (UserDAO) daoFactory.getTaxiDriverDAO();
-        UserDAO administratorDAO = (UserDAO) daoFactory.getAdministratorDAO();
+        DAO<Customer> customerDAO = daoFactory.getCustomerDAO();
+        DAO<TaxiDriver> driverDAO = daoFactory.getTaxiDriverDAO();
+        DAO<Administrator> administratorDAO = daoFactory.getAdministratorDAO();
 
         try {
             User customer = customerDAO.readByPhoneAndPassword(phone, encryptedPassword);

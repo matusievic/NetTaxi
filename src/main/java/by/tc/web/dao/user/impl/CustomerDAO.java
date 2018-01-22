@@ -1,286 +1,98 @@
 package by.tc.web.dao.user.impl;
 
-import by.tc.web.dao.user.UserDAO;
 import by.tc.web.dao.exception.DAOException;
-import by.tc.web.domain.user.User;
+import by.tc.web.dao.user.UserMySQLDAO;
 import by.tc.web.domain.user.impl.Customer;
-import by.tc.web.service.database.DatabaseFactory;
-import by.tc.web.service.database.connection.PooledConnection;
-import by.tc.web.service.database.pool.DBPool;
-import by.tc.web.service.registrar.impl.CustomerRegistrar;
-import org.apache.log4j.Logger;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
-public class CustomerDAO implements UserDAO {
-    private static final Logger logger = Logger.getLogger(CustomerRegistrar.class);
-    private static final DatabaseFactory databaseFactory = DatabaseFactory.getInstance();
-    private static final DBPool dbPool = databaseFactory.createDBPool();
-
-    @Override
-    public void create(User user) throws DAOException {
-        Customer customer = (Customer) user;
-        try (PooledConnection connection = dbPool.takeConnection();
-             PreparedStatement statement = connection.prepareStatement("INSERT INTO customers (phone, name, surname, password, is_banned, discount) VALUE (?, ?, ?, ?, false, 0);")) {
-
-            statement.setString(1, String.valueOf(customer.getPhone()));
-            statement.setString(2, customer.getName());
-            statement.setString(3, customer.getSurname());
-            statement.setString(4, String.valueOf(customer.getPassword()));
-
-            if (statement.executeUpdate() != 1) {
-                throw new SQLException("Cannot perform update query");
-            }
-
-        } catch (SQLException e) {
-            logger.error("Cannot register user: ", e);
-            throw new DAOException("Cannot register user due to server error");
-        } catch (InterruptedException e) {
-            logger.error("The thread was interrupted during waiting time", e);
-            throw new DAOException("Cannot register due to server error");
-        }
-    }
-
-    /*@Override
-    public Customer[] read() throws DAOException {
-        final String query = "SELECT * FROM customers;";
-        try {
-            PooledConnection connection = dbPool.takeConnection();
-            Statement statement = connection.createStatement();
-            ResultSet result = statement.executeQuery(query);
-
-            int rowCount = 0;
-            if (result.last()) {
-                rowCount = result.getRow();
-                result.beforeFirst();
-            }
-
-            Customer[] customers = new Customer[rowCount];
-            int currentPosition = 0;
-            while (result.next()) {
-                Customer customer = new Customer();
-                customer.setId(result.getInt("customer_id"));
-                customer.setPhone(result.getLong("phone"));
-                customer.setName(result.getString("name"));
-                customer.setSurname(result.getString("surname"));
-                customer.setPassword(result.getString("password").toCharArray());
-                customer.setBanned(result.getBoolean("is_banned"));
-                customer.setDiscount(result.getFloat("discount"));
-                customers[currentPosition] = customer;
-                currentPosition++;
-            }
-
-            return customers;
-
-        } catch (SQLException e) {
-            logger.error("Cannot register user: ", e);
-            throw new DAOException("Cannot register user due to server error");
-        } catch (InterruptedException e) {
-            logger.error("The thread was interrupted during waiting time", e);
-            throw new DAOException("Cannot register due to server error");
-        }
-    }*/
+public class CustomerDAO extends UserMySQLDAO<Customer> {
+    private static final String CREATE_QUERY = "INSERT INTO customers (phone, name, surname, password, is_banned, discount) VALUE (?, ?, ?, ?, false, 0);";
+    private static final String READ_BY_ID_QUERY = "SELECT * FROM customers WHERE customer_id=?;";
+    private static final String READ_IN_RANGE_QUERY = "SELECT * FROM customers WHERE customer_id BETWEEN ? AND ?";
+    private static final String READ_BY_PHONE_AND_PASSWORD_QUERY = "SELECT * FROM customers WHERE phone=? AND password=?";
+    private static final String READ_LENGTH_QUERY = "SELECT COUNT(*) FROM customers;";
+    private static final String UPDATE_QUERY = "UPDATE customers SET phone=?, name=?, surname=?, password=?, is_banned=?, discount=? WHERE customer_id=?;";
+    private static final String DELETE_QUERY = "DELETE FROM customers WHERE customer_id=?;";
 
     @Override
-    public User readById(int id) throws DAOException {
-        final String query = "SELECT * FROM customers WHERE customer_id=?;";
-
-        try (PooledConnection connection = dbPool.takeConnection();
-             PreparedStatement statement = connection.prepareStatement(query)) {
-
-            statement.setInt(1, id);
-            ResultSet result = statement.executeQuery();
-
-            while (result.next()) {
-                Customer customer = new Customer();
-
-                customer.setId(result.getInt("customer_id"));
-                customer.setPhone(result.getLong("phone"));
-                customer.setName(result.getString("name"));
-                customer.setSurname(result.getString("surname"));
-                customer.setPassword(result.getString("password").toCharArray());
-                customer.setBanned(result.getBoolean("is_banned"));
-                customer.setDiscount(result.getFloat("discount"));
-
-                return customer;
-            }
-
-        } catch (InterruptedException e) {
-            //TODO
-        } catch (SQLException e) {
-            //TODO
-        }
-
-        return null;
+    protected String getCreateQuery(Customer obj) {
+        return CREATE_QUERY;
     }
 
     @Override
-    public User[] readByLocation(float x, float y, int count) throws DAOException {
-        return new User[0];
+    protected void prepareStatementForCreate(PreparedStatement statement, Customer object) throws SQLException {
+        statement.setString(1, String.valueOf(object.getPhone()));
+        statement.setString(2, object.getName());
+        statement.setString(3, object.getSurname());
+        statement.setString(4, String.valueOf(object.getPassword()));
     }
 
     @Override
-    public User[] readInRange(int begin, int end) throws DAOException {
-        final String query = "SELECT * FROM customers WHERE customer_id BETWEEN ? AND ?";
-        try (PooledConnection connection = dbPool.takeConnection();
-             PreparedStatement statement = connection.prepareStatement(query)) {
-
-            statement.setInt(1, begin);
-            statement.setInt(2, end);
-
-            ResultSet result = statement.executeQuery();
-
-            int rowCount = 0;
-            if (result.last()) {
-                rowCount = result.getRow();
-                result.beforeFirst();
-            }
-
-            Customer[] customers = new Customer[rowCount];
-            int currentPosition = 0;
-            while (result.next()) {
-                Customer customer = new Customer();
-                customer.setId(result.getInt("customer_id"));
-                customer.setPhone(result.getLong("phone"));
-                customer.setName(result.getString("name"));
-                customer.setSurname(result.getString("surname"));
-                customer.setPassword(result.getString("password").toCharArray());
-                customer.setBanned(result.getBoolean("is_banned"));
-                customer.setDiscount(result.getFloat("discount"));
-                customers[currentPosition] = customer;
-                currentPosition++;
-            }
-
-            return customers;
-
-        } catch (InterruptedException e) {
-            //TODO
-        } catch (SQLException e) {
-            //TODO
-        }
-        return null;
+    protected String getReadByIdQuery() {
+        return READ_BY_ID_QUERY;
     }
 
     @Override
-    public User readByPhoneAndPassword(long phone, char[] password) throws DAOException {
-        final String query = "SELECT * FROM customers WHERE phone=? AND password=?";
-
-        try (PooledConnection connection = dbPool.takeConnection();
-             PreparedStatement statement = connection.prepareStatement(query)) {
-
-            statement.setLong(1, phone);
-            statement.setString(2, String.valueOf(password));
-            ResultSet result = statement.executeQuery();
-
-            if (result.last()) {
-                if (result.getRow() != 1) {
-                    return null;
-                } else {
-                    result.beforeFirst();
-                }
-            }
-
-            if (!result.next()) {
-                return null;
-            }
-
-            Customer customer = new Customer();
-            customer.setId(result.getInt("customer_id"));
-            customer.setPhone(result.getLong("phone"));
-            customer.setName(result.getString("name"));
-            customer.setSurname(result.getString("surname"));
-            customer.setPassword(result.getString("password").toCharArray());
-            customer.setBanned(result.getBoolean("is_banned"));
-            customer.setDiscount(result.getFloat("discount"));
-
-            return customer;
-
-        } catch (
-                SQLException e)
-
-        {
-            logger.error("Cannot register user: ", e);
-            throw new DAOException("Cannot register user due to server error");
-        } catch (
-                InterruptedException e)
-
-        {
-            logger.error("The thread was interrupted during waiting time", e);
-            throw new DAOException("Cannot register due to server error");
-        }
-
+    protected String getReadInRangeQuery() {
+        return READ_IN_RANGE_QUERY;
     }
 
     @Override
-    public int readLength() throws DAOException {
-        final String query = "SELECT COUNT(*) FROM customers;";
-
-        try (PooledConnection connection = dbPool.takeConnection();
-             Statement statement = connection.createStatement()) {
-
-            ResultSet result = statement.executeQuery(query);
-
-            while (result.next()) {
-                return result.getInt(1);
-            }
-
-        } catch (InterruptedException e) {
-            //TODO
-        } catch (SQLException e) {
-            //TODO
-        }
-        return 0;
+    protected String getReadLengthQuery() {
+        return READ_LENGTH_QUERY;
     }
 
     @Override
-    public void update(User user) throws DAOException {
-        final String query = "UPDATE customers " +
-                "SET phone=?, name=?, surname=?, password=?, is_banned=?, discount=? " +
-                "WHERE customer_id=?;";
-
-        Customer customer = (Customer) user;
-
-        try (PooledConnection connection = dbPool.takeConnection();
-             PreparedStatement statement = connection.prepareStatement(query)) {
-
-            statement.setLong(1, customer.getPhone());
-            statement.setString(2, customer.getName());
-            statement.setString(3, customer.getSurname());
-            statement.setString(4, String.valueOf(customer.getPassword()));
-            statement.setBoolean(5, customer.isBanned());
-            statement.setFloat(6, customer.getDiscount());
-            statement.setInt(7, customer.getId());
-
-            if (statement.executeUpdate() != 1) {
-                //TODO
-            }
-
-        } catch (InterruptedException e) {
-            //TODO
-        } catch (SQLException e) {
-            //TODO
-        }
+    protected String getUpdateQuery(Customer object) {
+        return UPDATE_QUERY;
     }
 
     @Override
-    public void delete(User user) throws DAOException {
-        final String query = "DELETE FROM customers WHERE customer_id=?;";
+    protected void prepareStatementForUpdate(PreparedStatement statement, Customer object) throws SQLException {
+        statement.setLong(1, object.getPhone());
+        statement.setString(2, object.getName());
+        statement.setString(3, object.getSurname());
+        statement.setString(4, String.valueOf(object.getPassword()));
+        statement.setBoolean(5, object.isBanned());
+        statement.setFloat(6, object.getDiscount());
+        statement.setInt(7, object.getId());
+    }
 
-        try (PooledConnection connection = dbPool.takeConnection();
-             PreparedStatement statement = connection.prepareStatement(query)) {
+    @Override
+    protected String getDeleteQuery() {
+        return DELETE_QUERY;
+    }
 
-            statement.setInt(1, user.getId());
-            if (statement.executeUpdate() != 1) {
-                //TODO
-            }
+    @Override
+    protected void prepareStatementForDelete(PreparedStatement statement, Customer object) throws SQLException {
+        statement.setInt(1, object.getId());
+    }
 
-        } catch (InterruptedException e) {
-            //TODO
-        } catch (SQLException e) {
-            //TODO
-        }
+    @Override
+    protected Customer parseResultSet(ResultSet resultSet) throws SQLException {
+        Customer customer = new Customer();
+        customer.setId(resultSet.getInt(CUSTOMER_ID_COLUMN));
+        customer.setPhone(resultSet.getLong(PHONE_COLUMN));
+        customer.setName(resultSet.getString(NAME_COLUMN));
+        customer.setSurname(resultSet.getString(SURNAME_COLUMN));
+        customer.setPassword(resultSet.getString(PASSWORD_COLUMN).toCharArray());
+        customer.setBanned(resultSet.getBoolean(IS_BANNED_COLUMN));
+        customer.setDiscount(resultSet.getFloat(DISCOUNT_COLUMN));
+        return customer;
+    }
+
+    @Override
+    protected String getReadByPhoneAndPasswordQuery() {
+        return READ_BY_PHONE_AND_PASSWORD_QUERY;
+    }
+
+    @Override
+    public List<Customer> readByLocation(float x, float y, int count) throws DAOException {
+        return new ArrayList<>();
     }
 }

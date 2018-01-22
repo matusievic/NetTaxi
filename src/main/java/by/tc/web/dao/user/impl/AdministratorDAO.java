@@ -1,230 +1,94 @@
 package by.tc.web.dao.user.impl;
 
 import by.tc.web.dao.exception.DAOException;
-import by.tc.web.dao.user.UserDAO;
-import by.tc.web.domain.user.User;
+import by.tc.web.dao.user.UserMySQLDAO;
 import by.tc.web.domain.user.impl.Administrator;
-import by.tc.web.domain.user.impl.Customer;
-import by.tc.web.service.database.DatabaseFactory;
-import by.tc.web.service.database.connection.PooledConnection;
-import by.tc.web.service.database.pool.DBPool;
-import by.tc.web.service.registrar.impl.CustomerRegistrar;
-import org.apache.log4j.Logger;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
-public class AdministratorDAO implements UserDAO {
-    private static final Logger logger = Logger.getLogger(CustomerRegistrar.class);
-    private static final DatabaseFactory databaseFactory = DatabaseFactory.getInstance();
-    private static final DBPool dbPool = databaseFactory.createDBPool();
+public class AdministratorDAO extends UserMySQLDAO<Administrator> {
+    private static final String CREATE_QUERY = "INSERT INTO administrator (phone, name, surname, password) VALUE (?, ?, ?, ?);";
+    private static final String READ_BY_ID_QUERY = "SELECT * FROM administrators WHERE administrator_id=?;";
+    private static final String READ_IN_RANGE = "SELECT * FROM administrators WHERE administrator_id BETWEEN ? AND ?";
+    private static final String READ_BY_PHONE_AND_PASSWORD_QUERY = "SELECT * FROM administrators WHERE phone=? AND password=?";
+    private static final String READ_LENGTH = "SELECT COUNT(*) FROM administrators;";
+    private static final String UPDATE_QUERY = "UPDATE administrators SET phone=?, name=?, surname=?, password=? WHERE administrator_id=?;";
+    private static final String DELETE_QUERY = "DELETE FROM administrators WHERE administrator_id=?;";
 
     @Override
-    public void create(User user) throws DAOException {
-        Customer customer = (Customer) user;
-        try (PooledConnection connection = dbPool.takeConnection();
-             PreparedStatement statement = connection.prepareStatement("INSERT INTO administrator (phone, name, surname, password) VALUE (?, ?, ?, ?);")) {
-
-            statement.setString(1, String.valueOf(customer.getPhone()));
-            statement.setString(2, customer.getName());
-            statement.setString(3, customer.getSurname());
-            statement.setString(4, String.valueOf(customer.getPassword()));
-            if (statement.executeUpdate() != 1) {
-                throw new SQLException("Cannot perform update query");
-            }
-
-        } catch (SQLException e) {
-            logger.error("Cannot register user: ", e);
-            throw new DAOException("Cannot register user due to server error");
-        } catch (InterruptedException e) {
-            logger.error("The thread was interrupted during waiting time", e);
-            throw new DAOException("Cannot register due to server error");
-        }
+    protected String getReadByPhoneAndPasswordQuery() {
+        return READ_BY_PHONE_AND_PASSWORD_QUERY;
     }
 
     @Override
-    public User readById(int id) throws DAOException {
-        final String query = "SELECT * FROM administrators WHERE administrator_id=?;";
-
-        try (PooledConnection connection = dbPool.takeConnection();
-             PreparedStatement statement = connection.prepareStatement(query)) {
-
-            statement.setInt(1, id);
-            ResultSet result = statement.executeQuery();
-
-            while (result.next()) {
-                Administrator administrator = new Administrator();
-                administrator.setId(result.getInt("administrator_id"));
-                administrator.setPhone(result.getLong("phone"));
-                administrator.setName(result.getString("name"));
-                administrator.setSurname(result.getString("surname"));
-                administrator.setPassword(result.getString("password").toCharArray());
-                return administrator;
-            }
-
-        } catch (InterruptedException e) {
-            //TODO
-        } catch (SQLException e) {
-            //TODO
-        }
-
-        return null;
+    public List<Administrator> readByLocation(float x, float y, int count) throws DAOException {
+        return new ArrayList<>();
     }
 
     @Override
-    public User[] readByLocation(float x, float y, int count) throws DAOException {
-        return new User[0];
+    protected String getCreateQuery(Administrator object) {
+        return CREATE_QUERY;
     }
 
     @Override
-    public User[] readInRange(int begin, int end) throws DAOException {
-        final String query = "SELECT * FROM administrators WHERE administrator_id BETWEEN ? AND ?";
-        try (PooledConnection connection = dbPool.takeConnection();
-             PreparedStatement statement = connection.prepareStatement(query)) {
-
-            statement.setInt(1, begin);
-            statement.setInt(2, end);
-
-            ResultSet result = statement.executeQuery();
-
-            int rowCount = 0;
-            if (result.last()) {
-                rowCount = result.getRow();
-                result.beforeFirst();
-            }
-
-            Administrator[] administrators = new Administrator[rowCount];
-            int currentPosition = 0;
-            while (result.next()) {
-                Administrator administrator = new Administrator();
-                administrator.setId(result.getInt("administrator_id"));
-                administrator.setPhone(result.getLong("phone"));
-                administrator.setName(result.getString("name"));
-                administrator.setSurname(result.getString("surname"));
-                administrator.setPassword(result.getString("password").toCharArray());
-                administrators[currentPosition] = administrator;
-                currentPosition++;
-            }
-
-            return administrators;
-
-        } catch (InterruptedException e) {
-            //TODO
-        } catch (SQLException e) {
-            //TODO
-        }
-        return null;
+    protected void prepareStatementForCreate(PreparedStatement statement, Administrator object) throws SQLException {
+        statement.setString(1, String.valueOf(object.getPhone()));
+        statement.setString(2, object.getName());
+        statement.setString(3, object.getSurname());
+        statement.setString(4, String.valueOf(object.getPassword()));
     }
 
     @Override
-    public User readByPhoneAndPassword(long phone, char[] password) throws DAOException {
-        final String query = "SELECT * FROM administrators WHERE phone=? AND password=?";
-
-        try (PooledConnection connection = dbPool.takeConnection();
-             PreparedStatement statement = connection.prepareStatement(query)) {
-
-            statement.setLong(1, phone);
-            statement.setString(2, String.valueOf(password));
-            ResultSet result = statement.executeQuery();
-
-            if (result.last()) {
-                if (result.getRow() != 1) {
-                    return null;
-                } else {
-                    result.beforeFirst();
-                }
-            }
-
-            if (!result.next()) {
-                return null;
-            }
-
-            Administrator administrator = new Administrator();
-            administrator.setId(result.getInt("administrator_id"));
-            administrator.setPhone(result.getLong("phone"));
-            administrator.setName(result.getString("name"));
-            administrator.setSurname(result.getString("surname"));
-            administrator.setPassword(result.getString("password").toCharArray());
-
-            return administrator;
-
-        } catch (SQLException e) {
-            logger.error("Cannot register user: ", e);
-            throw new DAOException("Cannot register user due to server error");
-        } catch (InterruptedException e) {
-            logger.error("The thread was interrupted during waiting time", e);
-            throw new DAOException("Cannot register due to server error");
-        }
+    protected String getReadByIdQuery() {
+        return READ_BY_ID_QUERY;
     }
 
     @Override
-    public int readLength() throws DAOException {
-        final String query = "SELECT COUNT(*) FROM administrators;";
-
-        try (PooledConnection connection = dbPool.takeConnection();
-             Statement statement = connection.createStatement()) {
-
-            ResultSet result = statement.executeQuery(query);
-
-            while (result.next()) {
-                return result.getInt(1);
-            }
-
-        } catch (InterruptedException e) {
-            //TODO
-        } catch (SQLException e) {
-            //TODO
-        }
-        return 0;
+    protected String getReadInRangeQuery() {
+        return READ_IN_RANGE;
     }
 
     @Override
-    public void update(User user) throws DAOException {
-        final String query = "UPDATE administrators " +
-                "SET phone=?, name=?, surname=?, password=? " +
-                "WHERE administrator_id=?;";
-
-        Administrator administrator = (Administrator) user;
-
-        try (PooledConnection connection = dbPool.takeConnection();
-             PreparedStatement statement = connection.prepareStatement(query)) {
-
-
-            statement.setLong(1, administrator.getPhone());
-            statement.setString(2, administrator.getName());
-            statement.setString(3, administrator.getSurname());
-            statement.setString(4, String.valueOf(administrator.getPassword()));
-            statement.setInt(5, administrator.getId());
-
-            if (statement.executeUpdate() != 1) {
-                //TODO
-            }
-
-        } catch (InterruptedException e) {
-            //TODO
-        } catch (SQLException e) {
-            //TODO
-        }
+    protected String getReadLengthQuery() {
+        return READ_LENGTH;
     }
 
     @Override
-    public void delete(User user) throws DAOException {
-        final String query = "DELETE FROM administrators WHERE administrator_id=?;";
+    protected String getUpdateQuery(Administrator object) {
+        return UPDATE_QUERY;
+    }
 
-        try (PooledConnection connection = dbPool.takeConnection();
-             PreparedStatement statement = connection.prepareStatement(query)) {
+    @Override
+    protected void prepareStatementForUpdate(PreparedStatement statement, Administrator object) throws SQLException {
+        statement.setLong(1, object.getPhone());
+        statement.setString(2, object.getName());
+        statement.setString(3, object.getSurname());
+        statement.setString(4, String.valueOf(object.getPassword()));
+        statement.setInt(5, object.getId());
+    }
 
-            statement.setInt(1, user.getId());
-            if (statement.executeUpdate() != 1) {
-                //TODO
-            }
+    @Override
+    protected String getDeleteQuery() {
+        return DELETE_QUERY;
+    }
 
-        } catch (InterruptedException e) {
-            //TODO
-        } catch (SQLException e) {
-            //TODO
-        }
+    @Override
+    protected void prepareStatementForDelete(PreparedStatement statement, Administrator object) throws SQLException {
+        statement.setInt(1, object.getId());
+    }
+
+    @Override
+    protected Administrator parseResultSet(ResultSet resultSet) throws SQLException {
+        Administrator administrator = new Administrator();
+        administrator.setId(resultSet.getInt(ID_COLUMN));
+        administrator.setPhone(resultSet.getLong(PHONE_COLUMN));
+        administrator.setName(resultSet.getString(NAME_COLUMN));
+        administrator.setSurname(resultSet.getString(SURNAME_COLUMN));
+        administrator.setPassword(resultSet.getString(PASSWORD_COLUMN).toCharArray());
+        return administrator;
     }
 }

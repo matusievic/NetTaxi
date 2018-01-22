@@ -1,16 +1,16 @@
 package by.tc.web.service.user.impl;
 
+import by.tc.web.dao.DAO;
 import by.tc.web.dao.DAOFactory;
 import by.tc.web.dao.exception.DAOException;
-import by.tc.web.dao.order.OrderDAO;
-import by.tc.web.dao.user.UserDAO;
+import by.tc.web.domain.order.Order;
 import by.tc.web.domain.point.Point;
 import by.tc.web.domain.user.User;
 import by.tc.web.domain.user.impl.TaxiDriver;
 import by.tc.web.service.user.AbstractUserService;
 
 public class TaxiDriverService extends AbstractUserService {
-    private static final UserDAO dao = (UserDAO) DAOFactory.getInstance().getTaxiDriverDAO();
+    private static final DAO<User> dao = DAOFactory.getInstance().getTaxiDriverDAO();
     private static final int DRIVERS_COUNT = 5;
 
     @Override
@@ -56,7 +56,7 @@ public class TaxiDriverService extends AbstractUserService {
 
         User[] result = null;
         try {
-            result = dao.readByLocation(x, y, 5);
+            result = dao.readByLocation(x, y, 5).toArray(new User[0]);
         } catch (DAOException e) {
             //TODO
         }
@@ -98,7 +98,7 @@ public class TaxiDriverService extends AbstractUserService {
     public void changeRating(int userId, byte rating) {
         TaxiDriver taxiDriver = (TaxiDriver) get(userId);
         float currentRating = taxiDriver.getRating();
-        OrderDAO orderDAO = (OrderDAO) DAOFactory.getInstance().getOrderDAO();
+        DAO<Order> orderDAO = DAOFactory.getInstance().getOrderDAO();
 
         int denominator = 0;
         try {
@@ -114,7 +114,7 @@ public class TaxiDriverService extends AbstractUserService {
     }
 
     @Override
-    protected UserDAO getDAO() {
+    protected DAO<User> getDAO() {
         return dao;
     }
 

@@ -1,13 +1,14 @@
 package by.tc.web.service.user.impl;
 
+import by.tc.web.dao.DAO;
 import by.tc.web.dao.DAOFactory;
 import by.tc.web.dao.exception.DAOException;
-import by.tc.web.dao.user.UserDAO;
 import by.tc.web.domain.user.User;
+import by.tc.web.domain.user.impl.Administrator;
 import by.tc.web.service.user.AbstractUserService;
 
 public class AdministratorService extends AbstractUserService {
-    private static final UserDAO dao = (UserDAO) DAOFactory.getInstance().getAdministratorDAO();
+    private static final DAO<User> dao = DAOFactory.getInstance().getAdministratorDAO();
 
     @Override
     public Object get(int userId) {
@@ -38,7 +39,7 @@ public class AdministratorService extends AbstractUserService {
     public void update(User user) {
         try {
             if (user != null) {
-                dao.update(user);
+                dao.update((Administrator) user);
             }
         } catch (DAOException e) {
             //TODO
@@ -49,7 +50,7 @@ public class AdministratorService extends AbstractUserService {
     public void delete(User user) {
         try {
             if (user != null) {
-                dao.delete(user);
+                dao.delete((Administrator) user);
             }
         } catch (DAOException e) {
             //TODO
@@ -62,7 +63,7 @@ public class AdministratorService extends AbstractUserService {
     }
 
     @Override
-    protected UserDAO getDAO() {
+    protected DAO<User> getDAO() {
         return dao;
     }
 }
