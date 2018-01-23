@@ -1,5 +1,6 @@
 package by.tc.web.controller.filter;
 
+import by.tc.web.controller.control.command.activity.ControllerActivity;
 import by.tc.web.domain.user.User;
 import by.tc.web.domain.user.impl.TaxiDriver;
 import org.apache.log4j.Logger;

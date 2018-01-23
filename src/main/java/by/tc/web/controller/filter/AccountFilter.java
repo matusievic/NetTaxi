@@ -1,7 +1,7 @@
 package by.tc.web.controller.filter;
 
+import by.tc.web.controller.control.command.activity.ControllerActivity;
 import by.tc.web.domain.user.User;
-import by.tc.web.domain.user.impl.Customer;
 import org.apache.log4j.Logger;
 
 import javax.servlet.Filter;
@@ -31,6 +31,7 @@ public class AccountFilter implements Filter {
 
         if (session == null) {
             resp.sendError(HttpServletResponse.SC_FORBIDDEN);
+            return;
         }
 
         User user = (User) session.getAttribute(FilterConstants.USER_PARAM);
@@ -43,6 +44,6 @@ public class AccountFilter implements Filter {
 
     @Override
     public void destroy() {
-        logger.info("Account  filter destroyed");
+        logger.info("Account filter destroyed");
     }
 }
