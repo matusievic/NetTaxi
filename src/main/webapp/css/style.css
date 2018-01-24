@@ -1,4 +1,365 @@
+body {
+    color: #4d4d4d;
+    font-family: "Open Sans", Arial, sans-serif;
+    font-size: 1em;
+}
+
+
+/* wrapper */
+.wrapper {
+    padding: 3%;
+    padding-top: 1%;
+}
+
+
+/* HEADER */
+header {
+    height: 700px;
+    background: linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) ), url("../img/taxi-banner.jpeg") no-repeat top;
+    background-size: 100% 100%;
+}
+
+.logo {
+    float: left;
+}
+
+.logo a {
+    font-family: "Lobster", sans-serif;
+    font-size: 35px;
+    font-weight: 500;
+    color: #ffffff;
+    text-decoration: none;
+}
+
+nav {
+    float: right;
+    text-align: justify;
+}
+
+.menu li a {
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 20px;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: white;
+}
+
+.menu li {
+    margin-left: 30px;
+    float: left;
+    list-style: none;
+}
+
+.menu li a:hover {
+    color: #F7CA18;
+}
+
+#touch-navigation {
+    display: none;
+    padding: 10px 15px;
+    float: left;
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 20px;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: white;
+}
+
+#touch-navigation:hover {
+    color: #F7CA18;
+}
+
+@media (max-width: 768px) {
+    .menu {
+        display: none;
+        clear: none;
+    }
+    .menu li {
+        float: none;
+        margin: 10px;
+    }
+    .menu li a {
+        display: table-cell;
+    }
+    #touch-navigation {
+        float: right;
+        display: block;
+    }
+}
+
+/* banner */
+.banner {
+    clear: both;
+    height: 100%;
+    font-weight: 600;
+    font-size: 3em;
+    text-transform: uppercase;
+    color: white;
+    padding-top: 250px;
+    text-align: center;
+}
+
+
+/* footer */
+footer {
+    width: 100%;
+    height: auto;
+    background: black;
+    margin: 0 auto;
+    padding-top: 25px;
+    margin: 0 auto;
+    display: table;
+}
+
+.company {
+    width: 45%;
+    margin-left: 5%;
+    float: left;
+    color: white;
+    font-family: "Lobster", sans-serif;
+    font-size: 1.5em;
+    font-weight: bold;
+    display: table-cell;
+}
+
+.company a {
+    color: white;
+    text-decoration: none;
+}
+
+.company a:hover {
+    color: white;
+    text-decoration: underline;
+    text-decoration-style: dotted;
+}
+
+.social {
+    width: 45%;
+    float: right;
+    display: table-cell;
+    padding-right: 5%;
+}
+
+.social img {
+    width: 35px;
+    height: 35px;
+    margin-bottom: 3%;
+    margin-left: 3%;
+    float: right;
+    filter: brightness(50%);
+}
+
+.social img:hover {
+    filter: none;
+}
+
+@media (max-width: 320px) {
+    .company, .social {
+        width: 100%;
+        text-align: center;
+        margin: 0 auto;
+        padding: 0;
+        padding-top: 5%;
+    }
+    .social img {
+        float: none;
+    }
+}
+
 #map {
-    width: 500px;
+    width: 100%;
     height: 500px;
+}
+
+/* Quote */
+.quote {
+    font-family: "Merriweather", sans-serif;
+    font-style: italic;
+    font-size: 2em;
+    padding-bottom: 3%;
+}
+
+.quote blockquote {
+    font-style: italic;
+    padding: 0;
+    margin: 0;
+}
+
+.quote blockquote:before, blockquote:after {
+    content: '"';
+}
+
+.quote figcaption {
+    text-align: right;
+    padding-right: 10%;
+}
+
+@media (max-width: 412px) {
+    .quote {
+        font-size: 1em;
+    }
+}
+
+
+/* Modal */
+.modal-container {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    background: rgba(0, 0, 0, .5);
+    z-index: 99;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 500ms ease;
+}
+
+.modal-container:target {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.modal-container > div {
+    transform: translate(0px, -50px);
+    transition: all 500ms ease;
+}
+
+.modal-container:target > div {
+    transform: translate(0px, 0px);
+}
+
+.modal {
+    width: 50%;
+    margin: auto;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: white;
+    border: 2px solid #222;
+    padding: 20px;
+    box-shadow: 0 0 50px 5px black;
+}
+
+#sign-in .modal {
+    height: 50%;
+}
+
+#sign-up .modal {
+    height: 100%;
+}
+
+.modal h1 {
+    width: 100%;
+    display: block;
+    margin-bottom: 30px;
+    color: #F7CA18;
+    text-align: center;
+}
+
+.modal form input[type=text],
+.modal form input[type=email],
+.modal form input[type=password] {
+    width: 50%;
+    border: 2px solid #aaa;
+    border-radius: 4px;
+    outline: none;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    font-size: 1.5em;
+    padding: 5px;
+    text-align: center;
+}
+
+.modal form input[type=text]:focus,
+.modal form input[type=email]:focus,
+.modal form input[type=password]:focus {
+    border-color: #F7CA18;
+    box-shadow: 0 0 8px 0 #F7CA18;
+}
+
+@media (max-width: 412px) {
+    .modal {
+        width: 90%;
+    }
+    .modal h1 {
+        margin-bottom: 10px;
+    }
+    .modal form input {
+        width: 90%;
+    }
+}
+
+.modal form label {
+    text-align: center;
+    margin-bottom: 3%;
+    display: block;
+}
+
+input[type=submit] {
+    border: 2px solid #F7CA18;
+    border-radius: 4px;
+    background: white;
+    font-size: 1.5em;
+    color: #F7CA18;
+    height: 50px;
+}
+
+input[type=submit]:hover {
+    background: #F7CA18;
+    color: white;
+}
+
+.cancel-button {
+    border: 2px solid #aaa;
+    border-radius: 4px;
+    background: white;
+    font-size: 1.5em;
+    height: 46px;
+    text-align: center;
+    vertical-align: middle;
+    line-height: 46px;
+    color: #aaa;
+}
+
+.cancel-button:hover {
+    background: #aaa;
+    color: white;
+}
+
+.cancel-button a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.confirm-wrapper {
+    width: 50%;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.confirm-wrapper input {
+    width: 45%;
+    float: left;
+}
+
+.confirm-wrapper div {
+    width: 45%;
+    float: right;
+}
+
+@media (max-width: 720px) {
+    .confirm-wrapper input,
+    .confirm-wrapper div {
+        float: none;
+        margin-left: auto;
+        margin-right: auto;
+        display: block;
+        width: 100%;
+        margin-top: 5px;
+    }
 }

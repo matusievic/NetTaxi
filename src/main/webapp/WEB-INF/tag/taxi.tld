@@ -29,4 +29,9 @@
             <required>true</required>
         </attribute>
     </tag>
+    <tag>
+        <name>menu</name>
+        <tag-class>by.tc.web.util.tag.MenuTag</tag-class>
+        <body-content>scriptless</body-content>
+    </tag>
 </taglib>

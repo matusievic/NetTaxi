@@ -1,0 +1,182 @@
+section {
+	display: table-row;
+	clear: none;
+}
+
+section h3 {
+	text-align: center;
+	text-transform: uppercase;
+	color: #F7CA18;
+	font-size: 3em;
+}
+
+@media (min-width: 768px) {
+	section h3:before, section h3:after {
+	    display: inline-block;
+	    content: "";
+	    border-top: .3rem solid #F7CA18;
+	    width: 4rem;
+	    margin: 0 1rem;
+	    transform: translateY(-1rem);
+	}
+}
+
+section p {
+	padding-left: 10%;
+	padding-right: 10%;
+	font-size: 1.5em;
+	text-indent: 2em;
+	text-align: justify;
+}
+
+section img {
+	width: 50%;
+	height: 50%;
+	float: left;
+	clear: none;
+}
+
+@media (max-width: 768px) {
+	section p {
+		padding: 3%;
+	}
+
+	section img {
+		width: 250px;
+		height: 200px;
+		display: block;
+		margin: auto;
+		float: none;
+	}
+}
+
+
+/* features */
+.features {
+	width: 100%;
+	display: table;
+}
+
+.feature {
+	display: table-cell;
+	text-align: center;
+	margin-right: auto;
+	margin-left: auto;
+	width: 25%;
+}
+
+.feature img {
+	width: 70px;
+	height: 70px;
+	display: block;
+	margin-right: auto;
+	margin-left: auto;
+	float: none;
+}
+
+.feature p {
+	width: 100%;
+	display: block;
+	margin-right: auto;
+	margin-left: auto;
+	float: none;
+	padding-left: 0;
+	padding-right: 0;
+	text-align: center;
+	text-indent: 0;
+}
+
+@media (max-width: 412px) {
+	.feature {
+		width: 100%;
+		display: table-row;
+	}
+}
+
+
+/* Timeline */
+.timeline {
+	list-style: none;
+	position: relative;
+	font-size: 2em;
+}
+
+.timeline:before {
+	content: "";
+	position: absolute;
+	width: 2px;
+	height: 100%;
+	background: #F7CA18;
+	margin: 0 30%;
+}
+
+.timeline li {
+	padding: 20px 20px;
+}
+
+.timeline li span {
+	color: #F7CA18;
+	position: absolute;
+	font-size: 1em;
+	background: white;
+	margin: 0 28%;
+}
+
+.timeline li div {
+	padding: 0 35%;
+}
+
+.timeline li div a {
+	text-decoration: underline;
+	text-decoration-style: dotted;
+	color: #4d4d4d;
+}
+
+.timeline li div a:hover {
+	color: #F7CA18;
+}
+
+@media (max-width: 414px) {
+	.timeline li div {
+		padding: 0 12%;
+	}
+	.timeline li span {
+		margin: 0;
+	}
+	.timeline:before {
+		margin: 0 8%;
+	}
+}
+
+
+/* Contact */
+#contact-map {
+	width: 30%;
+	height: 300px;
+	float: left;
+	display: table-cell;
+	margin-bottom: 5%;
+	padding-left: 3%;
+}
+
+#contact-info {
+	width: 30%;
+	padding-left: 10%;
+	float: left;
+	display: table-cell;
+	font-family: "Merriweather", sans-serif;
+	font-size: 2em;
+}
+
+@media (max-width: 412px) {
+	#contact-map {
+		width: 100%;
+		padding: 0;
+	}
+	#contact-info {
+		font-size: 1em;
+		width: 60%;
+		margin-bottom: 5%;
+		padding-left: 30%;
+	}
+}

@@ -30,79 +30,115 @@
     <title>${pageTitleLabel} - ${applicationNameLabel}</title>
 </head>
 <body>
-<input type="hidden" id="cancel-label" value="${cancelLabel}">
-<taxi:customer>
-    <script type="text/javascript" src="js/customer_orders.js"></script>
-    <div id="active-customer-order">
-        <table id="active-customer-order-table">
-            <thead>
-            <tr>
-                <th>${idLabel}</th>
-                <th>${nameLabel}</th>
-                <th>${surnameLabel}</th>
-                <th>${phoneLabel}</th>
-                <th>${carModelLabel}</th>
-                <th>${carNumberLabel}</th>
-                <th>${beginLabel}</th>
-                <th>${endLabel}</th>
-                <th>${priceLabel}</th>
-                <th>${statusLabel}</th>
-                <th>${ratingLabel}</th>
-                <th></th>
-            </tr>
-            </thead>
-            <tbody></tbody>
-        </table>
+<header>
+    <div class="wrapper">
+        <a href="#" id="touch-navigation">Menu</a>
+        <div class="logo">
+            <a href="/">NetTaxi</a>
+        </div>
+        <nav>
+            <ul class="menu">
+                <taxi:menu></taxi:menu>
+            </ul>
+        </nav>
+        <div class="banner">
+            ${aboutLabel}
+        </div>
     </div>
-</taxi:customer>
-<taxi:driver>
-    <script type="text/javascript" src="js/driver_orders.js"></script>
-    <div id="active-driver-order">
-        <table id="active-driver-order-table">
+</header>
+<main>
+    <section>
+        <h3></h3>
+        <p>
+            <input type="hidden" id="cancel-label" value="${cancelLabel}">
+            <taxi:customer>
+            <script type="text/javascript" src="js/customer_orders.js"></script>
+        <div id="active-customer-order">
+            <table id="active-customer-order-table">
+                <thead>
+                <tr>
+                    <th>${idLabel}</th>
+                    <th>${nameLabel}</th>
+                    <th>${surnameLabel}</th>
+                    <th>${phoneLabel}</th>
+                    <th>${carModelLabel}</th>
+                    <th>${carNumberLabel}</th>
+                    <th>${beginLabel}</th>
+                    <th>${endLabel}</th>
+                    <th>${priceLabel}</th>
+                    <th>${statusLabel}</th>
+                    <th>${ratingLabel}</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+        </taxi:customer>
+        <taxi:driver>
+            <script type="text/javascript" src="js/driver_orders.js"></script>
+            <div id="active-driver-order">
+                <table id="active-driver-order-table">
+                    <thead>
+                    <tr>
+                        <th>${idLabel}</th>
+                        <th>${customerLabel}</th>
+                        <th>${beginLabel}</th>
+                        <th>${endLabel}</th>
+                        <th>${priceLabel}</th>
+                        <th>${statusLabel}</th>
+                        <th>${ratingLabel}</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </taxi:driver>
+        <table>
             <thead>
             <tr>
                 <th>${idLabel}</th>
                 <th>${customerLabel}</th>
+                <th>${driverLabel}</th>
                 <th>${beginLabel}</th>
                 <th>${endLabel}</th>
                 <th>${priceLabel}</th>
                 <th>${statusLabel}</th>
                 <th>${ratingLabel}</th>
-                <th></th>
             </tr>
             </thead>
-            <tbody></tbody>
+            <tbody>
+            <c:forEach var="order" items="${orders}">
+                <tr>
+                    <td><a href="/controller?command=display_order&id=${order.id}">${order.id}</a></td>
+                    <td><a href="/controller?command=display_customer&id=${order.customerId}">${order.customerId}</a></td>
+                    <td><a href="/controller?command=display_taxidriver&id=${order.taxiDriverId}">${order.taxiDriverId}</a></td>
+                    <td>${order.begin.x}, ${order.begin.y}</td>
+                    <td>${order.end.x}, ${order.end.y}</td>
+                    <td>${order.price}</td>
+                    <td>${order.status}</td>
+                    <td>${order.rating}</td>
+                </tr>
+            </c:forEach>
+            </tbody>
         </table>
+        <taxi:pagination command="display_orders"/>
+
+        </p>
+    </section>
+</main>
+<footer>
+    <div class="company">
+        NetTaxi 2018
+        <%@include file="../include/language.jsp" %>
     </div>
-</taxi:driver>
-<table>
-    <thead>
-    <tr>
-        <th>${idLabel}</th>
-        <th>${customerLabel}</th>
-        <th>${driverLabel}</th>
-        <th>${beginLabel}</th>
-        <th>${endLabel}</th>
-        <th>${priceLabel}</th>
-        <th>${statusLabel}</th>
-        <th>${ratingLabel}</th>
-    </tr>
-    </thead>
-    <tbody>
-    <c:forEach var="order" items="${orders}">
-        <tr>
-            <td><a href="/controller?command=display_order&id=${order.id}">${order.id}</a></td>
-            <td><a href="/controller?command=display_customer&id=${order.customerId}">${order.customerId}</a></td>
-            <td><a href="/controller?command=display_taxidriver&id=${order.taxiDriverId}">${order.taxiDriverId}</a></td>
-            <td>${order.begin.x}, ${order.begin.y}</td>
-            <td>${order.end.x}, ${order.end.y}</td>
-            <td>${order.price}</td>
-            <td>${order.status}</td>
-            <td>${order.rating}</td>
-        </tr>
-    </c:forEach>
-    </tbody>
-</table>
-<taxi:pagination command="display_orders"/>
+    <div class="social">
+        <a href="#"><img src="img/social/phone.png" alt=""></a>
+        <a href="#"><img src="img/social/facebook.png" alt=""></a>
+        <a href="#"><img src="img/social/twitter.png" alt=""></a>
+        <a href="#"><img src="img/social/instagram.png" alt=""></a>
+    </div>
+</footer>
 </body>
 </html>

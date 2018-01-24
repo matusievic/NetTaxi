@@ -6,7 +6,8 @@
 <html>
 <head>
     <%@include file="../include/header.jsp"%>
-    <script type="text/javascript" src="js/order.js"></script>
+    <script type="text/javascript" src="https://api-maps.yandex.ru/2.1/?lang=en_US"></script>
+    <script type="text/javascript" src="/js/order.js"></script>
     <fmt:setLocale value="${sessionScope.locale}"/>
     <fmt:setBundle basename="localization.local" var="loc"/>
 
@@ -26,36 +27,71 @@
 
     <fmt:message bundle="${loc}" key="activity.choose" var="chooseLabel"/>
 
-    <fmt:message bundle="${loc}" key="account.sign_in" var="signinPageLabel"/>
-    <fmt:message bundle="${loc}" key="account.sign_up" var="signupPageLabel"/>
+    <fmt:message bundle="${loc}" key="account.sign_in" var="signInLabel"/>
+    <fmt:message bundle="${loc}" key="account.sign_up" var="signUpLabel"/>
 
     <title>${pageTitleLabel} - ${applicationNameLabel}</title>
 </head>
 <body>
-<jsp:directive.include file="../include/language.jsp"/>
-<form action="/controller?command=order">
-</form>
-<div id="map"></div>
-<div id="cost"></div>
-<div id="drivers">
-    <table id="drivers-table">
-        <thead>
-        <tr>
-            <th>${idLabel}</th>
-            <th>${nameLabel}</th>
-            <th>${surnameLabel}</th>
-            <th>${phoneLabel}</th>
-            <th>${carModelLabel}</th>
-            <th>${carNumberLabel}</th>
-            <th>${ratingLabel}</th>
-            <th>${lengthLabel}</th>
-            <th>${priceLabel}</th>
-            <th>${chooseLabel}</th>
-        </tr>
-        </thead>
-        <tbody>
-        </tbody>
-    </table>
-</div>
+<header>
+    <div class="wrapper">
+        <a href="#" id="touch-navigation">Menu</a>
+        <div class="logo">
+            <a href="/">NetTaxi</a>
+        </div>
+        <nav>
+            <ul class="menu">
+                <taxi:menu></taxi:menu>
+            </ul>
+        </nav>
+        <div class="banner">
+            ${aboutLabel}
+        </div>
+    </div>
+</header>
+<main>
+    <section>
+        <h3></h3>
+        <p>
+        <form action="/controller?command=order">
+        </form>
+        <div id="map"></div>
+        <div id="cost"></div>
+        <div id="drivers">
+            <table id="drivers-table">
+                <thead>
+                <tr>
+                    <th>${idLabel}</th>
+                    <th>${nameLabel}</th>
+                    <th>${surnameLabel}</th>
+                    <th>${phoneLabel}</th>
+                    <th>${carModelLabel}</th>
+                    <th>${carNumberLabel}</th>
+                    <th>${ratingLabel}</th>
+                    <th>${lengthLabel}</th>
+                    <th>${priceLabel}</th>
+                    <th>${chooseLabel}</th>
+                </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+
+        </p>
+    </section>
+</main>
+<footer>
+    <div class="company">
+        NetTaxi 2018
+        <%@include file="../include/language.jsp" %>
+    </div>
+    <div class="social">
+        <a href="#"><img src="img/social/phone.png" alt=""></a>
+        <a href="#"><img src="img/social/facebook.png" alt=""></a>
+        <a href="#"><img src="img/social/twitter.png" alt=""></a>
+        <a href="#"><img src="img/social/instagram.png" alt=""></a>
+    </div>
+</footer>
 </body>
 </html>
