@@ -27,16 +27,7 @@ public class CustomerActiveOrderReceivingCommand implements ControllerCommand {
         Gson gson = new GsonBuilder().serializeNulls().create();
 
         Order order = ControllerConstants.orderService.getActiveOrderByCustomerId(user.getId());
-        String orderJson = gson.toJson(order);
-
-        TaxiDriver taxiDriver = null;
-        if (order != null) {
-            taxiDriver = (TaxiDriver) ControllerConstants.taxiDriverService.get(order.getTaxiDriverId());
-            taxiDriver.setPassword(new char[0]);
-        }
-        String taxiDriverJson = gson.toJson(taxiDriver);
-
-        String json = '[' + orderJson + ',' + taxiDriverJson + ']';
+        String json = gson.toJson(order);
 
         resp.setContentType("application/json");
         resp.setCharacterEncoding("UTF-8");

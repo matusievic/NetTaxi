@@ -41,17 +41,31 @@
 <main>
     <section>
         <h3>${aboutDeleteLabel}</h3>
-        <p>
-
-        <form action="/controller?command=delete_account" method="post">
-            <label for="password">${passwordLabel}</label>
-            <input type="password" name="password" id="password" required>
-            <label for="sure-box">${sureLabel}</label>
-            <input type="checkbox" id="sure-box" onchange="document.getElementById('delete-button').disabled = !this.checked;" required>
-            <input type="submit" id="delete-button" disabled="true" value="${deleteLabel}">
-        </form>
-
-        </p>
+        <div class="content">
+            <form action="/controller?command=delete_account" method="post">
+                <div class="row">
+                    <div class="col-25">
+                        <label for="password">${passwordLabel}</label>
+                    </div>
+                    <div class="col-75">
+                        <input type="password" class="input-field" name="password" id="password" required>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-25">
+                        <label for="sure-box">${sureLabel}</label>
+                    </div>
+                    <div class="col-75">
+                        <input type="checkbox" class="input-field" id="sure-box" onchange="document.getElementById('delete-button').disabled = !this.checked;" required>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-100">
+                        <input type="submit" id="delete-button" disabled="true" value="${deleteLabel}">
+                    </div>
+                </div>
+            </form>
+        </div>
     </section>
 </main>
 <footer>

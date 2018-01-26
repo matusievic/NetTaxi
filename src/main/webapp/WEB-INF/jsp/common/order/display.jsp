@@ -20,7 +20,11 @@
     <fmt:message bundle="${loc}" key="order.status" var="statusLabel"/>
     <fmt:message bundle="${loc}" key="order.rating" var="ratingLabel"/>
 
+    <fmt:message bundle="${loc}" key="content.index.about" var="aboutLabel"/>
+    <fmt:message bundle="${loc}" key="content.common.orders.order" var="orderLabel"/>
+
     <fmt:message bundle="${loc}" key="activity.delete" var="deleteLabel"/>
+    <fmt:message bundle="${loc}" key="activity.rate" var="rateLabel"/>
 
     <title>#${order.id} - ${applicationNameLabel}</title>
 </head>
@@ -43,9 +47,9 @@
 </header>
 <main>
     <section>
-        <h3></h3>
-        <p>
-        <table>
+        <h3>${orderLabel}</h3>
+        <div class="content">
+        <table class="info-table">
             <tr>
                 <th>${idLabel}</th>
                 <td>${order.id}</td>
@@ -78,20 +82,27 @@
                 <th>${ratingLabel}</th>
                 <td>${order.rating}</td>
             </tr>
+            <taxi:customer>
+                <c:if test="${order.rating == 0}">
+                    <tr>
+                        <th>${rateLabel}</th>
+                        <td>
+                            <div class="rating">
+                                <span><a href="/controller?command=rate_order&id=${order.id}&rating=1">☆</a></span>
+                                <span><a href="/controller?command=rate_order&id=${order.id}&rating=2">☆</a></span>
+                                <span><a href="/controller?command=rate_order&id=${order.id}&rating=3">☆</a></span>
+                                <span><a href="/controller?command=rate_order&id=${order.id}&rating=4">☆</a></span>
+                                <span><a href="/controller?command=rate_order&id=${order.id}&rating=5">☆</a></span>
+                            </div>
+                        </td>
+                    </tr>
+                </c:if>
+            </taxi:customer>
         </table>
         <taxi:admin>
             <a href="/controller?command=delete_order&id=${order.id}">${deleteLabel}</a>
         </taxi:admin>
-        <taxi:customer>
-            <c:if test="${order.rating == 0}">
-                <form action="/controller?command=rate_order&id=${order.id}" method="post">
-                    <label for="rating">${ratingLabel}</label>
-                    <input type="text" name="rating" id="rating" required>
-                    <input type="submit" value="OK">
-                </form>
-            </c:if>
-        </taxi:customer>
-        </p>
+        </div>
     </section>
 </main>
 <footer>

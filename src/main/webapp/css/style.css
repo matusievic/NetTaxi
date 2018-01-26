@@ -101,6 +101,118 @@ nav {
     text-align: center;
 }
 
+/* sections */
+section {
+    display: block;
+    clear: none;
+    margin: 0 auto;
+}
+
+section h3 {
+    text-align: center;
+    text-transform: uppercase;
+    color: #F7CA18;
+    font-size: 3em;
+}
+
+a {
+    text-decoration: underline;
+    text-decoration-style: dotted;
+    color: #4d4d4d;
+}
+
+a:hover {
+    color: #F7CA18;
+}
+
+@media (min-width: 768px) {
+    section h3:before, section h3:after {
+        display: inline-block;
+        content: "";
+        border-top: .3rem solid #F7CA18;
+        width: 4rem;
+        margin: 0 1rem;
+        transform: translateY(-1rem);
+    }
+}
+
+section .content {
+    padding-left: 10%;
+    padding-right: 10%;
+    font-size: 1em;
+    text-indent: 2em;
+    text-align: justify;
+    padding-bottom: 5%;
+}
+
+section .content a {
+    font-size: 1.5em;
+    padding: 10px;
+}
+
+section img {
+    width: 50%;
+    height: 50%;
+    float: left;
+    clear: none;
+}
+
+@media (max-width: 768px) {
+    section .content {
+        padding: 3%;
+    }
+
+    section img {
+        width: 250px;
+        height: 200px;
+        display: block;
+        margin: auto;
+        float: none;
+    }
+}
+
+/* forms */
+.col-25 label {
+    padding: 12px 12px 12px 0;
+    display: inline-block;
+}
+
+/* Floating column for labels: 25% width */
+.col-25 {
+    float: left;
+    width: 25%;
+    margin-top: 6px;
+}
+
+/* Floating column for inputs: 75% width */
+.col-75 {
+    float: left;
+    width: 75%;
+    margin-top: 6px;
+}
+
+.col-100 {
+    float: none;
+    width: 100%;
+    padding-top: 6px;
+    margin: 0 auto;
+    display: block;
+}
+
+/* Clear floats after the columns */
+.row:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+/* Responsive layout - when the screen is less than 600px wide, make the two columns stack on top of each other instead of next to each other */
+@media (max-width: 600px) {
+    .col-25, .col-75, input[type=submit] {
+        width: 100%;
+        margin-top: 0;
+    }
+}
 
 /* footer */
 footer {
@@ -259,9 +371,7 @@ footer {
     text-align: center;
 }
 
-.modal form input[type=text],
-.modal form input[type=email],
-.modal form input[type=password] {
+.input-field {
     width: 50%;
     border: 2px solid #aaa;
     border-radius: 4px;
@@ -271,12 +381,10 @@ footer {
     display: block;
     font-size: 1.5em;
     padding: 5px;
-    text-align: center;
+    color: #4d4d4d;
 }
 
-.modal form input[type=text]:focus,
-.modal form input[type=email]:focus,
-.modal form input[type=password]:focus {
+.input-field:focus {
     border-color: #F7CA18;
     box-shadow: 0 0 8px 0 #F7CA18;
 }
@@ -306,6 +414,9 @@ input[type=submit] {
     font-size: 1.5em;
     color: #F7CA18;
     height: 50px;
+    width: 150px;
+    margin: 0 auto;
+    display: block;
 }
 
 input[type=submit]:hover {
@@ -317,7 +428,7 @@ input[type=submit]:hover {
     border: 2px solid #aaa;
     border-radius: 4px;
     background: white;
-    font-size: 1.5em;
+    font-size: 1.5rem;
     height: 46px;
     text-align: center;
     vertical-align: middle;
@@ -362,4 +473,114 @@ input[type=submit]:hover {
         width: 100%;
         margin-top: 5px;
     }
+}
+
+/* tables */
+.info-table {
+    width: 50%;
+    padding-bottom: 5%;
+}
+
+.info-table tr td .input-field {
+    margin: 0;
+}
+
+.info-table tr td input[type=submit] {
+    margin: 0;
+}
+
+.info-table tr td a {
+    font-size: 1rem;
+    padding: 0;
+}
+
+/* responsive table */
+.resp-table {
+    border: 1px solid #ccc;
+    border-collapse: collapse;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    table-layout: fixed;
+}
+
+.resp-table tr td a {
+    font-size: 1em;
+}
+
+.resp-table caption {
+    font-size: 1.5em;
+    margin: .5em 0 .75em;
+}
+.resp-table tr {
+    background: #f8f8f8;
+    border: 1px solid #ddd;
+    padding: .35em;
+}
+.resp-table th,
+.resp-table td {
+    padding: .625em;
+    text-align: center;
+}
+.resp-table th {
+    font-size: .85em;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+}
+@media screen and (max-width: 850px) {
+    .resp-table {
+        border: 0;
+    }
+    .resp-table caption {
+        font-size: 1.3em;
+    }
+    .resp-table thead {
+        border: none;
+        clip: rect(0 0 0 0);
+        height: 1px;
+        margin: -1px;
+        overflow: hidden;
+        padding: 0;
+        position: absolute;
+        width: 1px;
+    }
+    .resp-table tr {
+        border-bottom: 3px solid #ddd;
+        display: block;
+        margin-bottom: .625em;
+    }
+    .resp-table td {
+        border-bottom: 1px solid #ddd;
+        display: block;
+        font-size: .8em;
+        text-align: right;
+    }
+    .resp-table td:before {
+        /*
+        * aria-label has no advantage, it won't be read inside a table
+        content: attr(aria-label);
+        */
+        content: attr(data-label);
+        float: left;
+        font-weight: bold;
+        text-transform: uppercase;
+    }
+    .resp-table td:last-child {
+        border-bottom: 0;
+    }
+}
+
+/* rating */
+.rating {
+    unicode-bidi: bidi-override;
+}
+
+.rating > span {
+    display: inline-block;
+    position: relative;
+    width: 1.1em;
+}
+
+.rating > span:hover {
+    text-decoration: none;
 }

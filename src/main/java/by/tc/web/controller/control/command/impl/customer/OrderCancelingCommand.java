@@ -30,6 +30,7 @@ public class OrderCancelingCommand implements ControllerCommand {
             return;
         }
 
+        ControllerConstants.taxiDriverService.setFree(order.getTaxiDriverId(), true);
         ControllerConstants.orderService.changeStatus(id, OrderStatus.CANCELED);
     }
 }

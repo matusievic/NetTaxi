@@ -80,6 +80,18 @@ public class TaxiDriverService extends AbstractUserService {
     }
 
     @Override
+    public void setFree(int userId, boolean free) {
+        TaxiDriver taxiDriver = null;
+        try {
+            taxiDriver = dao.readById(userId);
+            taxiDriver.setFree(free);
+            dao.update(taxiDriver);
+        } catch (DAOException e) {
+            logger.error("Cannot change user free field -> DAO layer thrown an exception", e);
+        }
+    }
+
+    @Override
     protected DAO<TaxiDriver> getDAO() {
         return dao;
     }

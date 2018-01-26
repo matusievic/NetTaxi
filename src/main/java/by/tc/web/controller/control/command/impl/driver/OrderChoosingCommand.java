@@ -23,6 +23,9 @@ public class OrderChoosingCommand implements ControllerCommand {
             return;
         }
 
+        ((TaxiDriver) user).setFree(false);
+        ControllerConstants.taxiDriverService.update(user);
+
         ControllerConstants.orderService.changeStatus(id, OrderStatus.WAITING);
     }
 }

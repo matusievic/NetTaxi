@@ -20,7 +20,7 @@
     <fmt:message bundle="${loc}" key="activity.back" var="backLabel"/>
 
     <fmt:message bundle="${loc}" key="content.index.about" var="aboutLabel"/>
-    <fmt:message bundle="${loc}" key="content.account." var="aboutAccountLabel"/>
+    <fmt:message bundle="${loc}" key="content.administrator.drivers.create" var="createLabel"/>
 
     <fmt:message bundle="${loc}" key="application.name" var="applicationNameLabel"/>
     <fmt:message bundle="${loc}" key="title.create" var="pageTitleLabel"/>
@@ -46,23 +46,90 @@
 </header>
 <main>
     <section>
-        <h3></h3>
-        <p>
-            <c:out value="${error}"/>
-        <form action="/controller?command=register_taxidriver" method="post">
-            <input type="text" name="phone" placeholder="${phoneLabel}" required>
-            <input type="text" name="name" placeholder="${nameLabel}" required>
-            <input type="text" name="surname" placeholder="${surnameLabel}" required>
-            <input type="password" name="first_password" placeholder="${passwordLabel}" required>
-            <input type="password" name="second_password" placeholder="${repeatPasswordLabel}" required>
-            <input type="text" name="car_number" placeholder="${carModelLabel}" required>
-            <input type="text" name="car_model" placeholder="${carModelLabel}" required>
-            <input type="text" name="tariff" placeholder="${tariffLabel}" required>
-            <input type="submit" value="OK">
-        </form>
-        <a href="/controller?command=display_taxidrivers">${backLabel}</a>
-
-        </p>
+        <h3>${createLabel}</h3>
+        <div class="content">
+            <div class="row">
+                <div class="col-100">
+                    <c:out value="${error}"/>
+                </div>
+            </div>
+            <form action="/controller?command=register_taxidriver" method="post">
+                <div class="row">
+                    <div class="col-25">
+                        <label for="phone">${phoneLabel}</label>
+                    </div>
+                    <div class="col-75">
+                        <input type="text" class="input-field" id="phone" name="phone" required>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-25">
+                        <label for="name">${nameLabel}</label>
+                    </div>
+                    <div class="col-75">
+                        <input type="text" class="input-field" id="name" name="name" required>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-25">
+                        <label for="surname">${surnameLabel}</label>
+                    </div>
+                    <div class="col-75">
+                        <input type="text" class="input-field" id="surname" name="surname" required>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-25">
+                        <label for="first-password">${passwordLabel}</label>
+                    </div>
+                    <div class="col-75">
+                        <input type="password" class="input-field" id="first-password" name="first_password" required>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-25">
+                        <label for="second-password">${repeatPasswordLabel}</label>
+                    </div>
+                    <div class="col-75">
+                        <input type="password" class="input-field" id="second-password" name="second_password" required>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-25">
+                        <label for="car_number">${carNumberLabel}</label>
+                    </div>
+                    <div class="col-75">
+                        <input type="text" class="input-field" id="car_number" name="car_number" required>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-25">
+                        <label for="car_model">${carModelLabel}</label>
+                    </div>
+                    <div class="col-75">
+                        <input type="text" class="input-field" id="car_model" name="car_model" required>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-25">
+                        <label for="tariff">${tariffLabel}</label>
+                    </div>
+                    <div class="col-75">
+                        <input type="text" class="input-field" id="tariff" name="tariff" required>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-100">
+                        <div class="confirm-wrapper">
+                            <input type="submit" value="OK">
+                            <div class="cancel-button">
+                                <a href="/controller?command=display_taxidrivers">${backLabel}</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
     </section>
 </main>
 <footer>

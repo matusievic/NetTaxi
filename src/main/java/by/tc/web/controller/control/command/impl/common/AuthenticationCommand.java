@@ -32,9 +32,11 @@ public class AuthenticationCommand implements ControllerCommand {
         User user = Authenticator.authenticate(Long.parseLong(phone), password);
 
         if (user != null) {
+            String lang = (String) session.getAttribute(ControllerConstants.LOCALE_PARAM);
             session.invalidate();
             session = req.getSession();
-            session.setAttribute("user", user);
+            session.setAttribute(ControllerConstants.USER_PARAM, user);
+            session.setAttribute(ControllerConstants.LOCALE_PARAM, lang);
             resp.sendRedirect("/account");
         } else {
             displayError("Incorrect login/password combination", req, resp);

@@ -1,0 +1,131 @@
+body {
+    background-image: url('../img/taxi-banner.jpeg');
+    background-color: rgba(0, 0, 0, 0.5);
+    background-blend-mode: multiply;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    margin:0px;
+    font-family: 'Ubuntu', sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6, a {
+    margin:0; padding:0;
+}
+
+.sign-in {
+    margin:0 auto;
+    max-width:500px;
+}
+
+.sign-in-header {
+    color:#fff;
+    text-align:center;
+    font-size:300%;
+}
+
+.sign-in-header h1 {
+    font-size: 1.7em;
+}
+
+.sign-in-form h3 {
+    text-align:left;
+    margin-left:40px;
+    color:#fff;
+}
+
+.sign-in-form {
+    box-sizing:border-box;
+    padding-top:15px;
+    padding-bottom:10%;
+    margin:5% auto;
+    text-align:center;
+}
+
+.sign-in input[type="text"],
+.sign-in input[type="password"] {
+    max-width:400px;
+    width: 80%;
+    line-height:3em;
+    font-family: 'Ubuntu', sans-serif;
+    margin:1em 2em;
+    border-radius:5px;
+    border:2px solid #f2f2f2;
+    outline:none;
+    padding-left:10px;
+}
+
+.sign-in input[type="text"]:focus,
+.sign-in input[type="password"]:focus {
+    border:2px solid #F7CA18;
+}
+
+.sign-up{
+    color:#f2f2f2;
+    margin-left:-70%;
+    cursor:pointer;
+    text-decoration:underline;
+}
+
+.no-access {
+    color:#E86850;
+    margin:20px 0px 20px -57%;
+    text-decoration:underline;
+    cursor:pointer;
+}
+
+.try-again {
+    color:#f2f2f2;
+    text-decoration:underline;
+    cursor:pointer;
+}
+
+
+header {
+    height: 30%;
+    background: none;
+}
+
+main {
+    margin-top: 5%;
+    height: 45%;
+}
+
+footer {
+    height: 20%;
+    background: transparent;
+    margin: 0 auto;
+    padding-top: 0px;
+    margin: 0 auto;
+    display: table;
+}
+
+input[type=submit] {
+    border: 2px solid white;
+    border-radius: 4px;
+    background: transparent;
+    font-size: 1.5em;
+    color: white;
+    height: 50px;
+    text-transform: capitalize;
+}
+
+input[type=submit]:hover {
+    border: 2px solid #F7CA18;
+    background: transparent;
+    color: #F7CA18;
+}
+
+/*Media Querie*/
+@media only screen and (min-width : 150px) and (max-width : 530px){
+    .sign-in-form h3 {
+        text-align:center;
+        margin:0;
+    }
+    .sign-up, .no-access {
+        margin:10px 0;
+    }
+    .sign-in-button {
+        margin-bottom:10px;
+    }
+}

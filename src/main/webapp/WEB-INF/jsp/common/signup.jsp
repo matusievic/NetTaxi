@@ -42,18 +42,57 @@
 <main>
     <section>
         <h3>${signupButtonLabel}</h3>
-        <p>
-        <c:out value="${error}"/>
-        <form action="/controller" method="post">
-            <input type="hidden" name="command" value="register_customer">
-            <input type="text" name="phone" placeholder="${phoneLabel}" required><br>
-            <input type="text" name="name" placeholder="${nameLabel}" required><br>
-            <input type="text" name="surname" placeholder="${surnameLabel}" required><br>
-            <input type="password" name="first_password" placeholder="${passwordLabel}" required><br>
-            <input type="password" name="second_password" placeholder="${repeatPasswordLabel}" required><br>
-            <input type="submit" value="${signupPageLabel}">
-        </form>
-        </p>
+        <div class="content">
+            <c:out value="${error}"/>
+            <form action="/controller" method="post">
+                <input type="hidden" name="command" value="register_customer">
+                <div class="row">
+                    <div class="col-25">
+                        <label for="phone-field">${phoneLabel}</label>
+                    </div>
+                    <div class="col-75">
+                        <input type="text" class="input-field" id="phone-field" name="phone" required>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-25">
+                        <label for="name-filed">${nameLabel}</label>
+                    </div>
+                    <div class="col-75">
+                        <input type="text" class="input-field" id="name-filed" name="name" required>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-25">
+                        <label for="surname-field">${surnameLabel}</label>
+                    </div>
+                    <div class="col-75">
+                        <input type="text" class="input-field" id="surname-field" name="surname" required>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-25">
+                        <label for="first-password-field">${passwordLabel}</label>
+                    </div>
+                    <div class="col-75">
+                        <input type="password" class="input-field" id="first-password-field" name="first_password" required>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-25">
+                        <label for="second-password-field">${repeatPasswordLabel}</label>
+                    </div>
+                    <div class="col-75">
+                        <input type="password" class="input-field" id="second-password-field" name="second_password" required>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-100">
+                        <input type="submit" value="OK">
+                    </div>
+                </div>
+            </form>
+        </div>
     </section>
 </main>
 <footer>

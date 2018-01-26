@@ -37,7 +37,7 @@ public class ControllerFilter implements Filter {
         }
         ControllerActivity activity = ControllerActivity.valueOf(command.toUpperCase());
 
-        User user = (User) req.getSession(false).getAttribute(FilterConstants.USER_PARAM);
+        User user = (User) req.getSession().getAttribute(FilterConstants.USER_PARAM);
         if (user == null) {
             if (FilterConstants.unregisteredUserActivities.contains(activity)) {
                 filterChain.doFilter(servletRequest, servletResponse);

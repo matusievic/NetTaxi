@@ -6,6 +6,7 @@
 <html>
 <head>
     <%@include file="../include/header.jsp" %>
+    <link rel="stylesheet" type="text/css" href="/css/signin.css">
     <fmt:setLocale value="${sessionScope.locale}"/>
     <fmt:setBundle basename="localization.local" var="loc"/>
 
@@ -29,27 +30,32 @@
         </div>
         <nav>
             <ul class="menu">
-                <taxi:menu></taxi:menu>
+                <nav>
+                    <ul class="menu">
+                        <taxi:menu></taxi:menu>
+                    </ul>
+                </nav>
             </ul>
         </nav>
-        <div class="banner">
-            ${aboutLabel}
-        </div>
     </div>
 </header>
 <main>
-    <section>
-        <h3>${signinButtonLabel}</h3>
-        <p>
-            <c:out value="${error}"/>
-        <form action="/controller" method="get">
-            <input type="hidden" name="command" value="authenticate">
-            <input type="text" name="phone" placeholder="${phoneLabel}" required>
-            <input type="password" name="password" placeholder="${passwordLabel}" required>
-            <input type="submit" value="${signinButtonLabel}">
-        </form>
-        </p>
-    </section>
+    <div class="sign-in">
+        <div class="sign-in-header">
+            <h1>${pageTitleLabel}</h1>
+        </div>
+        <div class="sign-in-form">
+            <form action="/controller" method="get">
+                <input type="hidden" name="command" value="authenticate">
+                <h3>${phoneLabel}:</h3>
+                <input name="phone" type="text" placeholder="${phoneLabel}"/><br>
+                <h3>${passwordLabel}:</h3>
+                <input name="password" type="password" placeholder="${passwordLabel}"/>
+                <br>
+                <input type="submit" value="${signinButtonLabel}" class="sign-in-button"/>
+            </form>
+        </div>
+    </div>
 </main>
 <footer>
     <div class="company">

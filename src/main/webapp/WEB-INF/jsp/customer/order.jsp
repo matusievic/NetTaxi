@@ -5,7 +5,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <%@include file="../include/header.jsp"%>
+    <%@include file="../include/header.jsp" %>
     <script type="text/javascript" src="https://api-maps.yandex.ru/2.1/?lang=en_US"></script>
     <script type="text/javascript" src="/js/order.js"></script>
     <fmt:setLocale value="${sessionScope.locale}"/>
@@ -27,8 +27,8 @@
 
     <fmt:message bundle="${loc}" key="activity.choose" var="chooseLabel"/>
 
-    <fmt:message bundle="${loc}" key="account.sign_in" var="signInLabel"/>
-    <fmt:message bundle="${loc}" key="account.sign_up" var="signUpLabel"/>
+    <fmt:message bundle="${loc}" key="content.index.about" var="aboutLabel"/>
+    <fmt:message bundle="${loc}" key="content.customer.order.about" var="orderLabel"/>
 
     <title>${pageTitleLabel} - ${applicationNameLabel}</title>
 </head>
@@ -51,34 +51,30 @@
 </header>
 <main>
     <section>
-        <h3></h3>
-        <p>
-        <form action="/controller?command=order">
-        </form>
+        <h3>${orderLabel}</h3>
         <div id="map"></div>
-        <div id="cost"></div>
-        <div id="drivers">
-            <table id="drivers-table">
-                <thead>
-                <tr>
-                    <th>${idLabel}</th>
-                    <th>${nameLabel}</th>
-                    <th>${surnameLabel}</th>
-                    <th>${phoneLabel}</th>
-                    <th>${carModelLabel}</th>
-                    <th>${carNumberLabel}</th>
-                    <th>${ratingLabel}</th>
-                    <th>${lengthLabel}</th>
-                    <th>${priceLabel}</th>
-                    <th>${chooseLabel}</th>
-                </tr>
-                </thead>
-                <tbody>
-                </tbody>
-            </table>
+        <div class="content">
+            <div id="drivers">
+                <table id="drivers-table" class="resp-table">
+                    <thead>
+                    <tr>
+                        <th>${idLabel}</th>
+                        <th>${nameLabel}</th>
+                        <th>${surnameLabel}</th>
+                        <th>${phoneLabel}</th>
+                        <th>${carModelLabel}</th>
+                        <th>${carNumberLabel}</th>
+                        <th>${ratingLabel}</th>
+                        <th>${lengthLabel}</th>
+                        <th>${priceLabel}</th>
+                        <th>${chooseLabel}</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
         </div>
-
-        </p>
     </section>
 </main>
 <footer>

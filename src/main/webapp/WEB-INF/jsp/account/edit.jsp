@@ -47,42 +47,93 @@
 <main>
     <section>
         <h3>${aboutEditLabel}</h3>
-        <p>
+        <div class="content">
 
-        <form action="/controller?command=update_account" method="post">
-            <label for="name">${nameLabel}</label>
-            <input type="text" name="name" id="name" value="${user.name}" required>
+            <form action="/controller?command=update_account" method="post">
+                <div class="row">
+                    <div class="col-25">
+                        <label for="name">${nameLabel}</label>
+                    </div>
+                    <div class="col-75">
+                        <input type="text" class="input-field" name="name" id="name" value="${user.name}" required>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-25">
+                        <label for="surname">${surnameLabel}</label>
+                    </div>
+                    <div class="col-75">
+                        <input type="text" class="input-field" name="surname" id="surname" value="${user.surname}" required>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-25">
+                        <label for="phone">${phoneLabel}</label>
+                    </div>
+                    <div class="col-75">
+                        <input type="text" class="input-field" name="phone" id="phone" value="${user.phone}" required>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-25">
+                        <label for="old-password">${oldPasswordLabel}</label>
+                    </div>
+                    <div class="col-75">
+                        <input type="password" class="input-field" name="old_password" id="old-password">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-25">
+                        <label for="first-password">${firstPasswordLabel}</label>
+                    </div>
+                    <div class="col-75">
+                        <input type="password" class="input-field" name="first_password" id="first-password">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-25">
+                        <label for="second-password">${secondPasswordLabel}</label>
+                    </div>
+                    <div class="col-75">
+                        <input type="password" class="input-field" name="second_password" id="second-password">
+                    </div>
+                </div>
 
-            <label for="surname">${surnameLabel}</label>
-            <input type="text" name="surname" id="surname" value="${user.surname}" required>
+                <taxi:driver>
+                    <div class="row">
+                        <div class="col-25">
+                            <label for="car-number">${carNumberLabel}</label>
+                        </div>
+                        <div class="col-75">
+                            <input type="text" class="input-field" name="car_number" value="${String.valueOf(user.car.number)}" id="car-number" required>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-25">
+                            <label for="car-model">${carModelLabel}</label>
+                        </div>
+                        <div class="col-75">
+                            <input type="text" class="input-field" name="car_model" value="${user.car.model}" id="car-model" required>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-25">
+                            <label for="tariff">${tariffLabel}</label>
+                        </div>
+                        <div class="col-75">
+                            <input type="text" class="input-field" name="tariff" value="${user.tariff}" id="tariff" required>
+                        </div>
+                    </div>
+                </taxi:driver>
 
-            <label for="phone">${phoneLabel}</label>
-            <input type="text" name="phone" id="phone" value="${user.phone}" required>
+                <div class="row">
+                    <div class="col-100">
+                        <input type="submit" value="OK">
+                    </div>
+                </div>
+            </form>
 
-            <label for="old-password">${oldPasswordLabel}</label>
-            <input type="password" name="old_password" id="old-password">
-
-            <label for="first-password">${firstPasswordLabel}</label>
-            <input type="password" name="first_password" id="first-password">
-
-            <label for="second-password">${secondPasswordLabel}</label>
-            <input type="password" name="second_password" id="second-password">
-
-            <taxi:driver>
-                <label for="car-number">${carNumberLabel}</label>
-                <input type="text" name="car_number" value="${String.valueOf(user.car.number)}" id="car-number" required>
-
-                <label for="car-model">${carModelLabel}</label>
-                <input type="text" name="car_model" value="${user.car.model}" id="car-model" required>
-
-                <label for="tariff">${tariffLabel}</label>
-                <input type="text" name="tariff" value="${user.tariff}" id="tariff" required>
-            </taxi:driver>
-
-            <input type="submit" value="OK">
-        </form>
-
-        </p>
+        </div>
     </section>
 </main>
 <footer>

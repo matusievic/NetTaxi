@@ -1,6 +1,9 @@
 package by.tc.web.service.validator;
 
+import org.apache.log4j.Logger;
+
 public final class AccountValidator {
+    private static final Logger logger = Logger.getLogger(AccountValidator.class);
     private static final String PHONE_REGEX = "\\+?375[(29)(33)(44)](\\d{8})";
     private static final String NAME_REGEX = "[A-Z][a-z]+";
     private static final String SURNAME_REGEX = "[A-Z][a-z]+";
@@ -27,12 +30,12 @@ public final class AccountValidator {
     }
 
     public static boolean isRatingValid(String rating) {
-        float parsedRating = 0;
+        float parsedRating = -1;
 
         try {
             parsedRating = Float.parseFloat(rating);
         } catch (NumberFormatException e) {
-            return false;
+            logger.info("Rating is incorrect -> parsing thrown an exception", e);
         }
 
         return parsedRating >= 0 && parsedRating <= 5;
@@ -44,7 +47,7 @@ public final class AccountValidator {
         try {
             parsedTariff = Float.parseFloat(tariff);
         } catch (NumberFormatException e) {
-            return false;
+            logger.info("Tariff is incorrect -> parsing thrown an exception", e);
         }
 
         return parsedTariff > 0;

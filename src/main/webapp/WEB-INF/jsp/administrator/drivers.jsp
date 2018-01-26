@@ -13,15 +13,12 @@
     <fmt:message bundle="${loc}" key="account.name" var="nameLabel"/>
     <fmt:message bundle="${loc}" key="account.surname" var="surnameLabel"/>
     <fmt:message bundle="${loc}" key="account.car_number" var="carNumberLabel"/>
-    <fmt:message bundle="${loc}" key="account.car_model" var="carModelLabel"/>
     <fmt:message bundle="${loc}" key="account.rating" var="ratingLabel"/>
     <fmt:message bundle="${loc}" key="account.banned" var="bannedLabel"/>
     <fmt:message bundle="${loc}" key="account.free" var="freeLabel"/>
-    <fmt:message bundle="${loc}" key="account.location" var="locationLabel"/>
-    <fmt:message bundle="${loc}" key="account.tariff" var="tariffLabel"/>
 
     <fmt:message bundle="${loc}" key="content.index.about" var="aboutLabel"/>
-    <fmt:message bundle="${loc}" key="content.administrator.drivers.about" var="aboutDriversLabel"/>
+    <fmt:message bundle="${loc}" key="content.administrator.drivers.about" var="driversLabel"/>
 
     <fmt:message bundle="${loc}" key="activity.create" var="createButtonLabel"/>
     <fmt:message bundle="${loc}" key="title.drivers" var="pageTitleLabel"/>
@@ -48,47 +45,40 @@
 </header>
 <main>
     <section>
-        <h3>${aboutDriversLabel}</h3>
-        <p>
-
-            <a href="/administrator/driver/create">${createButtonLabel}</a>
-        <table>
-            <thead>
-            <tr>
-                <th>${idLabel}</th>
-                <th>${phoneLabel}</th>
-                <th>${nameLabel}</th>
-                <th>${surnameLabel}</th>
-                <th>${carNumberLabel}</th>
-                <th>${carModelLabel}</th>
-                <th>${bannedLabel}</th>
-                <th>${ratingLabel}</th>
-                <th>${freeLabel}</th>
-                <th>${locationLabel}</th>
-                <th>${tariffLabel}</th>
-            </tr>
-            </thead>
-            <tbody>
-            <c:forEach var="driver" items="${drivers}">
+        <h3>${driversLabel}</h3>
+        <div class="content">
+            <a href="/administrator/driver/create">${createButtonLabel}</a><br><br>
+            <table class="resp-table">
+                <thead>
                 <tr>
-                    <td><a href="/controller?command=display_taxidriver&id=${driver.id}">${driver.id}</a></td>
-                    <td>${driver.phone}</td>
-                    <td>${driver.name}</td>
-                    <td>${driver.surname}</td>
-                    <td>${String.valueOf(driver.car.number)}</td>
-                    <td>${driver.car.model}</td>
-                    <td>${driver.banned}</td>
-                    <td>${driver.rating}</td>
-                    <td>${driver.free}</td>
-                    <td>${driver.location.x} , ${driver.location.y}</td>
-                    <td>${driver.tariff}</td>
+                    <th>${idLabel}</th>
+                    <th>${phoneLabel}</th>
+                    <th>${nameLabel}</th>
+                    <th>${surnameLabel}</th>
+                    <th>${carNumberLabel}</th>
+                    <th>${bannedLabel}</th>
+                    <th>${ratingLabel}</th>
+                    <th>${freeLabel}</th>
                 </tr>
-            </c:forEach>
-            </tbody>
-        </table>
-        <taxi:pagination command="display_taxidrivers"/>
+                </thead>
+                <tbody>
+                <c:forEach var="driver" items="${drivers}">
+                    <tr>
+                        <td data-label="${idLabel}"><a href="/controller?command=display_taxidriver&id=${driver.id}">${driver.id}</a></td>
+                        <td data-label="${phoneLabel}">${driver.phone}</td>
+                        <td data-label="${nameLabel}">${driver.name}</td>
+                        <td data-label="${surnameLabel}">${driver.surname}</td>
+                        <td data-label="${carNumberLabel}">${String.valueOf(driver.car.number)}</td>
+                        <td data-label="${bannedLabel}">${driver.banned}</td>
+                        <td data-label="${ratingLabel}">${driver.rating}</td>
+                        <td data-label="${freeLabel}">${driver.free}</td>
+                    </tr>
+                </c:forEach>
+                </tbody>
+            </table>
+            <taxi:pagination command="display_taxidrivers"/>
 
-        </p>
+        </div>
     </section>
 </main>
 <footer>

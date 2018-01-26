@@ -15,4 +15,5 @@ public interface UserService {
     void update(User user);
     void delete(User user);
     void changeRating(int userId, byte rating);
+    void setFree(int userId, boolean free);
 }

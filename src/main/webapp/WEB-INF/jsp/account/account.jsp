@@ -50,56 +50,56 @@
 <main>
     <section>
         <h3>${aboutAccountLabel}</h3>
-        <p>
-        <table>
-            <tr>
-                <th>${idLabel}</th>
-                <td>${user.id}</td>
-            </tr>
-            <tr>
-                <th>${nameLabel}</th>
-                <td>${user.name}</td>
-            </tr>
-            <tr>
-                <th>${surnameLabel}</th>
-                <td>${user.surname}</td>
-            </tr>
-            <tr>
-                <th>${phoneLabel}</th>
-                <td>${user.phone}</td>
-            </tr>
-            <tr>
-                <th>${passwordLabel}</th>
-                <td>******</td>
-            </tr>
-            <taxi:customer>
+        <div class="content">
+            <table class="info-table">
                 <tr>
-                    <th>${discountLabel}</th>
-                    <td>${user.discount}</td>
-                </tr>
-            </taxi:customer>
-            <taxi:driver>
-                <tr>
-                    <th>${carNumberLabel}</th>
-                    <td>${String.valueOf(user.car.number)}</td>
+                    <th>${idLabel}</th>
+                    <td>${user.id}</td>
                 </tr>
                 <tr>
-                    <th>${carModelLabel}</th>
-                    <td>${user.car.model}</td>
+                    <th>${nameLabel}</th>
+                    <td>${user.name}</td>
                 </tr>
                 <tr>
-                    <th>${ratingLabel}</th>
-                    <td>${user.rating}</td>
+                    <th>${surnameLabel}</th>
+                    <td>${user.surname}</td>
                 </tr>
                 <tr>
-                    <th>${tariffLabel}</th>
-                    <td>${user.tariff}</td>
+                    <th>${phoneLabel}</th>
+                    <td>${user.phone}</td>
                 </tr>
-            </taxi:driver>
-        </table>
-        <a href="/account/edit">${editLabel}</a>
-        <a href="/account/delete">${deleteLabel}</a>
-        </p>
+                <tr>
+                    <th>${passwordLabel}</th>
+                    <td>******</td>
+                </tr>
+                <taxi:customer>
+                    <tr>
+                        <th>${discountLabel}</th>
+                        <td>${user.discount}</td>
+                    </tr>
+                </taxi:customer>
+                <taxi:driver>
+                    <tr>
+                        <th>${carNumberLabel}</th>
+                        <td>${String.valueOf(user.car.number)}</td>
+                    </tr>
+                    <tr>
+                        <th>${carModelLabel}</th>
+                        <td>${user.car.model}</td>
+                    </tr>
+                    <tr>
+                        <th>${ratingLabel}</th>
+                        <td>${user.rating}</td>
+                    </tr>
+                    <tr>
+                        <th>${tariffLabel}</th>
+                        <td>${user.tariff}</td>
+                    </tr>
+                </taxi:driver>
+            </table>
+            <a href="/account/edit">${editLabel}</a>
+            <a href="/account/delete">${deleteLabel}</a>
+        </div>
     </section>
 </main>
 <footer>

@@ -24,8 +24,13 @@ public class OrderFinishingCommand implements ControllerCommand {
             return;
         }
 
+        int userId = user.getId();
+        ControllerConstants.taxiDriverService.setFree(userId, true);
+
         ControllerConstants.orderService.changeStatus(id, OrderStatus.PERFORMED);
         Order order = ControllerConstants.orderService.get(id);
-        ControllerConstants.taxiDriverService.changeLocation(user.getId(), order.getEnd());
+
+        ControllerConstants.taxiDriverService.setFree(userId, true);
+        ControllerConstants.taxiDriverService.changeLocation(userId, order.getEnd());
     }
 }

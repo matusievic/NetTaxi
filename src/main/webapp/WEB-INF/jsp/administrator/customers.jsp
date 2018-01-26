@@ -14,6 +14,10 @@
     <fmt:message bundle="${loc}" key="account.surname" var="surnameLabel"/>
     <fmt:message bundle="${loc}" key="account.banned" var="bannedLabel"/>
     <fmt:message bundle="${loc}" key="account.discount" var="discountLabel"/>
+
+    <fmt:message bundle="${loc}" key="content.index.about" var="aboutLabel"/>
+    <fmt:message bundle="${loc}" key="content.administrator.customers.about" var="customersLabel"/>
+
     <fmt:message bundle="${loc}" key="title.customers" var="pageTitleLabel"/>
     <fmt:message bundle="${loc}" key="application.name" var="applicationNameLabel"/>
 
@@ -38,36 +42,35 @@
 </header>
 <main>
     <section>
-        <h3>${aboutDeleteLabel}</h3>
-        <p>
-
-        <table>
-            <thead>
-            <tr>
-                <th>${idLabel}</th>
-                <th>${phoneLabel}</th>
-                <th>${nameLabel}</th>
-                <th>${surnameLabel}</th>
-                <th>${bannedLabel}</th>
-                <th>${discountLabel}</th>
-            </tr>
-            </thead>
-            <tbody>
-            <c:forEach var="driver" items="${customers}">
+        <h3>${customersLabel}</h3>
+        <div class="content">
+            <table class="resp-table">
+                <thead>
                 <tr>
-                    <td><a href="/controller?command=display_customer&id=${driver.id}">${driver.id}</a></td>
-                    <td>${driver.phone}</td>
-                    <td>${driver.name}</td>
-                    <td>${driver.surname}</td>
-                    <td>${driver.banned}</td>
-                    <td>${driver.discount}</td>
+                    <th>${idLabel}</th>
+                    <th>${phoneLabel}</th>
+                    <th>${nameLabel}</th>
+                    <th>${surnameLabel}</th>
+                    <th>${bannedLabel}</th>
+                    <th>${discountLabel}</th>
                 </tr>
-            </c:forEach>
-            </tbody>
-        </table>
-        <taxi:pagination command="display_customers"/>
-
-        </p>
+                </thead>
+                <tbody>
+                <c:forEach var="driver" items="${customers}">
+                    <tr>
+                        <td data-label="${idLabel}"><a
+                                href="/controller?command=display_customer&id=${driver.id}">${driver.id}</a></td>
+                        <td data-label="${phoneLabel}">${driver.phone}</td>
+                        <td data-label="${nameLabel}">${driver.name}</td>
+                        <td data-label="${surnameLabel}">${driver.surname}</td>
+                        <td data-label="${bannedLabel}">${driver.banned}</td>
+                        <td data-label="${discountLabel}">${driver.discount}</td>
+                    </tr>
+                </c:forEach>
+                </tbody>
+            </table>
+            <taxi:pagination command="display_customers"/>
+        </div>
     </section>
 </main>
 <footer>

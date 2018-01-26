@@ -6,6 +6,7 @@
 <html>
 <head>
     <%@include file="include/header.jsp" %>
+    <link rel="stylesheet" type="text/css" href="/css/index.css">
     <fmt:setLocale value="${sessionScope.locale}"/>
     <fmt:setBundle basename="localization.local" var="loc"/>
     <fmt:message bundle="${loc}" key="application.name" var="applicationNameLabel"/>
@@ -96,7 +97,7 @@
             <li>
                 <span>1</span>
                 <div class="timeline-item">
-                    <a href="#sign-in">${signInLabel}</a> ${orLabel} <a href="#sign-up">${signUpLabel}</a>
+                    <a href="/signin">${signInLabel}</a> ${orLabel} <a href="/signup">${signUpLabel}</a>
                 </div>
             </li>
             <li>

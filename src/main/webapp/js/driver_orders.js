@@ -15,15 +15,24 @@ function getActiveOrder() {
                 $('#active-driver-order').show();
             }
 
+
+            var idLabel = $('#id-field').val();
+            var customerLabel = $('#customer-field').val();
+            var beginLabel = $('#begin-field').val();
+            var endLabel = $('#end-field').val();
+            var priceLabel = $('#price-field').val();
+            var statusLabel = $('#status-field').val();
+            var ratingLabel = $('#rating-field').val();
+
             $('#active-driver-order-table tbody > tr').remove();
-            $('#active-driver-order-table tbody').append('<tr><td>' + order.id + '</td>'
-                                            +'<td>' + order.customerId + '</td>'
-                                            +'<td>' + order.begin.x + ', ' + order.begin.y + '</td>'
-                                            +'<td>' + order.end.x + ', ' + order.end.y + '</td>'
-                                            +'<td>' + order.price + '</td>'
-                                            +'<td>' + order.status + '</td>'
-                                            +'<td>' + order.rating + '</td>'
-                                            +'<td><button onclick="nextStep(' + '&quot;' + order.status + '&quot;' + ', ' + order.id + ');">OK</button></td></tr>');
+            $('#active-driver-order-table tbody').append('<tr><td data-label="' + idLabel + '">' + order.id + '</td>'
+                                            +'<td data-label="' + customerLabel + '"><a href="/controller?command=display_customer&id=' + order.customerId + '">' + order.customerId + '</a></td>'
+                                            +'<td data-label="' + beginLabel + '">' + order.begin.x + ', ' + order.begin.y + '</td>'
+                                            +'<td data-label="' + endLabel + '">' + order.end.x + ', ' + order.end.y + '</td>'
+                                            +'<td data-label="' + priceLabel + '">' + order.price + '</td>'
+                                            +'<td data-label="' + statusLabel + '">' + order.status + '</td>'
+                                            +'<td data-label="' + ratingLabel + '">' + order.rating + '</td>'
+                                            +'<td><button onclick="nextStep(' + '&quot;' + order.status + '&quot;' + ', ' + order.id + ');">' + getActivity(order.status) + '</button></td></tr>');
         }
     });
 }
@@ -41,4 +50,12 @@ function nextStep(status, orderId) {
             break;
     }
     getActiveOrder();
+}
+
+function getActivity(status) {
+    switch (status) {
+        case 'NEW': return $('#choose-field').val();
+        case 'WAITING': return $('#accept-field').val();
+        case 'ACCEPTED': return $('#finish-field').val();
+    }
 }

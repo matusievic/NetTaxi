@@ -65,6 +65,9 @@ public abstract class AbstractUserService implements UserService {
     public void changeRating(int userId, byte rating) {}
 
     @Override
+    public void setFree(int userId, boolean free) {}
+
+    @Override
     public void discount(int userId, float discount) {}
 
     @Override
